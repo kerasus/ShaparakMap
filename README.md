@@ -38,8 +38,11 @@ yarn install
 yarn start
 ```
 
+### Docker
+```bash
+docker-compose build
+docker-compose up
+```
+
 ### Customize the configuration
 See [Configuring quasar.config.js](https://v2.quasar.dev/quasar-cli-vite/quasar-config-js).
-
-
-https://www.figma.com/file/m58I7EZQmWBVsRFn5ARxtn/Wafia?type=design&node-id=167-689&t=vC5quJ0wFftUHB4J-0
