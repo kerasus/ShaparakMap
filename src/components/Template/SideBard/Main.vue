@@ -43,6 +43,20 @@
                     tag="label">
               <q-item-section side
                               top>
+                <q-checkbox v-model="branches" />
+              </q-item-section>
+
+              <q-item-section>
+                <q-item-label>Branch</q-item-label>
+                <q-item-label caption>
+                  point
+                </q-item-label>
+              </q-item-section>
+            </q-item>
+            <q-item v-ripple
+                    tag="label">
+              <q-item-section side
+                              top>
                 <q-checkbox v-model="transport" />
               </q-item-section>
 
@@ -192,6 +206,7 @@ export default {
   name: 'MainSideBarTemplate',
   data () {
     return {
+      branches: true,
       transport: true,
       water: true,
       pofw: true,
@@ -205,6 +220,9 @@ export default {
     }
   },
   watch: {
+    branches (newValue) {
+      this.$bus.emit('map-change-branches', newValue)
+    },
     transport (newValue) {
       this.$bus.emit('map-change-transport', newValue)
     },

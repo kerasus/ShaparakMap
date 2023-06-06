@@ -111,6 +111,233 @@
                   </q-item>
                 </q-list>
               </q-tab-panel>
+              <q-tab-panel name="branches">
+                <q-list bordered
+                        separator>
+                  <q-item v-ripple
+                          clickable>
+                    <q-item-section>Branches</q-item-section>
+                  </q-item>
+                  <q-item v-ripple
+                          clickable>
+                    <q-item-section>
+                      <q-item-label>id</q-item-label>
+                      <q-item-label caption>
+                        {{ selectedLayer.id }}
+                      </q-item-label>
+                    </q-item-section>
+                  </q-item>
+                  <q-item v-ripple
+                          clickable>
+                    <q-item-section>
+                      <q-item-label>closest_branch</q-item-label>
+                      <q-item-label caption>
+                        {{ selectedLayer.closest_branch }}
+                      </q-item-label>
+                    </q-item-section>
+                  </q-item>
+                  <template v-if="selectedLayer.closest_branch_info">
+                    <q-item v-ripple
+                            clickable>
+                      <q-item-section>
+                        <q-item-label>closest_branch_info.id</q-item-label>
+                        <q-item-label caption>
+                          {{ selectedLayer.closest_branch_info.id }}
+                        </q-item-label>
+                      </q-item-section>
+                    </q-item>
+                    <q-item v-ripple
+                            clickable>
+                      <q-item-section>
+                        <q-item-label>closest_branch_info.geom</q-item-label>
+                        <q-item-label caption>
+                          {{ selectedLayer.closest_branch_info.geom }}
+                        </q-item-label>
+                      </q-item-section>
+                    </q-item>
+                    <q-item v-ripple
+                            clickable>
+                      <q-item-section>
+                        <q-item-label>closest_branch_info.distance</q-item-label>
+                        <q-item-label caption>
+                          {{ selectedLayer.closest_branch_info.distance }}
+                        </q-item-label>
+                      </q-item-section>
+                    </q-item>
+                    <q-item v-ripple
+                            clickable>
+                      <q-item-section>
+                        <q-item-label>closest_branch_info.geomPoint</q-item-label>
+                        <q-item-label caption>
+                          {{ selectedLayer.closest_branch_info.geomPoint }}
+                        </q-item-label>
+                      </q-item-section>
+                    </q-item>
+                  </template>
+                  <q-item v-ripple
+                          clickable>
+                    <q-item-section>
+                      <q-item-label>number</q-item-label>
+                      <q-item-label caption>
+                        {{ selectedLayer.number }}
+                      </q-item-label>
+                    </q-item-section>
+                  </q-item>
+                  <q-item v-ripple
+                          clickable>
+                    <q-item-section>
+                      <q-item-label>code</q-item-label>
+                      <q-item-label caption>
+                        {{ selectedLayer.code }}
+                      </q-item-label>
+                    </q-item-section>
+                  </q-item>
+                  <q-item v-ripple
+                          clickable>
+                    <q-item-section>
+                      <q-item-label>name</q-item-label>
+                      <q-item-label caption>
+                        {{ selectedLayer.name }}
+                      </q-item-label>
+                    </q-item-section>
+                  </q-item>
+                  <q-item v-ripple
+                          clickable>
+                    <q-item-section>
+                      <q-item-label>address</q-item-label>
+                      <q-item-label caption>
+                        {{ selectedLayer.address }}
+                      </q-item-label>
+                    </q-item-section>
+                  </q-item>
+                  <q-item v-ripple
+                          clickable>
+                    <q-item-section>
+                      <q-item-label>beforeـnumber</q-item-label>
+                      <q-item-label caption>
+                        {{ selectedLayer.beforeـnumber }}
+                      </q-item-label>
+                    </q-item-section>
+                  </q-item>
+                  <q-item v-ripple
+                          clickable>
+                    <q-item-section>
+                      <q-item-label>farsighted</q-item-label>
+                      <q-item-label caption>
+                        {{ selectedLayer.farsighted }}
+                      </q-item-label>
+                    </q-item-section>
+                  </q-item>
+                  <q-item v-ripple
+                          clickable>
+                    <q-item-section>
+                      <q-item-label>phone_1</q-item-label>
+                      <q-item-label caption>
+                        {{ selectedLayer.phone_1 }}
+                      </q-item-label>
+                    </q-item-section>
+                  </q-item>
+                  <q-item v-ripple
+                          clickable>
+                    <q-item-section>
+                      <q-item-label>phone_2</q-item-label>
+                      <q-item-label caption>
+                        {{ selectedLayer.phone_2 }}
+                      </q-item-label>
+                    </q-item-section>
+                  </q-item>
+                  <q-item v-ripple
+                          clickable>
+                    <q-item-section>
+                      <q-item-label>currencyـcircle</q-item-label>
+                      <q-item-label caption>
+                        {{ selectedLayer.currencyـcircle }}
+                      </q-item-label>
+                    </q-item-section>
+                  </q-item>
+                  <q-item v-ripple
+                          clickable>
+                    <q-item-section>
+                      <q-item-label>atm</q-item-label>
+                      <q-item-label caption>
+                        {{ selectedLayer.atm }}
+                      </q-item-label>
+                    </q-item-section>
+                  </q-item>
+                  <q-item v-ripple
+                          clickable>
+                    <q-item-section>
+                      <q-item-label>eveningـcounter</q-item-label>
+                      <q-item-label caption>
+                        {{ selectedLayer.eveningـcounter }}
+                      </q-item-label>
+                    </q-item-section>
+                  </q-item>
+                  <q-item v-ripple
+                          clickable>
+                    <q-item-section>
+                      <q-item-label>Safeـbox</q-item-label>
+                      <q-item-label caption>
+                        {{ selectedLayer.Safeـbox }}
+                      </q-item-label>
+                    </q-item-section>
+                  </q-item>
+                  <q-item v-ripple
+                          clickable>
+                    <q-item-section>
+                      <q-item-label>pos</q-item-label>
+                      <q-item-label caption>
+                        {{ selectedLayer.pos }}
+                      </q-item-label>
+                    </q-item-section>
+                  </q-item>
+                  <q-item v-ripple
+                          clickable>
+                    <q-item-section>
+                      <q-item-label>cvv2</q-item-label>
+                      <q-item-label caption>
+                        {{ selectedLayer.cvv2 }}
+                      </q-item-label>
+                    </q-item-section>
+                  </q-item>
+                  <q-item v-ripple
+                          clickable>
+                    <q-item-section>
+                      <q-item-label>cellularـphone</q-item-label>
+                      <q-item-label caption>
+                        {{ selectedLayer.cellularـphone }}
+                      </q-item-label>
+                    </q-item-section>
+                  </q-item>
+                  <q-item v-ripple
+                          clickable>
+                    <q-item-section>
+                      <q-item-label>done</q-item-label>
+                      <q-item-label caption>
+                        {{ selectedLayer.done }}
+                      </q-item-label>
+                    </q-item-section>
+                  </q-item>
+                  <q-item v-ripple
+                          clickable>
+                    <q-item-section>
+                      <q-item-label>city</q-item-label>
+                      <q-item-label caption>
+                        {{ selectedLayer.city }}
+                      </q-item-label>
+                    </q-item-section>
+                  </q-item>
+                  <q-item v-ripple
+                          clickable>
+                    <q-item-section>
+                      <q-item-label>geom</q-item-label>
+                      <q-item-label caption>
+                        {{ selectedLayer.geom }}
+                      </q-item-label>
+                    </q-item-section>
+                  </q-item>
+                </q-list>
+              </q-tab-panel>
               <q-tab-panel name="water">
                 <q-list bordered
                         separator>
@@ -997,6 +1224,7 @@ import { RailwayList } from 'src/models/Railway'
 import { RoadList } from 'src/models/Road'
 import { WaterwayList } from 'src/models/Waterway'
 import { ProvinceList } from 'src/models/Province'
+import { BrancheList } from 'src/models/Branche'
 
 let leafletObject = null
 if (typeof window !== 'undefined') {
@@ -1015,7 +1243,9 @@ export default {
       panel: 'empty',
       selectedLayer: {},
       selectedProvinece: null,
+      closestBranchPointMarker: null,
       selectedCity: null,
+      branchesList: new BrancheList(),
       provinceList: new ProvinceList(),
       transportList: new TransportList(),
       waterList: new WaterList(),
@@ -1028,6 +1258,7 @@ export default {
       roadsList: new RoadList(),
       waterWayList: new WaterwayList(),
       transportMarkers: [],
+      branchesMarkers: [],
       waterPolygon: [],
       pofwPolygon: [],
       placesPolygon: [],
@@ -1037,6 +1268,10 @@ export default {
       railwayPolyline: [],
       roadsPolyline: [],
       waterWayPolyline: [],
+      pointList: [
+        'transport',
+        'branches'
+      ],
       polygonNameList: [
         'water',
         'pofw',
@@ -1080,7 +1315,20 @@ export default {
         })
     },
     setEventBuses () {
-      this.setEventBus_transport()
+      this.pointList.forEach(item => {
+        this.$bus.on('map-change-' + item, (newValue) => {
+          if (newValue) {
+            this.loadMarkersList(item + 'List', item + 'Markers')
+          }
+          this[item + 'Markers'].forEach(marker => {
+            if (newValue) {
+              this.showLayer(marker)
+            } else {
+              this.hideLayer(marker)
+            }
+          })
+        })
+      })
       this.polygonNameList.forEach(item => {
         this.$bus.on('map-change-' + item, (newValue) => {
           if (newValue) {
@@ -1100,27 +1348,13 @@ export default {
           if (newValue) {
             this.loadPolylineList(item + 'List', item + 'Polyline')
           }
-          this[item + 'Polyline'].forEach(polygon => {
+          this[item + 'Polyline'].forEach(polyline => {
             if (newValue) {
-              this.showLayer(polygon)
+              this.showLayer(polyline)
             } else {
-              this.hideLayer(polygon)
+              this.hideLayer(polyline)
             }
           })
-        })
-      })
-    },
-    setEventBus_transport () {
-      this.$bus.on('map-change-transport', (newValue) => {
-        if (newValue) {
-          this.loadTransports()
-        }
-        this.transportMarkers.forEach(marker => {
-          if (newValue) {
-            this.showLayer(marker)
-          } else {
-            this.hideLayer(marker)
-          }
         })
       })
     },
@@ -1150,7 +1384,13 @@ export default {
       this.getPolylines()
     },
     getPoints () {
-      this.getTransports()
+      this.pointList.forEach(item => {
+        APIGateway.point[item]()
+          .then((list) => {
+            this[item + 'List'] = list
+            this.loadMarkersList(item + 'List', item + 'Markers')
+          })
+      })
     },
     getPolygons () {
       this.polygonNameList.forEach(item => {
@@ -1170,6 +1410,30 @@ export default {
           })
       })
     },
+    loadMarkersList (listName, markerName) {
+      this[listName].list.forEach(marker => {
+        const layerName = listName.replace('List', '')
+        const markerLayer = this.addMarker(marker.point, '<b>(' + layerName + ')</b></br><b>name: ' + marker.name + '</b></br>fclass:' + marker.fclass, marker, layerName)
+
+        // if (layerName === 'branches') {
+        //   const greenIcon = leafletObject.icon({
+        //     iconUrl: 'https://leafletjs.com/examples/custom-icons/leaf-green.png',
+        //     shadowUrl: 'https://leafletjs.com/examples/custom-icons/leaf-shadow.png',
+        //
+        //     iconSize: [38, 95], // size of the icon
+        //     shadowSize: [50, 64], // size of the shadow
+        //     iconAnchor: [22, 94], // point of the icon which will correspond to marker's location
+        //     shadowAnchor: [4, 62], // the same for the shadow
+        //     popupAnchor: [-3, -76] // point from which the popup should open relative to the iconAnchor
+        //   })
+        //   this.closestBranchPointMarker = this.addMarker(marker.point, '<b>(' + layerName + ')</b></br><b>name: ' + marker.name + '</b></br>fclass:' + marker.fclass, marker, layerName, greenIcon)
+        // } else {
+        //   this.hideLayer(this.closestBranchPointMarker)
+        //   this.closestBranchPointMarker = null
+        // }
+        this[markerName].push(markerLayer)
+      })
+    },
     loadPolygonList (listName, polygonName) {
       this[listName].list.forEach(polygon => {
         const layerName = listName.replace('List', '')
@@ -1184,31 +1448,52 @@ export default {
         this[polylineName].push(polylineLayer)
       })
     },
-    getTransports () {
-      APIGateway.point.transport()
-        .then((transportList) => {
-          this.transportList = transportList
-          this.loadTransports()
-        })
-    },
-    loadTransports () {
-      this.transportList.list.forEach(point => {
-        const marker = this.addMarker(point.point, '<b>name: ' + point.name + '</b></br>fclass:' + point.fclass, point, 'transport')
-        this.transportMarkers.push(marker)
-      })
-    },
     onClickMap(e) {
       // alert('You clicked the map at ' + e.latlng)
       // this.addMarker(e.latlng)
     },
-    addMarker(latlng, popup = '', data, name) {
-      return leafletObject.marker(latlng)
+    addMarker(latlng, popup = '', data, name, icon, clickEvent) {
+      let leafletMarker = null
+      if (icon) {
+        leafletMarker = leafletObject.marker(latlng, { icon })
+      } else {
+        leafletMarker = leafletObject.marker(latlng)
+      }
+      leafletMarker
         .addTo(this.mapInstance)
-        .on('click', () => {
-          this.panel = name
-          this.selectedLayer = data
-        })
-        .bindPopup(popup)
+      if (typeof clickEvent === 'undefined' || clickEvent === true) {
+        leafletMarker
+          .on('click', (e) => {
+            this.panel = name
+            this.selectedLayer = data
+
+            if (name === 'branches') {
+              const greenIcon = leafletObject.icon({
+                iconUrl: 'https://leafletjs.com/examples/custom-icons/leaf-green.png',
+                shadowUrl: 'https://leafletjs.com/examples/custom-icons/leaf-shadow.png',
+
+                iconSize: [38, 95], // size of the icon
+                shadowSize: [50, 64], // size of the shadow
+                iconAnchor: [22, 94], // point of the icon which will correspond to marker's location
+                shadowAnchor: [4, 62], // the same for the shadow
+                popupAnchor: [-3, -76] // point from which the popup should open relative to the iconAnchor
+              })
+              const layerName = 'branches'
+              if (data.closest_branch_point) {
+                if (this.closestBranchPointMarker) {
+                  this.hideLayer(this.closestBranchPointMarker)
+                }
+                this.closestBranchPointMarker = this.addMarker(data.closest_branch_point, '<b>(' + layerName + ')</b></br><b>name: ' + data.name + '</b></br>fclass:' + data.fclass, data, layerName, greenIcon, false)
+              }
+            } else {
+              if (this.closestBranchPointMarker) {
+                this.hideLayer(this.closestBranchPointMarker)
+              }
+              this.closestBranchPointMarker = null
+            }
+          })
+      }
+      return leafletMarker.bindPopup(popup)
       // .openPopup()
     },
     addPolygon(latlngs, popup = '', data, name) {
