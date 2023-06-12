@@ -18,7 +18,7 @@
              class="content-inside">
           <router :include="keepAliveComponents" />
         </div>
-        <!--        <floating-action-button v-if="isAdmin && canShowFloatingActionBtn" />-->
+        <floating-action-button v-if="canShowFloatingActionBtn" />
       </template>
     </quasar-template-builder>
   </div>
@@ -31,14 +31,14 @@ import KeepAliveComponents from 'src/assets/js/KeepAliveComponents.js'
 import templateHeader from 'src/components/Template/Header/TemplateHeader.vue'
 import TemplateSideBar from 'src/components/Template/SideBard/TemplateSideBar.vue'
 import QuasarTemplateBuilder from 'quasar-template-builder/src/quasar-template-builder.vue'
-// import FloatingActionButton from 'src/components/Template/FloatingActionButton/FloatingActionButton.vue'
+import FloatingActionButton from 'src/components/Template/FloatingActionButton/FloatingActionButton.vue'
 
 export default {
   components: {
     Router,
     templateHeader,
     TemplateSideBar,
-    // FloatingActionButton,
+    FloatingActionButton,
     QuasarTemplateBuilder
   },
   data () {
@@ -52,7 +52,7 @@ export default {
   },
   computed: {
     canShowFloatingActionBtn () {
-      return true
+      return false
       // return this.hasDynamicSetting || this.hasDynamicSettingWithParams
     },
     hasDynamicSetting () {

@@ -32,6 +32,13 @@ class PofwList extends Collection {
   model () {
     return Pofw
   }
+
+  inBounds (bounds) {
+    return this.list.filter(item =>
+      item.multiPolygon.filter(point =>
+        (point.lat > bounds._southWest.lat && point.lat < bounds._northEast.lat) &&
+        (point.lng > bounds._southWest.lng && point.lng < bounds._northEast.lng)).length > 0)
+  }
 }
 
 export { Pofw, PofwList }

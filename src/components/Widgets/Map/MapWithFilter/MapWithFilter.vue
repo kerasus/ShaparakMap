@@ -17,22 +17,21 @@
       </div>
     </div>
     <div class="row q-col-gutter-lg">
-      <div class="col-md-12">
+      <div class="col-12">
         <div class="card card-box">
           <div class="card-head">
             <header>نقشه</header>
             <div class="tools">
-              <a class="fa fa-repeat btn-color box-refresh"
-                 href="javascript:;" />
-              <a class="t-collapse btn-color fa fa-chevron-down"
-                 href="javascript:;" />
-              <a class="t-close btn-color fa fa-times"
-                 href="javascript:;" />
+              <q-btn color="secondary"
+                     flat
+                     :icon="$q.fullscreen.isActive ? 'fullscreen_exit' : 'fullscreen'"
+                     @click="toggle" />
             </div>
           </div>
           <div class="card-body "
                style="">
             <div id="map"
+                 ref="mapRef"
                  class="height-350"
                  style="position: relative; overflow: hidden;" />
           </div>
@@ -40,7 +39,7 @@
       </div>
     </div>
     <div class="row q-col-gutter-lg">
-      <div class="col-lg-6 col-md-6 col-sm-12 col-12">
+      <div class="col-lg-12 col-md-12 col-sm-12 col-12">
         <div class="card">
           <div class="card-block">
             <q-tab-panels v-model="panel"
@@ -1042,9 +1041,9 @@
           </div>
         </div>
       </div>
-      <div class="col-lg-6 col-md-6 col-sm-12 col-12">
+      <div class="col-lg-12 col-md-12 col-sm-12 col-12">
         <div class="row q-col-gutter-lg state-overview">
-          <div class="col-lg-6 col-md-6 col-sm-12 col-12">
+          <div class="col-lg-3 col-md-3 col-sm-12 col-12">
             <div class="info-box card-1">
               <span class="info-box-icon push-bottom"><i class="material-icons">group</i></span>
               <div class="info-box-content">
@@ -1060,7 +1059,7 @@
               <!-- /.info-box-content -->
             </div>
           </div>
-          <div class="col-lg-6 col-md-6 col-sm-12 col-12">
+          <div class="col-lg-3 col-md-3 col-sm-12 col-12">
             <div class="info-box card-2">
               <span class="info-box-icon push-bottom"><i class="material-icons">person</i></span>
               <div class="info-box-content">
@@ -1076,7 +1075,7 @@
               <!-- /.info-box-content -->
             </div>
           </div>
-          <div class="col-lg-6 col-md-6 col-sm-12 col-12">
+          <div class="col-lg-3 col-md-3 col-sm-12 col-12">
             <div class="info-box card-3">
               <span class="info-box-icon push-bottom"><i class="material-icons">content_cut</i></span>
               <div class="info-box-content">
@@ -1092,7 +1091,7 @@
               <!-- /.info-box-content -->
             </div>
           </div>
-          <div class="col-lg-6 col-md-6 col-sm-12 col-12">
+          <div class="col-lg-3 col-md-3 col-sm-12 col-12">
             <div class="info-box card-4">
               <span class="info-box-icon push-bottom"><i class="material-icons">monetization_on</i></span>
               <div class="info-box-content">
@@ -1108,7 +1107,7 @@
               <!-- /.info-box-content -->
             </div>
           </div>
-          <div class="col-lg-6 col-md-6 col-sm-12 col-12">
+          <div class="col-lg-3 col-md-3 col-sm-12 col-12">
             <div class="info-box card-4">
               <span class="info-box-icon push-bottom"><i class="material-icons">monetization_on</i></span>
               <div class="info-box-content">
@@ -1124,7 +1123,7 @@
               <!-- /.info-box-content -->
             </div>
           </div>
-          <div class="col-lg-6 col-md-6 col-sm-12 col-12">
+          <div class="col-lg-3 col-md-3 col-sm-12 col-12">
             <div class="info-box card-4">
               <span class="info-box-icon push-bottom"><i class="material-icons">monetization_on</i></span>
               <div class="info-box-content">
@@ -1140,7 +1139,7 @@
               <!-- /.info-box-content -->
             </div>
           </div>
-          <div class="col-lg-6 col-md-6 col-sm-12 col-12">
+          <div class="col-lg-3 col-md-3 col-sm-12 col-12">
             <div class="info-box card-4">
               <span class="info-box-icon push-bottom"><i class="material-icons">monetization_on</i></span>
               <div class="info-box-content">
@@ -1156,7 +1155,7 @@
               <!-- /.info-box-content -->
             </div>
           </div>
-          <div class="col-lg-6 col-md-6 col-sm-12 col-12">
+          <div class="col-lg-3 col-md-3 col-sm-12 col-12">
             <div class="info-box card-4">
               <span class="info-box-icon push-bottom"><i class="material-icons">monetization_on</i></span>
               <div class="info-box-content">
@@ -1172,7 +1171,7 @@
               <!-- /.info-box-content -->
             </div>
           </div>
-          <div class="col-lg-6 col-md-6 col-sm-12 col-12">
+          <div class="col-lg-3 col-md-3 col-sm-12 col-12">
             <div class="info-box card-4">
               <span class="info-box-icon push-bottom"><i class="material-icons">monetization_on</i></span>
               <div class="info-box-content">
@@ -1188,7 +1187,7 @@
               <!-- /.info-box-content -->
             </div>
           </div>
-          <div class="col-lg-6 col-md-6 col-sm-12 col-12">
+          <div class="col-lg-3 col-md-3 col-sm-12 col-12">
             <div class="info-box card-4">
               <span class="info-box-icon push-bottom"><i class="material-icons">monetization_on</i></span>
               <div class="info-box-content">
@@ -1205,6 +1204,12 @@
             </div>
           </div>
         </div>
+      </div>
+    </div>
+    <div class="row q-col-gutter-lg">
+      <div class="col-12">
+        <statistic-information-chart v-if="mounted"
+                                     :series="statisticInformation" />
       </div>
     </div>
   </div>
@@ -1225,6 +1230,7 @@ import { RoadList } from 'src/models/Road'
 import { WaterwayList } from 'src/models/Waterway'
 import { ProvinceList } from 'src/models/Province'
 import { BrancheList } from 'src/models/Branche'
+import StatisticInformationChart from 'src/components/Widgets/Map/MapWithFilter/StatisticInformationChart.vue'
 
 let leafletObject = null
 if (typeof window !== 'undefined') {
@@ -1234,8 +1240,27 @@ if (typeof window !== 'undefined') {
     })
 }
 
+const loadAllPages = (promise, thenCallBack, catchCallBack, page = 1, totalPages = 0) => {
+  promise(page)
+    .then((data) => {
+      let newTotalPages = totalPages
+      const newPage = page + 1
+      if (page === 1) {
+        newTotalPages = Math.floor(data.count / data.list.list.length) + 1
+      }
+      thenCallBack(data)
+      if (newPage <= newTotalPages) {
+        loadAllPages((page1) => promise(page1), thenCallBack, catchCallBack, newPage, newTotalPages)
+      }
+    })
+    .catch(() => {
+      catchCallBack(page)
+    })
+}
+
 export default {
   name: 'MapWithFilter',
+  components: { StatisticInformationChart },
   data: () => {
     return {
       mounted: false,
@@ -1285,6 +1310,20 @@ export default {
         'roads',
         'waterWay'
       ],
+
+      showbranches: false,
+      showtransport: false,
+      showwater: false,
+      showpofw: false,
+      showplaces: false,
+      shownatrual: false,
+      showlanduse: false,
+      showbuildings: false,
+      showrailway: false,
+      showroads: false,
+      showwaterWay: false,
+      statisticInformation: [],
+
       zoom: 2,
       iconWidth: 25,
       iconHeight: 40
@@ -1301,13 +1340,33 @@ export default {
   },
   mounted() {
     this.loadProvineces()
+    this.getStatistic()
     setTimeout(() => {
       this.loadMap()
       this.setEventBuses()
       this.getAllData()
+      this.mounted = true
     }, 1000)
   },
   methods: {
+    getStatistic () {
+      APIGateway.statistic.information()
+        .then((series) => {
+          this.statisticInformation = series
+          console.log('this.statisticInformation', this.statisticInformation)
+        })
+    },
+    toggle () {
+      this.$q.fullscreen.toggle(this.$refs.mapRef)
+        .then(() => {
+          // success!
+        })
+        .catch((err) => {
+          alert(err)
+          // uh, oh, error!!
+          // console.error(err)
+        })
+    },
     loadProvineces () {
       APIGateway.province.index()
         .then((provinceList) => {
@@ -1315,8 +1374,19 @@ export default {
         })
     },
     setEventBuses () {
+      this.$bus.on('map-change-branches-options', (newOptions) => {
+        const item = 'branches'
+        this[item + 'List'].list = []
+        loadAllPages((page) => APIGateway.point[item](page, newOptions), ({ list }) => {
+          this[item + 'List'].list = this[item + 'List'].list.concat(list.list)
+          // this.loadMarkersList(item + 'List', item + 'Markers')
+        }, () => {
+        })
+      })
+
       this.pointList.forEach(item => {
         this.$bus.on('map-change-' + item, (newValue) => {
+          this['show' + item] = newValue
           if (newValue) {
             this.loadMarkersList(item + 'List', item + 'Markers')
           }
@@ -1331,6 +1401,7 @@ export default {
       })
       this.polygonNameList.forEach(item => {
         this.$bus.on('map-change-' + item, (newValue) => {
+          this['show' + item] = newValue
           if (newValue) {
             this.loadPolygonList(item + 'List', item + 'Polygon')
           }
@@ -1345,6 +1416,7 @@ export default {
       })
       this.polylineNameList.forEach(item => {
         this.$bus.on('map-change-' + item, (newValue) => {
+          this['show' + item] = newValue
           if (newValue) {
             this.loadPolylineList(item + 'List', item + 'Polyline')
           }
@@ -1377,6 +1449,21 @@ export default {
         attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
       }).addTo(this.mapInstance)
       this.mapInstance.on('click', this.onClickMap)
+      this.mapInstance.on('moveend', () => {
+        if (this.closestBranchPointMarker) {
+          this.hideLayer(this.closestBranchPointMarker)
+        }
+        this.pointList.forEach(item => {
+          if (this['show' + item]) {
+            this.loadMarkersList(item + 'List', item + 'Markers')
+          }
+        })
+        this.polygonNameList.forEach(item => {
+          if (this['show' + item]) {
+            this.loadPolygonList(item + 'List', item + 'Polygon')
+          }
+        })
+      })
     },
     getAllData () {
       this.getPoints()
@@ -1385,64 +1472,90 @@ export default {
     },
     getPoints () {
       this.pointList.forEach(item => {
-        APIGateway.point[item]()
-          .then((list) => {
-            this[item + 'List'] = list
-            this.loadMarkersList(item + 'List', item + 'Markers')
-          })
+        // APIGateway.point[item]()
+        //   .then(({ list }) => {
+        //     this[item + 'List'] = list
+        //     // this.loadPolygonList(item + 'List', item + 'Polygon')
+        //   })
+        loadAllPages((page) => APIGateway.point[item](page), ({ list }) => {
+          this[item + 'List'].list = this[item + 'List'].list.concat(list.list)
+          // this.loadMarkersList(item + 'List', item + 'Markers')
+        }, () => {
+        })
       })
     },
     getPolygons () {
       this.polygonNameList.forEach(item => {
-        APIGateway.multiPolygon[item]()
-          .then((list) => {
-            this[item + 'List'] = list
-            this.loadPolygonList(item + 'List', item + 'Polygon')
-          })
+        loadAllPages((page) => APIGateway.multiPolygon[item](page), ({ list }) => {
+          this[item + 'List'].list = this[item + 'List'].list.concat(list.list)
+          // this.loadMarkersList(item + 'List', item + 'Markers')
+        }, () => {
+        })
+
+        // APIGateway.multiPolygon[item]()
+        //   .then(({ list }) => {
+        //     this[item + 'List'] = list
+        //     // this.loadPolygonList(item + 'List', item + 'Polygon')
+        //   })
       })
     },
     getPolylines () {
       this.polylineNameList.forEach(item => {
-        APIGateway.multiString[item]()
-          .then((list) => {
-            this[item + 'List'] = list
-            this.loadPolylineList(item + 'List', item + 'Polyline')
-          })
+        loadAllPages((page) => APIGateway.multiString[item](page), ({ list }) => {
+          this[item + 'List'].list = this[item + 'List'].list.concat(list.list)
+          // this.loadMarkersList(item + 'List', item + 'Markers')
+        }, () => {
+        })
+        // APIGateway.multiString[item]()
+        //   .then(({ list }) => {
+        //     this[item + 'List'] = list
+        //     // this.loadPolylineList(item + 'List', item + 'Polyline')
+        //   })
       })
     },
     loadMarkersList (listName, markerName) {
-      this[listName].list.forEach(marker => {
+      const zoom = this.mapInstance._zoom // 13
+      const bounds = this.mapInstance.getBounds()
+      this[markerName].forEach(marker => {
+        this.hideLayer(marker)
+      })
+      if (zoom < 14) {
+        return
+      }
+
+      this[listName].inBounds(bounds).forEach(marker => {
         const layerName = listName.replace('List', '')
         const markerLayer = this.addMarker(marker.point, '<b>(' + layerName + ')</b></br><b>name: ' + marker.name + '</b></br>fclass:' + marker.fclass, marker, layerName)
-
-        // if (layerName === 'branches') {
-        //   const greenIcon = leafletObject.icon({
-        //     iconUrl: 'https://leafletjs.com/examples/custom-icons/leaf-green.png',
-        //     shadowUrl: 'https://leafletjs.com/examples/custom-icons/leaf-shadow.png',
-        //
-        //     iconSize: [38, 95], // size of the icon
-        //     shadowSize: [50, 64], // size of the shadow
-        //     iconAnchor: [22, 94], // point of the icon which will correspond to marker's location
-        //     shadowAnchor: [4, 62], // the same for the shadow
-        //     popupAnchor: [-3, -76] // point from which the popup should open relative to the iconAnchor
-        //   })
-        //   this.closestBranchPointMarker = this.addMarker(marker.point, '<b>(' + layerName + ')</b></br><b>name: ' + marker.name + '</b></br>fclass:' + marker.fclass, marker, layerName, greenIcon)
-        // } else {
-        //   this.hideLayer(this.closestBranchPointMarker)
-        //   this.closestBranchPointMarker = null
-        // }
         this[markerName].push(markerLayer)
       })
     },
     loadPolygonList (listName, polygonName) {
-      this[listName].list.forEach(polygon => {
+      const zoom = this.mapInstance._zoom // 13
+      const bounds = this.mapInstance.getBounds()
+      this[polygonName].forEach(polygon => {
+        this.hideLayer(polygon)
+      })
+      if (zoom < 14) {
+        return
+      }
+
+      this[listName].inBounds(bounds).forEach(polygon => {
         const layerName = listName.replace('List', '')
         const polygonLayer = this.addPolygon(polygon.multiPolygon, '<b>(' + layerName + ')</b></br><b>name: ' + polygon.name + '</b></br>fclass:' + polygon.fclass, polygon, layerName)
         this[polygonName].push(polygonLayer)
       })
     },
     loadPolylineList (listName, polylineName) {
-      this[listName].list.forEach(polyline => {
+      const zoom = this.mapInstance._zoom // 13
+      const bounds = this.mapInstance.getBounds()
+      this[polylineName].forEach(polyline => {
+        this.hideLayer(polyline)
+      })
+      if (zoom < 14) {
+        return
+      }
+
+      this[listName].inBounds(bounds).forEach(polyline => {
         const layerName = listName.replace('List', '')
         const polylineLayer = this.addPolyline(polyline.multiString, '<b>(' + layerName + ')</b></br><b>name: ' + polyline.name + '</b></br>fclass:' + polyline.fclass, polyline, layerName)
         this[polylineName].push(polylineLayer)

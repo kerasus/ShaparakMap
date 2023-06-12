@@ -4,8 +4,7 @@
       <!-- logo start -->
       <div class="page-logo">
         <img alt=""
-             src="https://einfosoft.com/templates/templatemonster/ecab/source/assets/img/logo.png">
-        <span class="logo-default">ECab</span>
+             src="/img/Logo.jpg">
       </div>
       <!-- logo end -->
       <ul class="nav navbar-nav navbar-left in">
@@ -229,7 +228,7 @@
                aria-expanded="false">
               <img alt=""
                    class="img-circle "
-                   src="https://einfosoft.com/templates/templatemonster/ecab/source/assets/img/dp.jpg">
+                   src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/ea/Bank_Sepah_logo.svg/1200px-Bank_Sepah_logo.svg.png">
             </a>
             <ul class="dropdown-menu dropdown-menu-default animated jello">
               <li>
@@ -432,8 +431,8 @@ $header-height: 60px;
       font-weight: bold;
       padding: 0;
       height: $header-height;
-      span {
-        margin: 0;
+      img {
+        width: 150px;
       }
     }
     .nav {

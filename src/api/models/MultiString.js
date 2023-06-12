@@ -14,13 +14,17 @@ export default class MultiStringAPI extends APIRepository {
     }
   }
 
-  railway() {
+  railway(page) {
     return this.sendRequest({
       apiMethod: 'get',
       api: this.api,
       request: this.APIAdresses.railway,
+      data: { page },
       resolveCallback: (response) => {
-        return new RailwayList(response.data.results)
+        return {
+          count: response.data.count,
+          list: new RailwayList(response.data.results)
+        }
       },
       rejectCallback: (error) => {
         return error
@@ -28,13 +32,17 @@ export default class MultiStringAPI extends APIRepository {
     })
   }
 
-  roads() {
+  roads(page) {
     return this.sendRequest({
       apiMethod: 'get',
       api: this.api,
       request: this.APIAdresses.roads,
+      data: { page },
       resolveCallback: (response) => {
-        return new RoadList(response.data.results)
+        return {
+          count: response.data.count,
+          list: new RoadList(response.data.results)
+        }
       },
       rejectCallback: (error) => {
         return error
@@ -42,13 +50,17 @@ export default class MultiStringAPI extends APIRepository {
     })
   }
 
-  waterWay() {
+  waterWay(page) {
     return this.sendRequest({
       apiMethod: 'get',
       api: this.api,
       request: this.APIAdresses.waterWay,
+      data: { page },
       resolveCallback: (response) => {
-        return new WaterwayList(response.data.results)
+        return {
+          count: response.data.count,
+          list: new WaterwayList(response.data.results)
+        }
       },
       rejectCallback: (error) => {
         return error

@@ -276,6 +276,7 @@ module.exports = configure(function (ctx) {
         'Meta',
         'Notify',
         'Loading',
+        'AppFullscreen',
         'Dialog',
         'Cookies' // for cart
       ]

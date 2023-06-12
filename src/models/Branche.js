@@ -62,6 +62,12 @@ class BrancheList extends Collection {
   model () {
     return Branche
   }
+
+  inBounds (bounds) {
+    return this.list.filter(item =>
+      (item.point.lat > bounds._southWest.lat && item.point.lat < bounds._northEast.lat) &&
+      (item.point.lng > bounds._southWest.lng && item.point.lng < bounds._northEast.lng))
+  }
 }
 
 export { Branche, BrancheList }

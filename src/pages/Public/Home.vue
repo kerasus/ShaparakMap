@@ -13,7 +13,7 @@ export default {
   mixins: [mixinPageOptions],
   data: () => {
     return {
-      sections: [{ data: { rows: [{ cols: [{ widgets: [{ name: 'MapWithFilter' }], options: {} }], options: {} }] } }]
+      sections: [{ data: { rows: [{ cols: [{ widgets: [{ name: 'MapWithFilter', options: {} }], options: { style: {}, colNumber: 'col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12' } }], options: {} }] } }]
     }
   },
   created() {
