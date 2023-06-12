@@ -1353,7 +1353,6 @@ export default {
       APIGateway.statistic.information()
         .then((series) => {
           this.statisticInformation = series
-          console.log('this.statisticInformation', this.statisticInformation)
         })
     },
     toggle () {
