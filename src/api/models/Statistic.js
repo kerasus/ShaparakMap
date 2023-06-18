@@ -16,36 +16,46 @@ export default class StatisticAPI extends APIRepository {
         .then((response) => {
           const series = [
             {
+              yAxis: 0,
               name: 'total_nop',
+              max: 'max_nop',
+              min: 'min_nop',
               data: []
             },
             {
+              yAxis: 1,
               name: 'total_amount',
-              data: []
-            },
-            {
-              name: 'min_nop',
-              data: []
-            },
-            {
-              name: 'min_amount',
-              data: []
-            },
-            {
-              name: 'max_nop',
-              data: []
-            },
-            {
-              name: 'max_amount',
+              max: 'max_amount',
+              min: 'min_amount',
               data: []
             }
+            // {
+            //   name: 'min_nop',
+            //   data: []
+            // },
+            // {
+            //   name: 'min_amount',
+            //   data: []
+            // },
+            // {
+            //   name: 'max_nop',
+            //   data: []
+            // },
+            // {
+            //   name: 'max_amount',
+            //   data: []
+            // }
           ]
           const results = response.data.results
           series.forEach(sery => {
             sery.data = results.map(item => {
               return {
                 name: item.datetime,
-                y: item[sery.name]
+                y: item[sery.name],
+                maxLabel: sery.max,
+                minLabel: sery.min,
+                max: item[sery.max],
+                min: item[sery.min]
               }
             })
           })

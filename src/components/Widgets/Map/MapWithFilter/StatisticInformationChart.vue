@@ -38,11 +38,21 @@ export default {
         xAxis: {
           type: 'category'
         },
-        yAxis: {
+        // yAxis: {
+        //   title: {
+        //     text: ''
+        //   }
+        // },
+        yAxis: [{
           title: {
-            text: ''
+            text: 'total_nop'
+          },
+          opposite: true
+        }, {
+          title: {
+            text: 'total_amount'
           }
-        },
+        }],
         legend: {
           enabled: true
         },
@@ -58,7 +68,7 @@ export default {
         tooltip: {
           useHTML: true,
           formatter: function () {
-            return '<b>' + this.point.name + '(' + this.point.series.name + ')</b>: ' + this.point.y
+            return '<div><b>' + this.point.name + '</b></div><div><b>' + this.point.series.name + '</b>:' + this.point.y + '</div><div><b>' + this.point.maxLabel + '</b>:' + this.point.max + '</div><div><b>' + this.point.minLabel + '</b>:' + this.point.min + '</div>'
           }
           // headerFormat: '<span style="font-size:11px">{series.name}</span><br>',
           // pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.y:.2f}%</b> of total<br/>'
