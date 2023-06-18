@@ -1,6 +1,7 @@
 <template>
   <div class="MapWithFilter">
-    <div class="row q-col-gutter-lg q-mb-lg">
+    <div v-if="false"
+         class="row q-col-gutter-lg q-mb-lg">
       <div class="col-md-6 col-12">
         <q-select v-model="selectedProvinece"
                   label="استان"
@@ -28,8 +29,9 @@
                      @click="toggle" />
             </div>
           </div>
-          <div class="card-body "
-               style="">
+          <div class="card-body">
+            <q-linear-progress v-if="mapLoading"
+                               indeterminate />
             <div id="map"
                  ref="mapRef"
                  class="height-350"
@@ -39,8 +41,14 @@
       </div>
     </div>
     <div class="row q-col-gutter-lg">
-      <div class="col-lg-12 col-md-12 col-sm-12 col-12">
-        <div class="card">
+      <div class="col-lg-6 col-md-6 col-sm-12 col-12">
+        <div class="card relative-position">
+          <q-btn color="danger"
+                 flat
+                 round
+                 icon="highlight_off"
+                 class="absolute-top-right z-top"
+                 @click="clearSelectedLayer" />
           <div class="card-block">
             <q-tab-panels v-model="panel"
                           animated>
@@ -117,7 +125,8 @@
                           clickable>
                     <q-item-section>Branches</q-item-section>
                   </q-item>
-                  <q-item v-ripple
+                  <q-item v-if="selectedLayer.id"
+                          v-ripple
                           clickable>
                     <q-item-section>
                       <q-item-label>id</q-item-label>
@@ -126,7 +135,8 @@
                       </q-item-label>
                     </q-item-section>
                   </q-item>
-                  <q-item v-ripple
+                  <q-item v-if="selectedLayer.closest_branch"
+                          v-ripple
                           clickable>
                     <q-item-section>
                       <q-item-label>closest_branch</q-item-label>
@@ -135,7 +145,7 @@
                       </q-item-label>
                     </q-item-section>
                   </q-item>
-                  <template v-if="selectedLayer.closest_branch_info">
+                  <template v-if="selectedLayer.closest_branch && selectedLayer.closest_branch_info">
                     <q-item v-ripple
                             clickable>
                       <q-item-section>
@@ -173,7 +183,8 @@
                       </q-item-section>
                     </q-item>
                   </template>
-                  <q-item v-ripple
+                  <q-item v-if="selectedLayer.number"
+                          v-ripple
                           clickable>
                     <q-item-section>
                       <q-item-label>number</q-item-label>
@@ -182,7 +193,8 @@
                       </q-item-label>
                     </q-item-section>
                   </q-item>
-                  <q-item v-ripple
+                  <q-item v-if="selectedLayer.code"
+                          v-ripple
                           clickable>
                     <q-item-section>
                       <q-item-label>code</q-item-label>
@@ -191,7 +203,8 @@
                       </q-item-label>
                     </q-item-section>
                   </q-item>
-                  <q-item v-ripple
+                  <q-item v-if="selectedLayer.name"
+                          v-ripple
                           clickable>
                     <q-item-section>
                       <q-item-label>name</q-item-label>
@@ -200,25 +213,8 @@
                       </q-item-label>
                     </q-item-section>
                   </q-item>
-                  <q-item v-ripple
-                          clickable>
-                    <q-item-section>
-                      <q-item-label>address</q-item-label>
-                      <q-item-label caption>
-                        {{ selectedLayer.address }}
-                      </q-item-label>
-                    </q-item-section>
-                  </q-item>
-                  <q-item v-ripple
-                          clickable>
-                    <q-item-section>
-                      <q-item-label>beforeـnumber</q-item-label>
-                      <q-item-label caption>
-                        {{ selectedLayer.beforeـnumber }}
-                      </q-item-label>
-                    </q-item-section>
-                  </q-item>
-                  <q-item v-ripple
+                  <q-item v-if="selectedLayer.farsighted"
+                          v-ripple
                           clickable>
                     <q-item-section>
                       <q-item-label>farsighted</q-item-label>
@@ -227,7 +223,8 @@
                       </q-item-label>
                     </q-item-section>
                   </q-item>
-                  <q-item v-ripple
+                  <q-item v-if="selectedLayer.phone_1"
+                          v-ripple
                           clickable>
                     <q-item-section>
                       <q-item-label>phone_1</q-item-label>
@@ -236,7 +233,8 @@
                       </q-item-label>
                     </q-item-section>
                   </q-item>
-                  <q-item v-ripple
+                  <q-item v-if="selectedLayer.phone_2"
+                          v-ripple
                           clickable>
                     <q-item-section>
                       <q-item-label>phone_2</q-item-label>
@@ -245,7 +243,8 @@
                       </q-item-label>
                     </q-item-section>
                   </q-item>
-                  <q-item v-ripple
+                  <q-item v-if="selectedLayer.currencyـcircle"
+                          v-ripple
                           clickable>
                     <q-item-section>
                       <q-item-label>currencyـcircle</q-item-label>
@@ -254,7 +253,8 @@
                       </q-item-label>
                     </q-item-section>
                   </q-item>
-                  <q-item v-ripple
+                  <q-item v-if="selectedLayer.atm"
+                          v-ripple
                           clickable>
                     <q-item-section>
                       <q-item-label>atm</q-item-label>
@@ -263,7 +263,8 @@
                       </q-item-label>
                     </q-item-section>
                   </q-item>
-                  <q-item v-ripple
+                  <q-item v-if="selectedLayer.eveningـcounter"
+                          v-ripple
                           clickable>
                     <q-item-section>
                       <q-item-label>eveningـcounter</q-item-label>
@@ -272,7 +273,8 @@
                       </q-item-label>
                     </q-item-section>
                   </q-item>
-                  <q-item v-ripple
+                  <q-item v-if="selectedLayer.Safeـbox"
+                          v-ripple
                           clickable>
                     <q-item-section>
                       <q-item-label>Safeـbox</q-item-label>
@@ -281,7 +283,8 @@
                       </q-item-label>
                     </q-item-section>
                   </q-item>
-                  <q-item v-ripple
+                  <q-item v-if="selectedLayer.pos"
+                          v-ripple
                           clickable>
                     <q-item-section>
                       <q-item-label>pos</q-item-label>
@@ -290,7 +293,8 @@
                       </q-item-label>
                     </q-item-section>
                   </q-item>
-                  <q-item v-ripple
+                  <q-item v-if="selectedLayer.cvv2"
+                          v-ripple
                           clickable>
                     <q-item-section>
                       <q-item-label>cvv2</q-item-label>
@@ -299,7 +303,8 @@
                       </q-item-label>
                     </q-item-section>
                   </q-item>
-                  <q-item v-ripple
+                  <q-item v-if="selectedLayer.cellularـphone"
+                          v-ripple
                           clickable>
                     <q-item-section>
                       <q-item-label>cellularـphone</q-item-label>
@@ -308,25 +313,8 @@
                       </q-item-label>
                     </q-item-section>
                   </q-item>
-                  <q-item v-ripple
-                          clickable>
-                    <q-item-section>
-                      <q-item-label>done</q-item-label>
-                      <q-item-label caption>
-                        {{ selectedLayer.done }}
-                      </q-item-label>
-                    </q-item-section>
-                  </q-item>
-                  <q-item v-ripple
-                          clickable>
-                    <q-item-section>
-                      <q-item-label>city</q-item-label>
-                      <q-item-label caption>
-                        {{ selectedLayer.city }}
-                      </q-item-label>
-                    </q-item-section>
-                  </q-item>
-                  <q-item v-ripple
+                  <q-item v-if="selectedLayer.geom"
+                          v-ripple
                           clickable>
                     <q-item-section>
                       <q-item-label>geom</q-item-label>
@@ -1041,169 +1029,10 @@
           </div>
         </div>
       </div>
-      <div class="col-lg-12 col-md-12 col-sm-12 col-12">
-        <div class="row q-col-gutter-lg state-overview">
-          <div class="col-lg-3 col-md-3 col-sm-12 col-12">
-            <div class="info-box card-1">
-              <span class="info-box-icon push-bottom"><i class="material-icons">group</i></span>
-              <div class="info-box-content">
-                <span class="info-box-text">Transport</span>
-                <span class="info-box-number">{{ transportList.list.length }}</span>
-                <div class="progress">
-                  <div class="progress-bar width-60" />
-                </div>
-                <span class="progress-description">
-                  60% Increase in 28 Days
-                </span>
-              </div>
-              <!-- /.info-box-content -->
-            </div>
-          </div>
-          <div class="col-lg-3 col-md-3 col-sm-12 col-12">
-            <div class="info-box card-2">
-              <span class="info-box-icon push-bottom"><i class="material-icons">person</i></span>
-              <div class="info-box-content">
-                <span class="info-box-text">Water</span>
-                <span class="info-box-number">{{ waterList.list.length }}</span>
-                <div class="progress">
-                  <div class="progress-bar width-40" />
-                </div>
-                <span class="progress-description">
-                  40% Increase in 28 Days
-                </span>
-              </div>
-              <!-- /.info-box-content -->
-            </div>
-          </div>
-          <div class="col-lg-3 col-md-3 col-sm-12 col-12">
-            <div class="info-box card-3">
-              <span class="info-box-icon push-bottom"><i class="material-icons">content_cut</i></span>
-              <div class="info-box-content">
-                <span class="info-box-text">pofw</span>
-                <span class="info-box-number">{{ pofwList.list.length }}</span>
-                <div class="progress">
-                  <div class="progress-bar width-80" />
-                </div>
-                <span class="progress-description">
-                  80% Increase in 28 Days
-                </span>
-              </div>
-              <!-- /.info-box-content -->
-            </div>
-          </div>
-          <div class="col-lg-3 col-md-3 col-sm-12 col-12">
-            <div class="info-box card-4">
-              <span class="info-box-icon push-bottom"><i class="material-icons">monetization_on</i></span>
-              <div class="info-box-content">
-                <span class="info-box-text">Places</span>
-                <span class="info-box-number">{{ placesList.list.length }}</span>
-                <div class="progress">
-                  <div class="progress-bar width-60" />
-                </div>
-                <span class="progress-description">
-                  60% Increase in 28 Days
-                </span>
-              </div>
-              <!-- /.info-box-content -->
-            </div>
-          </div>
-          <div class="col-lg-3 col-md-3 col-sm-12 col-12">
-            <div class="info-box card-4">
-              <span class="info-box-icon push-bottom"><i class="material-icons">monetization_on</i></span>
-              <div class="info-box-content">
-                <span class="info-box-text">Natural</span>
-                <span class="info-box-number">{{ natrualList.list.length }}</span>
-                <div class="progress">
-                  <div class="progress-bar width-60" />
-                </div>
-                <span class="progress-description">
-                  60% Increase in 28 Days
-                </span>
-              </div>
-              <!-- /.info-box-content -->
-            </div>
-          </div>
-          <div class="col-lg-3 col-md-3 col-sm-12 col-12">
-            <div class="info-box card-4">
-              <span class="info-box-icon push-bottom"><i class="material-icons">monetization_on</i></span>
-              <div class="info-box-content">
-                <span class="info-box-text">LandUse</span>
-                <span class="info-box-number">{{ landuseList.list.length }}</span>
-                <div class="progress">
-                  <div class="progress-bar width-60" />
-                </div>
-                <span class="progress-description">
-                  60% Increase in 28 Days
-                </span>
-              </div>
-              <!-- /.info-box-content -->
-            </div>
-          </div>
-          <div class="col-lg-3 col-md-3 col-sm-12 col-12">
-            <div class="info-box card-4">
-              <span class="info-box-icon push-bottom"><i class="material-icons">monetization_on</i></span>
-              <div class="info-box-content">
-                <span class="info-box-text">Buildings</span>
-                <span class="info-box-number">{{ buildingsList.list.length }}</span>
-                <div class="progress">
-                  <div class="progress-bar width-60" />
-                </div>
-                <span class="progress-description">
-                  60% Increase in 28 Days
-                </span>
-              </div>
-              <!-- /.info-box-content -->
-            </div>
-          </div>
-          <div class="col-lg-3 col-md-3 col-sm-12 col-12">
-            <div class="info-box card-4">
-              <span class="info-box-icon push-bottom"><i class="material-icons">monetization_on</i></span>
-              <div class="info-box-content">
-                <span class="info-box-text">Railway</span>
-                <span class="info-box-number">{{ railwayList.list.length }}</span>
-                <div class="progress">
-                  <div class="progress-bar width-60" />
-                </div>
-                <span class="progress-description">
-                  60% Increase in 28 Days
-                </span>
-              </div>
-              <!-- /.info-box-content -->
-            </div>
-          </div>
-          <div class="col-lg-3 col-md-3 col-sm-12 col-12">
-            <div class="info-box card-4">
-              <span class="info-box-icon push-bottom"><i class="material-icons">monetization_on</i></span>
-              <div class="info-box-content">
-                <span class="info-box-text">Roads</span>
-                <span class="info-box-number">{{ roadsList.list.length }}</span>
-                <div class="progress">
-                  <div class="progress-bar width-60" />
-                </div>
-                <span class="progress-description">
-                  60% Increase in 28 Days
-                </span>
-              </div>
-              <!-- /.info-box-content -->
-            </div>
-          </div>
-          <div class="col-lg-3 col-md-3 col-sm-12 col-12">
-            <div class="info-box card-4">
-              <span class="info-box-icon push-bottom"><i class="material-icons">monetization_on</i></span>
-              <div class="info-box-content">
-                <span class="info-box-text">WaterWay</span>
-                <span class="info-box-number">{{ waterWayList.list.length }}</span>
-                <div class="progress">
-                  <div class="progress-bar width-60" />
-                </div>
-                <span class="progress-description">
-                  60% Increase in 28 Days
-                </span>
-              </div>
-              <!-- /.info-box-content -->
-            </div>
-          </div>
-        </div>
+      <div class="col-lg-6 col-md-6 col-sm-12 col-12">
+        <q-linear-progress v-if="staticalLoading"
+                           indeterminate />
+        <statical-data :data="staticalData" />
       </div>
     </div>
     <div class="row q-col-gutter-lg">
@@ -1217,19 +1046,21 @@
 
 <script>
 import 'leaflet/dist/leaflet.css'
-import { APIGateway } from 'src/api/APIGateway.js'
-import { TransportList } from 'src/models/Transport.js'
+import { PofwList } from 'src/models/Pofw.js'
+import { RoadList } from 'src/models/Road.js'
 import { WaterList } from 'src/models/Water.js'
-import { PofwList } from 'src/models/Pofw'
-import { PlaceList } from 'src/models/Place'
-import { NatrualList } from 'src/models/Natrual'
-import { LanduseList } from 'src/models/Landuse'
-import { BuildingList } from 'src/models/Building'
-import { RailwayList } from 'src/models/Railway'
-import { RoadList } from 'src/models/Road'
-import { WaterwayList } from 'src/models/Waterway'
-import { ProvinceList } from 'src/models/Province'
-import { BrancheList } from 'src/models/Branche'
+import { PlaceList } from 'src/models/Place.js'
+import { APIGateway } from 'src/api/APIGateway.js'
+import { NatrualList } from 'src/models/Natrual.js'
+import { RailwayList } from 'src/models/Railway.js'
+import { LanduseList } from 'src/models/Landuse.js'
+import { BrancheList } from 'src/models/Branche.js'
+import { BuildingList } from 'src/models/Building.js'
+import { WaterwayList } from 'src/models/Waterway.js'
+import { ProvinceList } from 'src/models/Province.js'
+import { TransportList } from 'src/models/Transport.js'
+import { MapBoundary } from 'src/models/MapBoundary.js'
+import StaticalData from 'src/components/Widgets/Map/MapWithFilter/Components/StaticalData.vue'
 import StatisticInformationChart from 'src/components/Widgets/Map/MapWithFilter/StatisticInformationChart.vue'
 
 let leafletObject = null
@@ -1240,59 +1071,72 @@ if (typeof window !== 'undefined') {
     })
 }
 
-const loadAllPages = (promise, thenCallBack, catchCallBack, page = 1, totalPages = 0) => {
-  promise(page)
-    .then((data) => {
-      let newTotalPages = totalPages
-      const newPage = page + 1
-      if (page === 1) {
-        newTotalPages = Math.floor(data.count / data.list.list.length) + 1
-      }
-      thenCallBack(data)
-      if (newPage <= newTotalPages) {
-        loadAllPages((page1) => promise(page1), thenCallBack, catchCallBack, newPage, newTotalPages)
-      }
-    })
-    .catch(() => {
-      catchCallBack(page)
-    })
-}
-
 export default {
   name: 'MapWithFilter',
-  components: { StatisticInformationChart },
+  components: { StaticalData, StatisticInformationChart },
   data: () => {
     return {
       mounted: false,
       mapInstance: null,
-      panel: 'empty',
+      panel: 'branches',
       selectedLayer: {},
       selectedProvinece: null,
       closestBranchPointMarker: null,
       selectedCity: null,
-      branchesList: new BrancheList(),
+      staticalData: null,
+      staticalLoading: false,
       provinceList: new ProvinceList(),
+
+      // points
+      branchesAbortController: null,
+      transportAbortController: null,
+      branchesList: new BrancheList(),
       transportList: new TransportList(),
+      branchesMarkers: [],
+      transportMarkers: [],
+      showbranches: false,
+      showtransport: false,
+
+      // polygons
+      waterAbortController: null,
+      pofwAbortController: null,
+      placesAbortController: null,
+      natrualAbortController: null,
+      landuseAbortController: null,
+      buildingsAbortController: null,
       waterList: new WaterList(),
       pofwList: new PofwList(),
       placesList: new PlaceList(),
       natrualList: new NatrualList(),
       landuseList: new LanduseList(),
       buildingsList: new BuildingList(),
-      railwayList: new RailwayList(),
-      roadsList: new RoadList(),
-      waterWayList: new WaterwayList(),
-      transportMarkers: [],
-      branchesMarkers: [],
       waterPolygon: [],
       pofwPolygon: [],
       placesPolygon: [],
       natrualPolygon: [],
       landusePolygon: [],
       buildingsPolygon: [],
-      railwayPolyline: [],
+      showwater: false,
+      showpofw: false,
+      showplaces: true,
+      shownatrual: false,
+      showlanduse: false,
+      showbuildings: false,
+
+      // polylines
+      railwayAbortController: null,
+      roadsAbortController: null,
+      waterWayAbortController: null,
+      railwayList: new RailwayList(),
+      roadsList: new RoadList(),
+      waterWayList: new WaterwayList(),
       roadsPolyline: [],
       waterWayPolyline: [],
+      railwayPolyline: [],
+      showrailway: false,
+      showroads: false,
+      showwaterWay: false,
+
       pointList: [
         'transport',
         'branches'
@@ -1300,7 +1144,7 @@ export default {
       polygonNameList: [
         'water',
         'pofw',
-        'places',
+        // 'places',
         'natrual',
         'landuse',
         'buildings'
@@ -1311,17 +1155,6 @@ export default {
         'waterWay'
       ],
 
-      showbranches: false,
-      showtransport: false,
-      showwater: false,
-      showpofw: false,
-      showplaces: false,
-      shownatrual: false,
-      showlanduse: false,
-      showbuildings: false,
-      showrailway: false,
-      showroads: false,
-      showwaterWay: false,
       statisticInformation: [],
 
       zoom: 2,
@@ -1330,6 +1163,10 @@ export default {
     }
   },
   computed: {
+    mapLoading () {
+      const allList = this.pointList.concat(this.polygonNameList, this.polylineNameList, ['places'])
+      return allList.find(item => this[item + 'List'].laoding)
+    },
     citiesOfSelectedProvinece () {
       if (!this.selectedProvinece) {
         return []
@@ -1339,16 +1176,34 @@ export default {
     }
   },
   mounted() {
-    this.loadProvineces()
+    // this.loadProvineces()
     this.getStatistic()
     setTimeout(() => {
       this.loadMap()
       this.setEventBuses()
-      this.getAllData()
       this.mounted = true
     }, 1000)
   },
   methods: {
+    clearSelectedLayer () {
+      this.selectedLayer = {}
+      this.hideAll('branches', 'Markers')
+    },
+    getStatical () {
+      const bounds = new MapBoundary(this.mapInstance.getBounds()).getBBox()
+      const options = {
+        bbox: bounds
+      }
+      this.staticalLoading = true
+      APIGateway.statistic.statical(options)
+        .then((staticalData) => {
+          this.staticalLoading = false
+          this.staticalData = staticalData
+        })
+        .catch(() => {
+          this.staticalLoading = false
+        })
+    },
     getStatistic () {
       APIGateway.statistic.information()
         .then((series) => {
@@ -1375,57 +1230,38 @@ export default {
     setEventBuses () {
       this.$bus.on('map-change-branches-options', (newOptions) => {
         const item = 'branches'
+        const showState = this['show' + item]
         this[item + 'List'].list = []
-        loadAllPages((page) => APIGateway.point[item](page, newOptions), ({ list }) => {
-          this[item + 'List'].list = this[item + 'List'].list.concat(list.list)
-          // this.loadMarkersList(item + 'List', item + 'Markers')
-        }, () => {
-        })
+        if (showState) {
+          const bounds = new MapBoundary(this.mapInstance.getBounds()).getBounds()
+          newOptions.payload = bounds
+          this.getPoint(item, newOptions)
+        } else {
+          this.hideAll(item, 'Markers')
+        }
       })
-
+      this.$bus.on('map-change-places-filter', (placesFilter) => {
+        const item = 'places'
+        this.hideAll(item, 'Polygon')
+        this[item + 'List'].list = []
+        this.getPolygon(item, { place: placesFilter })
+      })
       this.pointList.forEach(item => {
         this.$bus.on('map-change-' + item, (newValue) => {
           this['show' + item] = newValue
-          if (newValue) {
-            this.loadMarkersList(item + 'List', item + 'Markers')
-          }
-          this[item + 'Markers'].forEach(marker => {
-            if (newValue) {
-              this.showLayer(marker)
-            } else {
-              this.hideLayer(marker)
-            }
-          })
+          this.togglePoints()
         })
       })
       this.polygonNameList.forEach(item => {
         this.$bus.on('map-change-' + item, (newValue) => {
           this['show' + item] = newValue
-          if (newValue) {
-            this.loadPolygonList(item + 'List', item + 'Polygon')
-          }
-          this[item + 'Polygon'].forEach(polygon => {
-            if (newValue) {
-              this.showLayer(polygon)
-            } else {
-              this.hideLayer(polygon)
-            }
-          })
+          this.togglePolygons()
         })
       })
       this.polylineNameList.forEach(item => {
         this.$bus.on('map-change-' + item, (newValue) => {
           this['show' + item] = newValue
-          if (newValue) {
-            this.loadPolylineList(item + 'List', item + 'Polyline')
-          }
-          this[item + 'Polyline'].forEach(polyline => {
-            if (newValue) {
-              this.showLayer(polyline)
-            } else {
-              this.hideLayer(polyline)
-            }
-          })
+          this.togglePolylines()
         })
       })
     },
@@ -1448,81 +1284,154 @@ export default {
         attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
       }).addTo(this.mapInstance)
       this.mapInstance.on('click', this.onClickMap)
-      this.mapInstance.on('moveend', () => {
-        if (this.closestBranchPointMarker) {
-          this.hideLayer(this.closestBranchPointMarker)
-        }
-        this.pointList.forEach(item => {
-          if (this['show' + item]) {
-            this.loadMarkersList(item + 'List', item + 'Markers')
-          }
-        })
-        this.polygonNameList.forEach(item => {
-          if (this['show' + item]) {
-            this.loadPolygonList(item + 'List', item + 'Polygon')
-          }
-        })
+      this.mapInstance.on('moveend', this.moveenddMap)
+    },
+    moveenddMap () {
+      // this.getStatical()
+      if (this.closestBranchPointMarker) {
+        this.hideLayer(this.closestBranchPointMarker)
+      }
+      this.togglePoints()
+      this.togglePolygons()
+      this.togglePolylines()
+    },
+    hideAll (layerName, layerType) {
+      this[layerName + layerType].forEach(layer => {
+        this.hideLayer(layer)
       })
     },
-    getAllData () {
-      this.getPoints()
-      this.getPolygons()
-      this.getPolylines()
-    },
-    getPoints () {
+    togglePoints () {
       this.pointList.forEach(item => {
-        // APIGateway.point[item]()
-        //   .then(({ list }) => {
-        //     this[item + 'List'] = list
-        //     // this.loadPolygonList(item + 'List', item + 'Polygon')
-        //   })
-        loadAllPages((page) => APIGateway.point[item](page), ({ list }) => {
-          this[item + 'List'].list = this[item + 'List'].list.concat(list.list)
-          // this.loadMarkersList(item + 'List', item + 'Markers')
-        }, () => {
-        })
+        this.togglePoint(item)
       })
     },
-    getPolygons () {
-      this.polygonNameList.forEach(item => {
-        loadAllPages((page) => APIGateway.multiPolygon[item](page), ({ list }) => {
-          this[item + 'List'].list = this[item + 'List'].list.concat(list.list)
-          // this.loadMarkersList(item + 'List', item + 'Markers')
-        }, () => {
-        })
+    getPoint (item, options) {
+      // AbortController
+      if (this[item + 'AbortController']) {
+        this[item + 'AbortController'].abort()
+      }
+      this[item + 'AbortController'] = new AbortController()
+      options.config = {
+        signal: this[item + 'AbortController'].signal
+      }
 
-        // APIGateway.multiPolygon[item]()
-        //   .then(({ list }) => {
-        //     this[item + 'List'] = list
-        //     // this.loadPolygonList(item + 'List', item + 'Polygon')
-        //   })
+      this[item + 'List'].laoding = true
+      APIGateway.point[item](options)
+        .then(({ list }) => {
+          if (list.list.length === 0) {
+            return
+          }
+          this[item + 'List'] = list
+          this.loadMarkersList(item + 'List', item + 'Markers')
+          this[item + 'List'].laoding = false
+        })
+        .catch(() => {
+          this[item + 'List'].laoding = false
+        })
+    },
+    togglePoint (item) {
+      const showState = this['show' + item]
+      this[item + 'List'].list = []
+      const bounds = new MapBoundary(this.mapInstance.getBounds()).getBounds()
+      const options = {
+        payload: bounds
+      }
+      if (showState) {
+        this.getPoint(item, options)
+      } else {
+        this.hideAll(item, 'Markers')
+      }
+    },
+    togglePolygons () {
+      this.polygonNameList.forEach(item => {
+        this.togglePolygon(item)
       })
     },
-    getPolylines () {
-      this.polylineNameList.forEach(item => {
-        loadAllPages((page) => APIGateway.multiString[item](page), ({ list }) => {
-          this[item + 'List'].list = this[item + 'List'].list.concat(list.list)
-          // this.loadMarkersList(item + 'List', item + 'Markers')
-        }, () => {
+    togglePolygon (item) {
+      const showState = this['show' + item]
+      this[item + 'List'].list = []
+      const bounds = new MapBoundary(this.mapInstance.getBounds()).getBounds()
+      const options = {
+        payload: bounds
+      }
+      if (showState) {
+        this.getPolygon(item, options)
+      } else {
+        this.hideAll(item, 'Polygon')
+      }
+    },
+    getPolygon (item, options) {
+      // AbortController
+      if (this[item + 'AbortController']) {
+        this[item + 'AbortController'].abort()
+      }
+      this[item + 'AbortController'] = new AbortController()
+      options.config = {
+        signal: this[item + 'AbortController'].signal
+      }
+
+      this[item + 'List'].laoding = true
+      APIGateway.multiPolygon[item](options)
+        .then(({ list }) => {
+          this[item + 'List'] = list
+          this.loadPolygonList(item + 'List', item + 'Polygon')
+          this[item + 'List'].laoding = false
         })
-        // APIGateway.multiString[item]()
-        //   .then(({ list }) => {
-        //     this[item + 'List'] = list
-        //     // this.loadPolylineList(item + 'List', item + 'Polyline')
-        //   })
+        .catch(() => {
+          this[item + 'List'].laoding = false
+        })
+    },
+    togglePolylines () {
+      this.polylineNameList.forEach(item => {
+        this.togglePolyline(item)
       })
+    },
+    getPolyline (item, options) {
+      // AbortController
+      if (this[item + 'AbortController']) {
+        this[item + 'AbortController'].abort()
+      }
+      this[item + 'AbortController'] = new AbortController()
+      options.config = {
+        signal: this[item + 'AbortController'].signal
+      }
+
+      this[item + 'List'].laoding = true
+      APIGateway.multiString[item](options)
+        .then(({ list }) => {
+          this[item + 'List'] = list
+          this.loadPolylineList(item + 'List', item + 'Polyline')
+          this[item + 'List'].laoding = false
+        })
+        .catch(() => {
+          this[item + 'List'].laoding = false
+        })
+    },
+    togglePolyline (item) {
+      const showState = this['show' + item]
+      this[item + 'List'].list = []
+      const bounds = new MapBoundary(this.mapInstance.getBounds()).getBounds()
+      const options = {
+        payload: bounds
+      }
+      if (showState) {
+        this.getPolyline(item, options)
+      } else {
+        this.hideAll(item, 'Polyline')
+      }
     },
     loadMarkersList (listName, markerName) {
       const zoom = this.mapInstance._zoom // 13
-      const bounds = this.mapInstance.getBounds()
+      // const bounds = this.mapInstance.getBounds()
       this[markerName].forEach(marker => {
         this.hideLayer(marker)
       })
-      if (zoom < 14) {
+      if (zoom < 10) {
         return
       }
 
-      this[listName].inBounds(bounds).forEach(marker => {
+      // this[listName].inBounds(bounds).forEach(marker => {
+      this[listName].list.forEach(marker => {
         const layerName = listName.replace('List', '')
         const markerLayer = this.addMarker(marker.point, '<b>(' + layerName + ')</b></br><b>name: ' + marker.name + '</b></br>fclass:' + marker.fclass, marker, layerName)
         this[markerName].push(markerLayer)
@@ -1530,15 +1439,16 @@ export default {
     },
     loadPolygonList (listName, polygonName) {
       const zoom = this.mapInstance._zoom // 13
-      const bounds = this.mapInstance.getBounds()
+      // const bounds = this.mapInstance.getBounds()
       this[polygonName].forEach(polygon => {
         this.hideLayer(polygon)
       })
-      if (zoom < 14) {
+      if (zoom < 10) {
         return
       }
 
-      this[listName].inBounds(bounds).forEach(polygon => {
+      // this[listName].inBounds(bounds).forEach(polygon => {
+      this[listName].list.forEach(polygon => {
         const layerName = listName.replace('List', '')
         const polygonLayer = this.addPolygon(polygon.multiPolygon, '<b>(' + layerName + ')</b></br><b>name: ' + polygon.name + '</b></br>fclass:' + polygon.fclass, polygon, layerName)
         this[polygonName].push(polygonLayer)
@@ -1546,15 +1456,16 @@ export default {
     },
     loadPolylineList (listName, polylineName) {
       const zoom = this.mapInstance._zoom // 13
-      const bounds = this.mapInstance.getBounds()
+      // const bounds = this.mapInstance.getBounds()
       this[polylineName].forEach(polyline => {
         this.hideLayer(polyline)
       })
-      if (zoom < 14) {
+      if (zoom < 10) {
         return
       }
 
-      this[listName].inBounds(bounds).forEach(polyline => {
+      // this[listName].inBounds(bounds).forEach(polyline => {
+      this[listName].list.forEach(polyline => {
         const layerName = listName.replace('List', '')
         const polylineLayer = this.addPolyline(polyline.multiString, '<b>(' + layerName + ')</b></br><b>name: ' + polyline.name + '</b></br>fclass:' + polyline.fclass, polyline, layerName)
         this[polylineName].push(polylineLayer)
@@ -1576,27 +1487,26 @@ export default {
       if (typeof clickEvent === 'undefined' || clickEvent === true) {
         leafletMarker
           .on('click', (e) => {
-            this.panel = name
-            this.selectedLayer = data
-
             if (name === 'branches') {
-              const greenIcon = leafletObject.icon({
-                iconUrl: 'https://leafletjs.com/examples/custom-icons/leaf-green.png',
-                shadowUrl: 'https://leafletjs.com/examples/custom-icons/leaf-shadow.png',
-
-                iconSize: [38, 95], // size of the icon
-                shadowSize: [50, 64], // size of the shadow
-                iconAnchor: [22, 94], // point of the icon which will correspond to marker's location
-                shadowAnchor: [4, 62], // the same for the shadow
-                popupAnchor: [-3, -76] // point from which the popup should open relative to the iconAnchor
-              })
-              const layerName = 'branches'
-              if (data.closest_branch_point) {
-                if (this.closestBranchPointMarker) {
-                  this.hideLayer(this.closestBranchPointMarker)
-                }
-                this.closestBranchPointMarker = this.addMarker(data.closest_branch_point, '<b>(' + layerName + ')</b></br><b>name: ' + data.name + '</b></br>fclass:' + data.fclass, data, layerName, greenIcon, false)
-              }
+              this.panel = name
+              this.selectedLayer = data
+              // const greenIcon = leafletObject.icon({
+              //   iconUrl: 'https://leafletjs.com/examples/custom-icons/leaf-green.png',
+              //   shadowUrl: 'https://leafletjs.com/examples/custom-icons/leaf-shadow.png',
+              //
+              //   iconSize: [38, 95], // size of the icon
+              //   shadowSize: [50, 64], // size of the shadow
+              //   iconAnchor: [22, 94], // point of the icon which will correspond to marker's location
+              //   shadowAnchor: [4, 62], // the same for the shadow
+              //   popupAnchor: [-3, -76] // point from which the popup should open relative to the iconAnchor
+              // })
+              // const layerName = 'branches'
+              // if (data.closest_branch_point) {
+              //   if (this.closestBranchPointMarker) {
+              //     this.hideLayer(this.closestBranchPointMarker)
+              //   }
+              //   this.closestBranchPointMarker = this.addMarker(data.closest_branch_point, '<b>(' + layerName + ')</b></br><b>name: ' + data.name + '</b></br>fclass:' + data.fclass, data, layerName, greenIcon, false)
+              // }
             } else {
               if (this.closestBranchPointMarker) {
                 this.hideLayer(this.closestBranchPointMarker)
@@ -1612,8 +1522,17 @@ export default {
       return leafletObject.polygon(latlngs)
         .addTo(this.mapInstance)
         .on('click', () => {
-          this.panel = name
-          this.selectedLayer = data
+          if (name !== 'places') {
+            return
+          }
+          this.hideAll('places', 'Polygon')
+          const item = 'branches'
+          this.hideAll(item, 'Markers')
+          this[item + 'List'].list = []
+          this.getPoint(item, { bbox: data.bbox })
+
+          // this.panel = name
+          // this.selectedLayer = data
         })
         .bindPopup(popup)
       // .openPopup()
@@ -1622,8 +1541,8 @@ export default {
       return leafletObject.polyline(latlngs)
         .addTo(this.mapInstance)
         .on('click', () => {
-          this.panel = name
-          this.selectedLayer = data
+          // this.panel = name
+          // this.selectedLayer = data
         })
         .bindPopup(popup)
       // .openPopup()

@@ -14,12 +14,23 @@ export default class MultiStringAPI extends APIRepository {
     }
   }
 
-  railway(page) {
+  railway(options) {
+    const defaultFilterOptions = {
+      bbox: null,
+      payload: null
+    }
+    const mergedFilter = Object.assign(defaultFilterOptions, options)
+    Object.keys(mergedFilter).forEach(key => {
+      if (mergedFilter[key] === null) {
+        delete mergedFilter[key]
+      }
+    })
     return this.sendRequest({
-      apiMethod: 'get',
+      apiMethod: 'post',
       api: this.api,
+      config: options.config,
       request: this.APIAdresses.railway,
-      data: { page },
+      data: mergedFilter,
       resolveCallback: (response) => {
         return {
           count: response.data.count,
@@ -32,12 +43,23 @@ export default class MultiStringAPI extends APIRepository {
     })
   }
 
-  roads(page) {
+  roads(options) {
+    const defaultFilterOptions = {
+      bbox: null,
+      payload: null
+    }
+    const mergedFilter = Object.assign(defaultFilterOptions, options)
+    Object.keys(mergedFilter).forEach(key => {
+      if (mergedFilter[key] === null) {
+        delete mergedFilter[key]
+      }
+    })
     return this.sendRequest({
-      apiMethod: 'get',
+      apiMethod: 'post',
       api: this.api,
+      config: options.config,
       request: this.APIAdresses.roads,
-      data: { page },
+      data: mergedFilter,
       resolveCallback: (response) => {
         return {
           count: response.data.count,
@@ -50,12 +72,23 @@ export default class MultiStringAPI extends APIRepository {
     })
   }
 
-  waterWay(page) {
+  waterWay(options) {
+    const defaultFilterOptions = {
+      bbox: null,
+      payload: null
+    }
+    const mergedFilter = Object.assign(defaultFilterOptions, options)
+    Object.keys(mergedFilter).forEach(key => {
+      if (mergedFilter[key] === null) {
+        delete mergedFilter[key]
+      }
+    })
     return this.sendRequest({
-      apiMethod: 'get',
+      apiMethod: 'post',
       api: this.api,
+      config: options.config,
       request: this.APIAdresses.waterWay,
-      data: { page },
+      data: mergedFilter,
       resolveCallback: (response) => {
         return {
           count: response.data.count,

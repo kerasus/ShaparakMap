@@ -14,18 +14,30 @@ export default class MultiPolygonAPI extends APIRepository {
       water: '/water/',
       pofw: '/pofw/',
       places: '/places/',
+      searchplace: '/searchplace/',
       natrual: '/natrual/',
       landuse: '/landuse/',
       buildings: '/buildings/'
     }
   }
 
-  water(page) {
+  water(options) {
+    const defaultFilterOptions = {
+      bbox: null,
+      payload: null
+    }
+    const mergedFilter = Object.assign(defaultFilterOptions, options)
+    Object.keys(mergedFilter).forEach(key => {
+      if (mergedFilter[key] === null) {
+        delete mergedFilter[key]
+      }
+    })
     return this.sendRequest({
-      apiMethod: 'get',
+      apiMethod: 'post',
       api: this.api,
+      config: options.config,
       request: this.APIAdresses.water,
-      data: { page },
+      data: mergedFilter,
       resolveCallback: (response) => {
         return {
           count: response.data.count,
@@ -38,12 +50,23 @@ export default class MultiPolygonAPI extends APIRepository {
     })
   }
 
-  pofw(page) {
+  pofw(options) {
+    const defaultFilterOptions = {
+      bbox: null,
+      payload: null
+    }
+    const mergedFilter = Object.assign(defaultFilterOptions, options)
+    Object.keys(mergedFilter).forEach(key => {
+      if (mergedFilter[key] === null) {
+        delete mergedFilter[key]
+      }
+    })
     return this.sendRequest({
-      apiMethod: 'get',
+      apiMethod: 'post',
       api: this.api,
+      config: options.config,
       request: this.APIAdresses.pofw,
-      data: { page },
+      data: mergedFilter,
       resolveCallback: (response) => {
         return {
           count: response.data.count,
@@ -56,12 +79,51 @@ export default class MultiPolygonAPI extends APIRepository {
     })
   }
 
-  places(page) {
+  // places(options) {
+  //   const defaultFilterOptions = {
+  //     bbox: null,
+  //     payload: null
+  //   }
+  //   const mergedFilter = Object.assign(defaultFilterOptions, options)
+  //   Object.keys(mergedFilter).forEach(key => {
+  //     if (mergedFilter[key] === null) {
+  //       delete mergedFilter[key]
+  //     }
+  //   })
+  //   return this.sendRequest({
+  //     apiMethod: 'post',
+  //     api: this.api,
+  //     config: options.config,
+  //     request: this.APIAdresses.places,
+  //     data: mergedFilter,
+  //     resolveCallback: (response) => {
+  //       return {
+  //         count: response.data.count,
+  //         list: new PlaceList(response.data.results)
+  //       }
+  //     },
+  //     rejectCallback: (error) => {
+  //       return error
+  //     }
+  //   })
+  // }
+
+  places(options) {
+    const defaultFilterOptions = {
+      place: null
+    }
+    const mergedFilter = Object.assign(defaultFilterOptions, options)
+    Object.keys(mergedFilter).forEach(key => {
+      if (mergedFilter[key] === null) {
+        delete mergedFilter[key]
+      }
+    })
     return this.sendRequest({
-      apiMethod: 'get',
+      apiMethod: 'post',
       api: this.api,
-      request: this.APIAdresses.places,
-      data: { page },
+      config: options.config,
+      request: this.APIAdresses.searchplace,
+      data: mergedFilter,
       resolveCallback: (response) => {
         return {
           count: response.data.count,
@@ -74,12 +136,23 @@ export default class MultiPolygonAPI extends APIRepository {
     })
   }
 
-  natrual(page) {
+  natrual(options) {
+    const defaultFilterOptions = {
+      bbox: null,
+      payload: null
+    }
+    const mergedFilter = Object.assign(defaultFilterOptions, options)
+    Object.keys(mergedFilter).forEach(key => {
+      if (mergedFilter[key] === null) {
+        delete mergedFilter[key]
+      }
+    })
     return this.sendRequest({
-      apiMethod: 'get',
+      apiMethod: 'post',
       api: this.api,
+      config: options.config,
       request: this.APIAdresses.natrual,
-      data: { page },
+      data: mergedFilter,
       resolveCallback: (response) => {
         return {
           count: response.data.count,
@@ -92,12 +165,23 @@ export default class MultiPolygonAPI extends APIRepository {
     })
   }
 
-  landuse(page) {
+  landuse(options) {
+    const defaultFilterOptions = {
+      bbox: null,
+      payload: null
+    }
+    const mergedFilter = Object.assign(defaultFilterOptions, options)
+    Object.keys(mergedFilter).forEach(key => {
+      if (mergedFilter[key] === null) {
+        delete mergedFilter[key]
+      }
+    })
     return this.sendRequest({
-      apiMethod: 'get',
+      apiMethod: 'post',
       api: this.api,
+      config: options.config,
       request: this.APIAdresses.landuse,
-      data: { page },
+      data: mergedFilter,
       resolveCallback: (response) => {
         return {
           count: response.data.count,
@@ -110,12 +194,23 @@ export default class MultiPolygonAPI extends APIRepository {
     })
   }
 
-  buildings(page) {
+  buildings(options) {
+    const defaultFilterOptions = {
+      bbox: null,
+      payload: null
+    }
+    const mergedFilter = Object.assign(defaultFilterOptions, options)
+    Object.keys(mergedFilter).forEach(key => {
+      if (mergedFilter[key] === null) {
+        delete mergedFilter[key]
+      }
+    })
     return this.sendRequest({
-      apiMethod: 'get',
+      apiMethod: 'post',
       api: this.api,
+      config: options.config,
       request: this.APIAdresses.buildings,
-      data: { page },
+      data: mergedFilter,
       resolveCallback: (response) => {
         return {
           count: response.data.count,

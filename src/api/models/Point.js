@@ -7,12 +7,12 @@ export default class MultiStringAPI extends APIRepository {
   constructor() {
     super('point', appApiInstance)
     this.APIAdresses = {
-      branches: (page = 1) => '/branches/?page=' + page,
+      branches: '/branches/',
       transport: '/transport/'
     }
   }
 
-  branches(page, options) {
+  branches(options) {
     const defaultFilterOptions = {
       branchesCC: null,
       branchesATM: null,
@@ -20,7 +20,8 @@ export default class MultiStringAPI extends APIRepository {
       branchesSB: null,
       branchesPOS: null,
       branchesCVV2: null,
-      branchesCP: null
+      branchesCP: null,
+      payload: null
     }
     const mergedFilter = Object.assign(defaultFilterOptions, options)
     Object.keys(mergedFilter).forEach(key => {
@@ -31,12 +32,13 @@ export default class MultiStringAPI extends APIRepository {
     return this.sendRequest({
       apiMethod: 'post',
       api: this.api,
-      request: this.APIAdresses.branches(page),
+      request: this.APIAdresses.branches,
       data: mergedFilter,
+      config: options.config,
       resolveCallback: (response) => {
         return {
-          count: response.data.count,
-          list: new BrancheList(response.data.results)
+          count: response?.data?.count,
+          list: new BrancheList(response?.data?.results)
         }
       },
       rejectCallback: (error) => {
@@ -45,16 +47,27 @@ export default class MultiStringAPI extends APIRepository {
     })
   }
 
-  transport(page) {
+  transport(options) {
+    const defaultFilterOptions = {
+      bbox: null,
+      payload: null
+    }
+    const mergedFilter = Object.assign(defaultFilterOptions, options)
+    Object.keys(mergedFilter).forEach(key => {
+      if (mergedFilter[key] === null) {
+        delete mergedFilter[key]
+      }
+    })
     return this.sendRequest({
-      apiMethod: 'get',
+      apiMethod: 'post',
       api: this.api,
+      config: options.config,
       request: this.APIAdresses.transport,
-      data: { page },
+      data: mergedFilter,
       resolveCallback: (response) => {
         return {
-          count: response.data.count,
-          list: new TransportList(response.data.results)
+          count: response?.data?.count,
+          list: new TransportList(response?.data?.results)
         }
       },
       rejectCallback: (error) => {

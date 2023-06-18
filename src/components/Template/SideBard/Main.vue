@@ -204,7 +204,8 @@
                     </q-item-label>
                   </q-item-section>
                 </q-item>
-                <q-item v-ripple
+                <q-item v-if="false"
+                        v-ripple
                         tag="label">
                   <q-item-section side
                                   top>
@@ -306,6 +307,13 @@
               </q-list>
             </q-expansion-item>
           </q-list>
+          <q-input v-model="placesFilter"
+                   label="مکان ها" />
+          <q-btn color="primary"
+                 class="full-width"
+                 @click="placesFilterAction">
+            جستجو
+          </q-btn>
         </div>
       </div>
     </div>
@@ -317,6 +325,8 @@ export default {
   name: 'MainSideBarTemplate',
   data () {
     return {
+      placesFilter: null,
+
       branchesCC: null,
       branchesATM: null,
       branchesEC: null,
@@ -410,6 +420,9 @@ export default {
     window.removeEventListener('resize', this.handleResize)
   },
   methods: {
+    placesFilterAction () {
+      this.$bus.emit('map-change-places-filter', this.placesFilter)
+    },
     handleResize() {
       const windowWidth = window.innerWidth
       this.menuItems.forEach(item => {

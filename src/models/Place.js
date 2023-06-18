@@ -9,6 +9,7 @@ class Place extends Model {
       { key: 'population' },
       { key: 'fclass' },
       { key: 'name' },
+      { key: 'bbox' },
       { key: 'geom' } // MULTIPOLYGON
     ])
 
