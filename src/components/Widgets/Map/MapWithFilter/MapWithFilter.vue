@@ -1037,8 +1037,14 @@
     </div>
     <div class="row q-col-gutter-lg">
       <div class="col-12">
-        <statistic-information-chart v-if="mounted"
-                                     :series="statisticInformation" />
+        <template v-if="statisticInformationLoading">
+          <q-skeleton height="200px"
+                      square />
+        </template>
+        <template v-else>
+          <statistic-information-chart v-if="mounted"
+                                       :series="statisticInformation" />
+        </template>
       </div>
     </div>
   </div>
@@ -1088,6 +1094,8 @@ export default {
       provinceList: new ProvinceList(),
       searchBranch: new Branche(),
       searchBranchLayer: null,
+
+      staticalAbortController: null,
 
       // points
       branchesAbortController: null,
@@ -1157,6 +1165,7 @@ export default {
         'waterWay'
       ],
 
+      statisticInformationLoading: false,
       statisticInformation: [],
 
       zoom: 2,
@@ -1196,6 +1205,16 @@ export default {
       const options = {
         bbox: bounds
       }
+
+      // AbortController
+      if (this.staticalAbortController) {
+        this.staticalAbortController.abort()
+      }
+      this.staticalAbortController = new AbortController()
+      options.config = {
+        signal: this.staticalAbortController.signal
+      }
+
       this.staticalLoading = true
       APIGateway.statistic.statical(options)
         .then((staticalData) => {
@@ -1207,9 +1226,14 @@ export default {
         })
     },
     getStatistic () {
+      this.statisticInformationLoading = true
       APIGateway.statistic.information()
         .then((series) => {
           this.statisticInformation = series
+          this.statisticInformationLoading = false
+        })
+        .catch(() => {
+          this.statisticInformationLoading = false
         })
     },
     toggle () {
@@ -1395,6 +1419,9 @@ export default {
       this[item + 'List'].laoding = true
       APIGateway.multiPolygon[item](options)
         .then(({ list }) => {
+          if (list.list.length === 0) {
+            return
+          }
           this[item + 'List'] = list
           this.loadPolygonList(item + 'List', item + 'Polygon')
           this[item + 'List'].laoding = false
@@ -1421,6 +1448,9 @@ export default {
       this[item + 'List'].laoding = true
       APIGateway.multiString[item](options)
         .then(({ list }) => {
+          if (list.list.length === 0) {
+            return
+          }
           this[item + 'List'] = list
           this.loadPolylineList(item + 'List', item + 'Polyline')
           this[item + 'List'].laoding = false
@@ -1444,7 +1474,7 @@ export default {
     },
     loadMarkersList (listName, markerName) {
       const zoom = this.mapInstance._zoom // 13
-      // const bounds = this.mapInstance.getBounds()
+      const bounds = this.mapInstance.getBounds()
       this[markerName].forEach(marker => {
         this.hideLayer(marker)
       })
@@ -1452,8 +1482,8 @@ export default {
         return
       }
 
-      // this[listName].inBounds(bounds).forEach(marker => {
-      this[listName].list.forEach(marker => {
+      this[listName].inBounds(bounds).forEach(marker => {
+      // this[listName].list.forEach(marker => {
         const layerName = listName.replace('List', '')
         const markerLayer = this.addMarker(marker.point, '<b>(' + layerName + ')</b></br><b>name: ' + marker.name + '</b></br>fclass:' + marker.fclass, marker, layerName)
         this[markerName].push(markerLayer)
@@ -1461,7 +1491,7 @@ export default {
     },
     loadPolygonList (listName, polygonName) {
       const zoom = this.mapInstance._zoom // 13
-      // const bounds = this.mapInstance.getBounds()
+      const bounds = this.mapInstance.getBounds()
       this[polygonName].forEach(polygon => {
         this.hideLayer(polygon)
       })
@@ -1469,8 +1499,8 @@ export default {
         return
       }
 
-      // this[listName].inBounds(bounds).forEach(polygon => {
-      this[listName].list.forEach(polygon => {
+      this[listName].inBounds(bounds).forEach(polygon => {
+      // this[listName].list.forEach(polygon => {
         const layerName = listName.replace('List', '')
         const polygonLayer = this.addPolygon(polygon.multiPolygon, '<b>(' + layerName + ')</b></br><b>name: ' + polygon.name + '</b></br>fclass:' + polygon.fclass, polygon, layerName)
         this[polygonName].push(polygonLayer)
@@ -1478,7 +1508,7 @@ export default {
     },
     loadPolylineList (listName, polylineName) {
       const zoom = this.mapInstance._zoom // 13
-      // const bounds = this.mapInstance.getBounds()
+      const bounds = this.mapInstance.getBounds()
       this[polylineName].forEach(polyline => {
         this.hideLayer(polyline)
       })
@@ -1486,8 +1516,8 @@ export default {
         return
       }
 
-      // this[listName].inBounds(bounds).forEach(polyline => {
-      this[listName].list.forEach(polyline => {
+      this[listName].inBounds(bounds).forEach(polyline => {
+      // this[listName].list.forEach(polyline => {
         const layerName = listName.replace('List', '')
         const polylineLayer = this.addPolyline(polyline.multiString, '<b>(' + layerName + ')</b></br><b>name: ' + polyline.name + '</b></br>fclass:' + polyline.fclass, polyline, layerName)
         this[polylineName].push(polylineLayer)
