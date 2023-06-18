@@ -1262,7 +1262,7 @@ export default {
               this.hideLayer(this.searchBranchLayer)
               this.searchBranchLayer = null
             }
-            this.searchBranchLayer = this.addMarker(this.searchBranch.point, '<b>name: ' + this.searchBranch.name + '</b></br>fclass:' + this.searchBranch.fclass, this.searchBranch)
+            this.searchBranchLayer = this.addMarker(this.searchBranch.point, '<b>name: ' + this.searchBranch.name + '</b></br>fclass:' + this.searchBranch.fclass, this.searchBranch, 'searchBranch')
           })
           .catch(() => {
             this.searchBranch.loading = false
@@ -1509,8 +1509,8 @@ export default {
       if (typeof clickEvent === 'undefined' || clickEvent === true) {
         leafletMarker
           .on('click', (e) => {
-            if (name === 'branches') {
-              this.panel = name
+            if (name === 'branches' || name === 'searchBranch') {
+              this.panel = 'branches'
               this.selectedLayer = data
               // const greenIcon = leafletObject.icon({
               //   iconUrl: 'https://leafletjs.com/examples/custom-icons/leaf-green.png',

@@ -151,7 +151,8 @@
 
               </q-list>
             </q-expansion-item>
-            <q-expansion-item expand-separator
+            <q-expansion-item v-if="false"
+                              expand-separator
                               icon="account_balance_wallet"
                               label="Branches 2">
               Branches 2
