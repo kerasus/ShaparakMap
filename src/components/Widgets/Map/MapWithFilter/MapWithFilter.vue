@@ -1054,7 +1054,7 @@ import { APIGateway } from 'src/api/APIGateway.js'
 import { NatrualList } from 'src/models/Natrual.js'
 import { RailwayList } from 'src/models/Railway.js'
 import { LanduseList } from 'src/models/Landuse.js'
-import { BrancheList } from 'src/models/Branche.js'
+import { Branche, BrancheList } from 'src/models/Branche.js'
 import { BuildingList } from 'src/models/Building.js'
 import { WaterwayList } from 'src/models/Waterway.js'
 import { ProvinceList } from 'src/models/Province.js'
@@ -1086,6 +1086,8 @@ export default {
       staticalData: null,
       staticalLoading: false,
       provinceList: new ProvinceList(),
+      searchBranch: new Branche(),
+      searchBranchLayer: null,
 
       // points
       branchesAbortController: null,
@@ -1165,7 +1167,7 @@ export default {
   computed: {
     mapLoading () {
       const allList = this.pointList.concat(this.polygonNameList, this.polylineNameList, ['places'])
-      return allList.find(item => this[item + 'List'].laoding)
+      return allList.find(item => this[item + 'List'].laoding) || this.searchBranch.loading
     },
     citiesOfSelectedProvinece () {
       if (!this.selectedProvinece) {
@@ -1246,6 +1248,26 @@ export default {
         this[item + 'List'].list = []
         this.getPolygon(item, { place: placesFilter })
       })
+      this.$bus.on('map-change-show-branch', (searchBranch) => {
+        this.searchBranch.loading = true
+        APIGateway.point.getBranche(searchBranch.id)
+          .then((searchBranch) => {
+            this.searchBranch = searchBranch
+            this.searchBranch.loading = false
+            this.mapInstance.panTo(this.searchBranch.point)
+            setTimeout(() => {
+              this.mapInstance.setZoom(13)
+            }, 1000)
+            if (this.searchBranchLayer) {
+              this.hideLayer(this.searchBranchLayer)
+              this.searchBranchLayer = null
+            }
+            this.searchBranchLayer = this.addMarker(this.searchBranch.point, '<b>name: ' + this.searchBranch.name + '</b></br>fclass:' + this.searchBranch.fclass, this.searchBranch)
+          })
+          .catch(() => {
+            this.searchBranch.loading = false
+          })
+      })
       this.pointList.forEach(item => {
         this.$bus.on('map-change-' + item, (newValue) => {
           this['show' + item] = newValue
@@ -1287,7 +1309,7 @@ export default {
       this.mapInstance.on('moveend', this.moveenddMap)
     },
     moveenddMap () {
-      // this.getStatical()
+      this.getStatical()
       if (this.closestBranchPointMarker) {
         this.hideLayer(this.closestBranchPointMarker)
       }

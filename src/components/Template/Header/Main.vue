@@ -15,22 +15,42 @@
                  @click="toggleLeftDrawer" />
         </li>
       </ul>
-      <form class="search-form-opened"
-            action="#"
-            method="GET">
+      <form class="search-form-opened">
+        <q-linear-progress v-if="searchbranches.loading"
+                           indeterminate />
         <div class="input-group">
-          <input type="text"
+          <input v-model="searchbranch"
+                 type="text"
                  class="form-control"
                  placeholder="Search..."
-                 name="query">
+                 :disabled="searchbranches.loading"
+                 name="query"
+                 v-on:keydown.enter.prevent="searchbranche">
           <span class="input-group-btn search-btn">
             <q-btn flat
                    size="sm"
                    round
                    class="text-black"
-                   icon="search" />
+                   icon="search"
+                   :loading="searchbranches.loading"
+                   @click="searchbranche" />
           </span>
         </div>
+        <q-menu v-model="showingSearchbranch"
+                max-height="300px">
+          <q-list style="max-width: 300px">
+            <q-item v-for="searchbranch in searchbranches.list.splice(0, 20)"
+                    :key="searchbranch.id"
+                    clickable
+                    @click="showBranch(searchbranch)">
+              <q-item-section>
+                <div>{{ searchbranch.name }}</div>
+                <div style="max-width: 270px"
+                     class="ellipsis">{{ searchbranch.address }}</div>
+              </q-item-section>
+            </q-item>
+          </q-list>
+        </q-menu>
       </form>
       <!-- start mobile menu -->
       <a href="javascript:;"
@@ -272,17 +292,22 @@
 <script>
 import { mapMutations } from 'vuex'
 import { User } from 'src/models/User.js'
+import { APIGateway } from 'src/api/APIGateway.js'
+import { BrancheList } from 'src/models/Branche.js'
 import menuItems from 'src/components/Template/menuData.js'
 
 export default {
   name: 'MainHeaderTemplate',
   data() {
     return {
+      searchbranch: null,
+      showingSearchbranch: false,
       cart: null,
       conferenceMenu: false,
       showHamburgerConfig: true,
       searchInput: '',
       user: new User(),
+      searchbranches: new BrancheList(),
       isAdmin: false,
       isUserLogin: false,
       items: menuItems
@@ -358,6 +383,24 @@ export default {
     this.checkMenurItemsForAuthenticatedUser()
   },
   methods: {
+    showBranch(searchbranch) {
+      this.showingSearchbranch = false
+      this.$bus.emit('map-change-show-branch', searchbranch)
+    },
+    searchbranche () {
+      this.searchbranches.loading = true
+      this.showingSearchbranch = false
+      APIGateway.point.searchbranche({ text: this.searchbranch })
+        .then(({ list }) => {
+          this.searchbranches = new BrancheList(list)
+          this.searchbranches.loading = false
+          this.showingSearchbranch = true
+        })
+        .catch(() => {
+          this.showingSearchbranch = false
+          this.searchbranches.loading = false
+        })
+    },
     toggleMenu () {
 
     },

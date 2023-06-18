@@ -216,7 +216,9 @@ export default class APIInstanceWrapper {
     if (req === 'get') {
       return option.api.get(option.request, { params: option.data, timeout })
     } else if (req === 'post') {
-      return option.api.post(option.request, option.data, option.config)
+      const config = option.config
+      delete option.data.config
+      return option.api.post(option.request, option.data, config)
     } else if (req === 'put') {
       return option.api.put(option.request, option.data)
     } else if (req === 'delete') {
