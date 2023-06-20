@@ -322,7 +322,7 @@
                      icon="clear"
                      size="sm"
                      :loading="placesList.loading"
-                     @click="clearSearch" />
+                     @click="clearSearch(false)" />
             </template>
           </q-input>
           <q-btn color="primary"
@@ -416,39 +416,50 @@ export default {
   },
   watch: {
     branchesOptions (newValue) {
+      this.clearSearch(true)
       this.$bus.emit('map-change-branches-options', newValue)
     },
     branches (newValue) {
       this.$bus.emit('map-change-branches', newValue)
     },
     transport (newValue) {
+      this.clearSearch(true)
       this.$bus.emit('map-change-transport', newValue)
     },
     water (newValue) {
+      this.clearSearch(true)
       this.$bus.emit('map-change-water', newValue)
     },
     pofw (newValue) {
+      this.clearSearch(true)
       this.$bus.emit('map-change-pofw', newValue)
     },
     places (newValue) {
+      this.clearSearch(true)
       this.$bus.emit('map-change-places', newValue)
     },
     natrual (newValue) {
+      this.clearSearch(true)
       this.$bus.emit('map-change-natrual', newValue)
     },
     landuse (newValue) {
+      this.clearSearch(true)
       this.$bus.emit('map-change-landuse', newValue)
     },
     buildings (newValue) {
+      this.clearSearch(true)
       this.$bus.emit('map-change-buildings', newValue)
     },
     railway (newValue) {
+      this.clearSearch(true)
       this.$bus.emit('map-change-railway', newValue)
     },
     roads (newValue) {
+      this.clearSearch(true)
       this.$bus.emit('map-change-roads', newValue)
     },
     waterWay (newValue) {
+      this.clearSearch(true)
       this.$bus.emit('map-change-waterWay', newValue)
     }
   },
@@ -459,6 +470,9 @@ export default {
       this.branches = newState
       this.locationsExpanded = false
       this.branchesExpanded = false
+    })
+    this.$bus.on('clear-places-filter', (preventEvent) => {
+      this.clearSearch(preventEvent)
     })
   },
   beforeUnmount() {
@@ -490,11 +504,14 @@ export default {
           this.placesList.loading = false
         })
     },
-    clearSearch () {
+    clearSearch (preventEvent) {
       this.showingSearchPlaces = false
       this.placesList.loading = false
       this.placesList = new PlaceList()
       this.placesFilter = null
+      if (preventEvent) {
+        return
+      }
       this.$bus.emit('map-change-places-filter', null)
     },
     handleResize() {

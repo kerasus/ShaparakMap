@@ -58,7 +58,7 @@
              class="clear-search-bar"
              icon="clear"
              size="sm"
-             @click="clearSearch" />
+             @click="clearSearch(false)" />
       <!-- start mobile menu -->
       <a href="javascript:;"
          class="menu-toggler responsive-toggler"
@@ -387,15 +387,22 @@ export default {
   },
   mounted () {
     this.loadAuthData()
+    this.$bus.on('clear-branches-header-filter', (preventEvent) => {
+      this.clearSearch(preventEvent)
+    })
   },
   methods: {
     showBranch(searchbranch) {
       this.showingSearchbranch = false
       this.$bus.emit('map-change-show-branch', searchbranch)
     },
-    clearSearch () {
+    clearSearch (preventEvent) {
       this.searchbranches = new BrancheList()
       this.showingSearchbranch = false
+      this.searchbranch = null
+      if (preventEvent) {
+        return
+      }
       this.$bus.emit('map-change-show-branch', null)
     },
     searchbranche () {

@@ -307,12 +307,20 @@ export default {
         }
       })
       this.$bus.on('map-change-places-filter', (places) => {
+        this.$bus.emit('clear-branches-header-filter', true)
+        this.selectedBranchHeaderMenu = null
         this.changeShowbranches(false)
         this.hideAll('places', 'Polygon')
         const item = 'branches'
         this.hideAll(item, 'Markers')
         const listName = item + 'List'
         this.removeMarkerClusterLayer(listName)
+
+        if (this.searchBranchLayer) {
+          this.hideLayer(this.searchBranchLayer)
+          this.searchBranchLayer = null
+        }
+
         this[item + 'List'].list = []
         this.selectedPlacesFilterSideMenu = places
         if (places) {
@@ -320,9 +328,13 @@ export default {
         }
       })
       this.$bus.on('map-change-show-branch', (searchBranch) => {
+        this.$bus.emit('clear-places-filter', true)
+        this.selectedPlacesFilterSideMenu = null
         this.changeShowbranches(false)
         const item = 'branches'
         this.hideAll(item, 'Markers')
+        const listName = item + 'List'
+        this.removeMarkerClusterLayer(listName)
         this.selectedBranchHeaderMenu = searchBranch
         if (!searchBranch) {
           if (this.searchBranchLayer) {
