@@ -2,330 +2,365 @@
   <div class="white-sidebar-color">
     <div class="sidebar-container">
       <div class="sidemenu-container navbar-collapse collapse fixed-menu">
-        <div id="remove-scroll">
-          <ul class="sidemenu page-header-fixed"
-              data-keep-expanded="false"
-              data-auto-scroll="true"
-              data-slide-speed="200">
-            <li class="sidebar-toggler-wrapper hide">
-              <div class="sidebar-toggler">
-                <span />
+        <ul class="sidemenu page-header-fixed"
+            data-keep-expanded="false"
+            data-auto-scroll="true"
+            data-slide-speed="200">
+          <li class="sidebar-toggler-wrapper hide">
+            <div class="sidebar-toggler">
+              <span />
+            </div>
+          </li>
+          <li class="sidebar-user-panel">
+            <div class="user-panel">
+              <div class="pull-left image">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/ea/Bank_Sepah_logo.svg/1200px-Bank_Sepah_logo.svg.png"
+                     class="img-circle user-img-circle"
+                     alt="User Image">
               </div>
-            </li>
-            <li class="sidebar-user-panel">
-              <div class="user-panel">
-                <div class="pull-left image">
-                  <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/ea/Bank_Sepah_logo.svg/1200px-Bank_Sepah_logo.svg.png"
-                       class="img-circle user-img-circle"
-                       alt="User Image">
-                </div>
-                <div class="pull-left info">
-                  <p> بانک سپه </p>
-                  <div class="info-action">
-                    <q-btn flat
-                           round
-                           icon="email" />
-                    <q-btn flat
-                           round
-                           icon="person" />
-                    <q-btn flat
-                           round
-                           icon="power_settings_new" />
-                  </div>
+              <div class="pull-left info">
+                <p> بانک سپه </p>
+                <div class="info-action">
+                  <q-btn flat
+                         round
+                         icon="email" />
+                  <q-btn flat
+                         round
+                         icon="person" />
+                  <q-btn flat
+                         round
+                         icon="power_settings_new" />
                 </div>
               </div>
-            </li>
-          </ul>
-          <q-list bordered
-                  class="rounded-borders">
-            <q-expansion-item expand-separator
-                              icon="account_balance"
-                              label="Branches">
-              <q-list bordered
-                      separator>
+            </div>
+          </li>
+        </ul>
+        <q-list bordered
+                class="rounded-borders">
+          <q-expansion-item expand-separator
+                            icon="account_balance"
+                            label="Branches">
+            <q-list bordered
+                    separator>
 
-                <q-item v-ripple
-                        tag="label">
-                  <q-item-section side
-                                  top>
-                    <q-checkbox v-model="branches" />
-                  </q-item-section>
-                  <q-item-section>
-                    <q-item-label>Branch</q-item-label>
-                    <q-item-label caption>
-                      point
-                    </q-item-label>
-                  </q-item-section>
-                </q-item>
-                <q-item v-ripple
-                        tag="label">
-                  <q-item-section>
-                    <q-item-label>Branch with CC</q-item-label>
-                    <q-item-label caption>
-                      <q-option-group v-model="branchesCC"
-                                      :options="branchesRadioOptions"
-                                      dense
-                                      color="primary"
-                                      inline />
-                    </q-item-label>
-                  </q-item-section>
-                </q-item>
-                <q-item v-ripple
-                        tag="label">
-                  <q-item-section>
-                    <q-item-label>Branch with ATM</q-item-label>
-                    <q-item-label caption>
-                      <q-option-group v-model="branchesATM"
-                                      :options="branchesRadioOptions"
-                                      dense
-                                      color="primary"
-                                      inline />
-                    </q-item-label>
-                  </q-item-section>
-                </q-item>
-                <q-item v-ripple
-                        tag="label">
-                  <q-item-section>
-                    <q-item-label>Branch with EC</q-item-label>
-                    <q-item-label caption>
-                      <q-option-group v-model="branchesEC"
-                                      :options="branchesRadioOptions"
-                                      dense
-                                      color="primary"
-                                      inline />
-                    </q-item-label>
-                  </q-item-section>
-                </q-item>
-                <q-item v-ripple
-                        tag="label">
-                  <q-item-section>
-                    <q-item-label>Branch with SB</q-item-label>
-                    <q-item-label caption>
-                      <q-option-group v-model="branchesSB"
-                                      :options="branchesRadioOptions"
-                                      dense
-                                      color="primary"
-                                      inline />
-                    </q-item-label>
-                  </q-item-section>
-                </q-item>
-                <q-item v-ripple
-                        tag="label">
-                  <q-item-section>
-                    <q-item-label>Branch with POS</q-item-label>
-                    <q-item-label caption>
-                      <q-option-group v-model="branchesPOS"
-                                      :options="branchesRadioOptions"
-                                      dense
-                                      color="primary"
-                                      inline />
-                    </q-item-label>
-                  </q-item-section>
-                </q-item>
-                <q-item v-ripple
-                        tag="label">
-                  <q-item-section>
-                    <q-item-label>Branch with CVV2</q-item-label>
-                    <q-item-label caption>
-                      <q-option-group v-model="branchesCVV2"
-                                      :options="branchesRadioOptions"
-                                      dense
-                                      color="primary"
-                                      inline />
-                    </q-item-label>
-                  </q-item-section>
-                </q-item>
-                <q-item v-ripple
-                        tag="label">
-                  <q-item-section>
-                    <q-item-label>Branch with CP</q-item-label>
-                    <q-item-label caption>
-                      <q-option-group v-model="branchesCP"
-                                      :options="branchesRadioOptions"
-                                      dense
-                                      color="primary"
-                                      inline />
-                    </q-item-label>
-                  </q-item-section>
-                </q-item>
+              <q-item v-ripple
+                      tag="label">
+                <q-item-section side
+                                top>
+                  <q-checkbox v-model="branches" />
+                </q-item-section>
+                <q-item-section>
+                  <q-item-label>Branch</q-item-label>
+                  <q-item-label caption>
+                    point
+                  </q-item-label>
+                </q-item-section>
+              </q-item>
+              <q-item v-ripple
+                      tag="label">
+                <q-item-section>
+                  <q-item-label>Branch with CC</q-item-label>
+                  <q-item-label caption>
+                    <q-option-group v-model="branchesCC"
+                                    :options="branchesRadioOptions"
+                                    dense
+                                    color="primary"
+                                    inline />
+                  </q-item-label>
+                </q-item-section>
+              </q-item>
+              <q-item v-ripple
+                      tag="label">
+                <q-item-section>
+                  <q-item-label>Branch with ATM</q-item-label>
+                  <q-item-label caption>
+                    <q-option-group v-model="branchesATM"
+                                    :options="branchesRadioOptions"
+                                    dense
+                                    color="primary"
+                                    inline />
+                  </q-item-label>
+                </q-item-section>
+              </q-item>
+              <q-item v-ripple
+                      tag="label">
+                <q-item-section>
+                  <q-item-label>Branch with EC</q-item-label>
+                  <q-item-label caption>
+                    <q-option-group v-model="branchesEC"
+                                    :options="branchesRadioOptions"
+                                    dense
+                                    color="primary"
+                                    inline />
+                  </q-item-label>
+                </q-item-section>
+              </q-item>
+              <q-item v-ripple
+                      tag="label">
+                <q-item-section>
+                  <q-item-label>Branch with SB</q-item-label>
+                  <q-item-label caption>
+                    <q-option-group v-model="branchesSB"
+                                    :options="branchesRadioOptions"
+                                    dense
+                                    color="primary"
+                                    inline />
+                  </q-item-label>
+                </q-item-section>
+              </q-item>
+              <q-item v-ripple
+                      tag="label">
+                <q-item-section>
+                  <q-item-label>Branch with POS</q-item-label>
+                  <q-item-label caption>
+                    <q-option-group v-model="branchesPOS"
+                                    :options="branchesRadioOptions"
+                                    dense
+                                    color="primary"
+                                    inline />
+                  </q-item-label>
+                </q-item-section>
+              </q-item>
+              <q-item v-ripple
+                      tag="label">
+                <q-item-section>
+                  <q-item-label>Branch with CVV2</q-item-label>
+                  <q-item-label caption>
+                    <q-option-group v-model="branchesCVV2"
+                                    :options="branchesRadioOptions"
+                                    dense
+                                    color="primary"
+                                    inline />
+                  </q-item-label>
+                </q-item-section>
+              </q-item>
+              <q-item v-ripple
+                      tag="label">
+                <q-item-section>
+                  <q-item-label>Branch with CP</q-item-label>
+                  <q-item-label caption>
+                    <q-option-group v-model="branchesCP"
+                                    :options="branchesRadioOptions"
+                                    dense
+                                    color="primary"
+                                    inline />
+                  </q-item-label>
+                </q-item-section>
+              </q-item>
 
-              </q-list>
-            </q-expansion-item>
-            <q-expansion-item v-if="false"
-                              expand-separator
-                              icon="account_balance_wallet"
-                              label="Branches 2">
-              Branches 2
-            </q-expansion-item>
-            <q-expansion-item expand-separator
-                              icon="room"
-                              label="Locations">
-              <q-list bordered
-                      separator>
+            </q-list>
+          </q-expansion-item>
+          <q-expansion-item v-if="false"
+                            expand-separator
+                            icon="account_balance_wallet"
+                            label="Branches 2">
+            Branches 2
+          </q-expansion-item>
+          <q-expansion-item expand-separator
+                            icon="room"
+                            label="Locations">
+            <q-list bordered
+                    separator>
 
-                <q-item v-ripple
-                        tag="label">
-                  <q-item-section side
-                                  top>
-                    <q-checkbox v-model="transport" />
-                  </q-item-section>
+              <q-item v-ripple
+                      tag="label">
+                <q-item-section side
+                                top>
+                  <q-checkbox v-model="transport" />
+                </q-item-section>
 
-                  <q-item-section>
-                    <q-item-label>Transport</q-item-label>
-                    <q-item-label caption>
-                      point
-                    </q-item-label>
-                  </q-item-section>
-                </q-item>
-                <q-item v-ripple
-                        tag="label">
-                  <q-item-section side
-                                  top>
-                    <q-checkbox v-model="water" />
-                  </q-item-section>
+                <q-item-section>
+                  <q-item-label>Transport</q-item-label>
+                  <q-item-label caption>
+                    point
+                  </q-item-label>
+                </q-item-section>
+              </q-item>
+              <q-item v-ripple
+                      tag="label">
+                <q-item-section side
+                                top>
+                  <q-checkbox v-model="water" />
+                </q-item-section>
 
-                  <q-item-section>
-                    <q-item-label>water</q-item-label>
-                    <q-item-label caption>
-                      polygon
-                    </q-item-label>
-                  </q-item-section>
-                </q-item>
-                <q-item v-ripple
-                        tag="label">
-                  <q-item-section side
-                                  top>
-                    <q-checkbox v-model="pofw" />
-                  </q-item-section>
+                <q-item-section>
+                  <q-item-label>water</q-item-label>
+                  <q-item-label caption>
+                    polygon
+                  </q-item-label>
+                </q-item-section>
+              </q-item>
+              <q-item v-ripple
+                      tag="label">
+                <q-item-section side
+                                top>
+                  <q-checkbox v-model="pofw" />
+                </q-item-section>
 
-                  <q-item-section>
-                    <q-item-label>pofw</q-item-label>
-                    <q-item-label caption>
-                      polygon
-                    </q-item-label>
-                  </q-item-section>
-                </q-item>
-                <q-item v-if="false"
-                        v-ripple
-                        tag="label">
-                  <q-item-section side
-                                  top>
-                    <q-checkbox v-model="places" />
-                  </q-item-section>
+                <q-item-section>
+                  <q-item-label>pofw</q-item-label>
+                  <q-item-label caption>
+                    polygon
+                  </q-item-label>
+                </q-item-section>
+              </q-item>
+              <q-item v-if="false"
+                      v-ripple
+                      tag="label">
+                <q-item-section side
+                                top>
+                  <q-checkbox v-model="places" />
+                </q-item-section>
 
-                  <q-item-section>
-                    <q-item-label>places</q-item-label>
-                    <q-item-label caption>
-                      polygon
-                    </q-item-label>
-                  </q-item-section>
-                </q-item>
-                <q-item v-ripple
-                        tag="label">
-                  <q-item-section side
-                                  top>
-                    <q-checkbox v-model="natrual" />
-                  </q-item-section>
+                <q-item-section>
+                  <q-item-label>places</q-item-label>
+                  <q-item-label caption>
+                    polygon
+                  </q-item-label>
+                </q-item-section>
+              </q-item>
+              <q-item v-ripple
+                      tag="label">
+                <q-item-section side
+                                top>
+                  <q-checkbox v-model="natrual" />
+                </q-item-section>
 
-                  <q-item-section>
-                    <q-item-label>natural</q-item-label>
-                    <q-item-label caption>
-                      polygon
-                    </q-item-label>
-                  </q-item-section>
-                </q-item>
-                <q-item v-ripple
-                        tag="label">
-                  <q-item-section side
-                                  top>
-                    <q-checkbox v-model="landuse" />
-                  </q-item-section>
+                <q-item-section>
+                  <q-item-label>natural</q-item-label>
+                  <q-item-label caption>
+                    polygon
+                  </q-item-label>
+                </q-item-section>
+              </q-item>
+              <q-item v-ripple
+                      tag="label">
+                <q-item-section side
+                                top>
+                  <q-checkbox v-model="landuse" />
+                </q-item-section>
 
-                  <q-item-section>
-                    <q-item-label>landuse</q-item-label>
-                    <q-item-label caption>
-                      polygon
-                    </q-item-label>
-                  </q-item-section>
-                </q-item>
-                <q-item v-ripple
-                        tag="label">
-                  <q-item-section side
-                                  top>
-                    <q-checkbox v-model="buildings" />
-                  </q-item-section>
+                <q-item-section>
+                  <q-item-label>landuse</q-item-label>
+                  <q-item-label caption>
+                    polygon
+                  </q-item-label>
+                </q-item-section>
+              </q-item>
+              <q-item v-ripple
+                      tag="label">
+                <q-item-section side
+                                top>
+                  <q-checkbox v-model="buildings" />
+                </q-item-section>
 
-                  <q-item-section>
-                    <q-item-label>buildings</q-item-label>
-                    <q-item-label caption>
-                      polygon
-                    </q-item-label>
-                  </q-item-section>
-                </q-item>
-                <q-item v-ripple
-                        tag="label">
-                  <q-item-section side
-                                  top>
-                    <q-checkbox v-model="railway" />
-                  </q-item-section>
+                <q-item-section>
+                  <q-item-label>buildings</q-item-label>
+                  <q-item-label caption>
+                    polygon
+                  </q-item-label>
+                </q-item-section>
+              </q-item>
+              <q-item v-ripple
+                      tag="label">
+                <q-item-section side
+                                top>
+                  <q-checkbox v-model="railway" />
+                </q-item-section>
 
-                  <q-item-section>
-                    <q-item-label>railway</q-item-label>
-                    <q-item-label caption>
-                      polyline
-                    </q-item-label>
-                  </q-item-section>
-                </q-item>
-                <q-item v-ripple
-                        tag="label">
-                  <q-item-section side
-                                  top>
-                    <q-checkbox v-model="roads" />
-                  </q-item-section>
+                <q-item-section>
+                  <q-item-label>railway</q-item-label>
+                  <q-item-label caption>
+                    polyline
+                  </q-item-label>
+                </q-item-section>
+              </q-item>
+              <q-item v-ripple
+                      tag="label">
+                <q-item-section side
+                                top>
+                  <q-checkbox v-model="roads" />
+                </q-item-section>
 
-                  <q-item-section>
-                    <q-item-label>roads</q-item-label>
-                    <q-item-label caption>
-                      polyline
-                    </q-item-label>
-                  </q-item-section>
-                </q-item>
-                <q-item v-ripple
-                        tag="label">
-                  <q-item-section side
-                                  top>
-                    <q-checkbox v-model="waterWay" />
-                  </q-item-section>
+                <q-item-section>
+                  <q-item-label>roads</q-item-label>
+                  <q-item-label caption>
+                    polyline
+                  </q-item-label>
+                </q-item-section>
+              </q-item>
+              <q-item v-ripple
+                      tag="label">
+                <q-item-section side
+                                top>
+                  <q-checkbox v-model="waterWay" />
+                </q-item-section>
 
-                  <q-item-section>
-                    <q-item-label>waterWay</q-item-label>
-                    <q-item-label caption>
-                      polyline
-                    </q-item-label>
-                  </q-item-section>
-                </q-item>
+                <q-item-section>
+                  <q-item-label>waterWay</q-item-label>
+                  <q-item-label caption>
+                    polyline
+                  </q-item-label>
+                </q-item-section>
+              </q-item>
 
-              </q-list>
-            </q-expansion-item>
-          </q-list>
+            </q-list>
+          </q-expansion-item>
+        </q-list>
+        <div>
           <q-input v-model="placesFilter"
-                   label="مکان ها" />
+                   label="مکان ها"
+                   :loading="placesList.loading"
+                   v-on:keydown.enter.prevent="placesFilterAction">
+            <template #after>
+              <q-btn v-if="placesFilter"
+                     round
+                     color="danger"
+                     class="clear-search-bar"
+                     icon="clear"
+                     size="sm"
+                     :loading="placesList.loading"
+                     @click="clearSearch" />
+            </template>
+          </q-input>
           <q-btn color="primary"
                  class="full-width"
+                 :loading="placesList.loading"
                  @click="placesFilterAction">
             جستجو
           </q-btn>
         </div>
+        <q-card v-if="showingSearchPlaces"
+                style="max-height: 400px; overflow: auto;">
+          <q-card-section>
+            <q-list>
+              <q-item v-for="places in placesList.list.splice(0, 50)"
+                      :key="places.id"
+                      clickable
+                      @click="showPlaces(places)">
+                <q-item-label>
+                  {{ places.name }}
+                </q-item-label>
+              </q-item>
+            </q-list>
+          </q-card-section>
+        </q-card>
       </div>
     </div>
   </div>
 </template>
 
 <script>
+import { PlaceList } from 'src/models/Place.js'
+import { APIGateway } from 'src/api/APIGateway.js'
+
 export default {
   name: 'MainSideBarTemplate',
   data () {
     return {
+      showingSearchPlaces: false,
+      placesList: new PlaceList(),
+
       placesFilter: null,
 
       branchesCC: null,
@@ -421,8 +456,31 @@ export default {
     window.removeEventListener('resize', this.handleResize)
   },
   methods: {
+    showPlaces(places) {
+      this.showingSearchPlaces = false
+      this.$bus.emit('map-change-places-filter', places)
+    },
     placesFilterAction () {
-      this.$bus.emit('map-change-places-filter', this.placesFilter)
+      this.placesList.loading = true
+      this.showingSearchPlaces = false
+      APIGateway.multiPolygon.places({ place: this.placesFilter })
+        .then(({ list }) => {
+          debugger
+          this.placesList = new PlaceList(list)
+          this.showingSearchPlaces = true
+          this.placesList.loading = false
+        })
+        .catch(() => {
+          this.showingSearchPlaces = false
+          this.placesList.loading = false
+        })
+    },
+    clearSearch () {
+      this.showingSearchPlaces = false
+      this.placesList.loading = false
+      this.placesList = new PlaceList()
+      this.placesFilter = null
+      this.$bus.emit('map-change-places-filter', null)
     },
     handleResize() {
       const windowWidth = window.innerWidth
@@ -472,6 +530,8 @@ export default {
     height: 100%;
     .sidemenu-container {
       height: 100%;
+      display: flex;
+      flex-flow: column;
       .sidemenu {
         .sidebar-user-panel {
           .user-panel {

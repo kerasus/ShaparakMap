@@ -3,7 +3,7 @@
     <template v-if="data">
       <div class="col-lg-4 col-md-4 col-sm-12 col-12">
         <div class="info-box card-3">
-          <div class="info-box-content">
+          <div class="info-box-content custom-height">
             <div>
               تعداد کل شعب:
               {{ data.BRANCH_NUMBER }}
@@ -103,8 +103,11 @@ export default {
 }
 </script>
 
-<style scoped>
-.info-box-content {
-  margin: 0;
+<style lang="scss" scoped>
+.info-box {
+  height: 165px;
+  .info-box-content {
+    margin: 0;
+  }
 }
 </style>

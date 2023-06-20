@@ -39,7 +39,7 @@
         <q-menu v-model="showingSearchbranch"
                 max-height="300px">
           <q-list style="max-width: 300px">
-            <q-item v-for="searchbranch in searchbranches.list.splice(0, 20)"
+            <q-item v-for="searchbranch in searchbranches.list.splice(0, 50)"
                     :key="searchbranch.id"
                     clickable
                     @click="showBranch(searchbranch)">
@@ -52,6 +52,13 @@
           </q-list>
         </q-menu>
       </form>
+      <q-btn v-if="searchbranch"
+             round
+             color="danger"
+             class="clear-search-bar"
+             icon="clear"
+             size="sm"
+             @click="clearSearch" />
       <!-- start mobile menu -->
       <a href="javascript:;"
          class="menu-toggler responsive-toggler"
@@ -380,12 +387,16 @@ export default {
   },
   mounted () {
     this.loadAuthData()
-    this.checkMenurItemsForAuthenticatedUser()
   },
   methods: {
     showBranch(searchbranch) {
       this.showingSearchbranch = false
       this.$bus.emit('map-change-show-branch', searchbranch)
+    },
+    clearSearch () {
+      this.searchbranches = new BrancheList()
+      this.showingSearchbranch = false
+      this.$bus.emit('map-change-show-branch', null)
     },
     searchbranche () {
       this.searchbranches.loading = true
@@ -401,40 +412,12 @@ export default {
           this.searchbranches.loading = false
         })
     },
-    toggleMenu () {
-
-    },
-    checkMenurItemsForAuthenticatedUser () {
-      // ToDo: check menu items by user role
-      // if (this.isAdmin) {
-      //   const hasAdminPanel = this.items.find((item) => item.routeName === 'Admin.UploadCenter.Contents')
-      //   if (!hasAdminPanel) {
-      //     this.items.push({
-      //       selected: 'adminPanel',
-      //       title: 'پنل ادمین',
-      //       routeName: 'Admin.UploadCenter.Contents',
-      //       type: 'itemMenu',
-      //       permission: 'all',
-      //       show: false
-      //     })
-      //   }
-      // }
-    },
-    filterByStatement() {
-      const param = {
-        q: this.searchInput
-      }
-      this.$router.push({ name: 'Public.Content.Search', query: param })
-    },
     loadAuthData () { // prevent Hydration node mismatch
       this.user = this.$store.getters['Auth/user']
       this.isAdmin = this.$store.getters['Auth/isAdmin']
       this.isUserLogin = this.$store.getters['Auth/isUserLogin']
     },
     ...mapMutations('AppLayout', [
-      'updateVisibilityBreadcrumb',
-      'updateBreadcrumbs',
-      'updateBreadcrumbLoading',
       'updateLayoutLeftDrawerVisible'
     ]),
     logOut() {
@@ -464,6 +447,7 @@ $header-height: 60px;
 
 .page-header {
   min-height: $header-height;
+
   .page-header-inner {
     .page-logo {
       display: flex;
@@ -474,10 +458,12 @@ $header-height: 60px;
       font-weight: bold;
       padding: 0;
       height: $header-height;
+
       img {
         width: 150px;
       }
     }
+
     .nav {
       &.navbar-nav {
         margin: 0;
@@ -488,6 +474,7 @@ $header-height: 60px;
         align-items: center;
       }
     }
+
     .search-form-opened {
       .input-group {
         position: relative;
@@ -495,26 +482,33 @@ $header-height: 60px;
         flex-wrap: wrap;
         align-items: stretch;
         width: 100%;
-        &>.form-control,
-        &>.form-select {
+
+        & > .form-control,
+        & > .form-select {
           position: relative;
           flex: 1 1 auto;
           width: 1%;
           min-width: 0;
         }
-        &>:not(:first-child):not(.dropdown-menu):not(.valid-tooltip):not(.valid-feedback):not(.invalid-tooltip):not(.invalid-feedback) {
+
+        & > :not(:first-child):not(.dropdown-menu):not(.valid-tooltip):not(.valid-feedback):not(.invalid-tooltip):not(.invalid-feedback) {
           display: flex;
           align-items: center;
           justify-content: center;
           margin-left: -1px;
           border-top-left-radius: 0;
           border-bottom-left-radius: 0;
+        }
+      }
+    }
+    .clear-search-bar {
+      float: left;
+      margin: 12px 0 10px 0;
     }
   }
-}
-}
-audio, canvas, iframe, img, svg, video {
-vertical-align: middle;
-}
+
+  audio, canvas, iframe, img, svg, video {
+    vertical-align: middle;
+  }
 }
 </style>
