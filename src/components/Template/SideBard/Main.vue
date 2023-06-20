@@ -37,7 +37,8 @@
         </ul>
         <q-list bordered
                 class="rounded-borders">
-          <q-expansion-item expand-separator
+          <q-expansion-item v-model="branchesExpanded"
+                            expand-separator
                             icon="account_balance"
                             label="Branches">
             <q-list bordered
@@ -156,7 +157,8 @@
                             label="Branches 2">
             Branches 2
           </q-expansion-item>
-          <q-expansion-item expand-separator
+          <q-expansion-item v-model="locationsExpanded"
+                            expand-separator
                             icon="room"
                             label="Locations">
             <q-list bordered
@@ -358,6 +360,8 @@ export default {
   name: 'MainSideBarTemplate',
   data () {
     return {
+      locationsExpanded: false,
+      branchesExpanded: false,
       showingSearchPlaces: false,
       placesList: new PlaceList(),
 
@@ -451,6 +455,11 @@ export default {
   mounted() {
     // window.addEventListener('resize', this.handleResize)
     // this.handleResize()
+    this.$bus.on('change-show-branches', (newState) => {
+      this.branches = newState
+      this.locationsExpanded = false
+      this.branchesExpanded = false
+    })
   },
   beforeUnmount() {
     window.removeEventListener('resize', this.handleResize)
@@ -461,16 +470,22 @@ export default {
       this.$bus.emit('map-change-places-filter', places)
     },
     placesFilterAction () {
+      this.locationsExpanded = false
+      this.branchesExpanded = false
+
       this.placesList.loading = true
       this.showingSearchPlaces = false
       APIGateway.multiPolygon.places({ place: this.placesFilter })
         .then(({ list }) => {
-          debugger
+          this.locationsExpanded = false
+          this.branchesExpanded = false
           this.placesList = new PlaceList(list)
           this.showingSearchPlaces = true
           this.placesList.loading = false
         })
         .catch(() => {
+          this.locationsExpanded = false
+          this.branchesExpanded = false
           this.showingSearchPlaces = false
           this.placesList.loading = false
         })

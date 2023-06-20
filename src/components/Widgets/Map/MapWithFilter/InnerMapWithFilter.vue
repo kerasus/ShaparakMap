@@ -119,6 +119,9 @@ export default {
       provinceList: new ProvinceList(),
       searchBranch: new Branche(),
       searchBranchLayer: null,
+      branchesRadioOptions: null,
+      selectedPlacesFilterSideMenu: null,
+      selectedBranchHeaderMenu: null,
 
       staticalAbortController: null,
       clusterAbortController: null,
@@ -285,6 +288,10 @@ export default {
           this.provinceList = provinceList
         })
     },
+    changeShowbranches (state) {
+      this.showbranches = state
+      this.$bus.emit('change-show-branches', state)
+    },
     setEventBuses () {
       this.$bus.on('map-change-branches-options', (newOptions) => {
         const item = 'branches'
@@ -293,23 +300,30 @@ export default {
         const listName = item + 'List'
         this.removeMarkerClusterLayer(listName)
         this[item + 'List'].list = []
+        this.branchesRadioOptions = newOptions
         if (showState) {
           newOptions.payload = new MapBoundary(this.mapInstance.getBounds()).getBounds()
           this.getPoint(item, newOptions)
         }
       })
       this.$bus.on('map-change-places-filter', (places) => {
+        this.changeShowbranches(false)
         this.hideAll('places', 'Polygon')
         const item = 'branches'
         this.hideAll(item, 'Markers')
         const listName = item + 'List'
         this.removeMarkerClusterLayer(listName)
         this[item + 'List'].list = []
-        this.getPoint(item, { bbox: places.bbox })
+        this.selectedPlacesFilterSideMenu = places
+        if (places) {
+          this.getPoint(item, { bbox: places.bbox })
+        }
       })
       this.$bus.on('map-change-show-branch', (searchBranch) => {
+        this.changeShowbranches(false)
         const item = 'branches'
         this.hideAll(item, 'Markers')
+        this.selectedBranchHeaderMenu = searchBranch
         if (!searchBranch) {
           if (this.searchBranchLayer) {
             this.hideLayer(this.searchBranchLayer)
@@ -377,7 +391,30 @@ export default {
       this.mapInstance.on('moveend', this.moveenddMap)
     },
     moveenddMap () {
+      if (this.closestBranchPointMarker) {
+        this.hideLayer(this.closestBranchPointMarker)
+      }
       this.getStatical()
+      if (this.showbranches && this.branchesRadioOptions) {
+        const item = 'branches'
+        this.hideAll(item, 'Markers')
+        const listName = item + 'List'
+        this.removeMarkerClusterLayer(listName)
+        this[item + 'List'].list = []
+        this.branchesRadioOptions.payload = new MapBoundary(this.mapInstance.getBounds()).getBounds()
+        this.getPoint(item, this.branchesRadioOptions)
+      } else if (this.selectedPlacesFilterSideMenu) {
+        // this.hideAll('places', 'Polygon')
+        // const item = 'branches'
+        // this.hideAll(item, 'Markers')
+        // const listName = item + 'List'
+        // this.removeMarkerClusterLayer(listName)
+        // this[item + 'List'].list = []
+        // this.getPoint(item, { bbox: this.selectedPlacesFilterSideMenu.bbox })
+        return
+      } else if (this.selectedBranchHeaderMenu) {
+        return
+      }
       // if (this.mapInstance._zoom < 9) {
       //   this.loadCluster('country')
       //   return
@@ -386,9 +423,6 @@ export default {
       //   this.loadCluster('province')
       //   return
       // }
-      if (this.closestBranchPointMarker) {
-        this.hideLayer(this.closestBranchPointMarker)
-      }
       this.togglePoints()
       this.togglePolygons()
       this.togglePolylines()
@@ -462,8 +496,14 @@ export default {
       const showState = this['show' + item]
       this[item + 'List'].list = []
       const bounds = new MapBoundary(this.mapInstance.getBounds()).getBounds()
-      const options = {
-        payload: bounds
+      let options = {}
+      if (item === 'branches' && this.showbranches && this.branchesRadioOptions) {
+        this.branchesRadioOptions.payload = bounds
+        options = this.branchesRadioOptions
+      } else {
+        options = {
+          payload: bounds
+        }
       }
       const listName = item + 'List'
       this.zoom = this.mapInstance._zoom
