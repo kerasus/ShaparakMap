@@ -1,4 +1,5 @@
 import { appApiInstance } from 'src/boot/axios.js'
+import { ClusterList } from 'src/models/Cluster.js'
 import APIRepository from '../classes/APIRepository.js'
 import { TransportList } from 'src/models/Transport.js'
 import { Branche, BrancheList } from 'src/models/Branche.js'
@@ -9,6 +10,7 @@ export default class MultiStringAPI extends APIRepository {
     this.APIAdresses = {
       branchById: (branchId) => '/branche/' + branchId + '/',
       branches: '/branches/',
+      cluster: '/cluster/',
       searchbranche: '/searchbranche/',
       transport: '/transport/'
     }
@@ -21,6 +23,33 @@ export default class MultiStringAPI extends APIRepository {
       request: this.APIAdresses.branchById(branchId),
       resolveCallback: (response) => {
         return new Branche(response?.data)
+      },
+      rejectCallback: (error) => {
+        return error
+      }
+    })
+  }
+
+  getCluster(options) {
+    const defaultFilterOptions = {
+      zoom: null,
+      country: null,
+      province: null
+    }
+    const mergedFilter = Object.assign(defaultFilterOptions, options)
+    Object.keys(mergedFilter).forEach(key => {
+      if (mergedFilter[key] === null) {
+        delete mergedFilter[key]
+      }
+    })
+    return this.sendRequest({
+      apiMethod: 'post',
+      api: this.api,
+      request: this.APIAdresses.cluster,
+      data: mergedFilter,
+      config: options.config,
+      resolveCallback: (response) => {
+        return new ClusterList(response?.data)
       },
       rejectCallback: (error) => {
         return error

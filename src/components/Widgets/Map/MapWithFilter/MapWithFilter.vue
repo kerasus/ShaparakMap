@@ -21,7 +21,9 @@
       <div class="col-12">
         <div class="card card-box">
           <div class="card-head">
-            <header>نقشه</header>
+            <header v-if="mapInstance">
+              نقشه
+            </header>
             <div class="tools">
               <q-btn color="secondary"
                      flat
@@ -42,992 +44,7 @@
     </div>
     <div class="row q-col-gutter-lg">
       <div class="col-lg-6 col-md-6 col-sm-12 col-12">
-        <div class="card relative-position">
-          <q-btn color="danger"
-                 flat
-                 round
-                 icon="highlight_off"
-                 class="absolute-top-right z-top"
-                 @click="clearSelectedLayer" />
-          <div class="card-block">
-            <q-tab-panels v-model="panel"
-                          animated>
-              <q-tab-panel name="empty">
-                روی یک نقطه کلیک کنید
-              </q-tab-panel>
-              <q-tab-panel name="transport">
-                <q-list bordered
-                        separator>
-                  <q-item v-ripple
-                          clickable>
-                    <q-item-section>Transport</q-item-section>
-                  </q-item>
-                  <q-item v-ripple
-                          clickable>
-                    <q-item-section>
-                      <q-item-label>gid</q-item-label>
-                      <q-item-label caption>
-                        {{ selectedLayer.gid }}
-                      </q-item-label>
-                    </q-item-section>
-                  </q-item>
-                  <q-item v-ripple
-                          clickable>
-                    <q-item-section>
-                      <q-item-label>osm_id</q-item-label>
-                      <q-item-label caption>
-                        {{ selectedLayer.osm_id }}
-                      </q-item-label>
-                    </q-item-section>
-                  </q-item>
-                  <q-item v-ripple
-                          clickable>
-                    <q-item-section>
-                      <q-item-label>code</q-item-label>
-                      <q-item-label caption>
-                        {{ selectedLayer.code }}
-                      </q-item-label>
-                    </q-item-section>
-                  </q-item>
-                  <q-item v-ripple
-                          clickable>
-                    <q-item-section>
-                      <q-item-label>fclass</q-item-label>
-                      <q-item-label caption>
-                        {{ selectedLayer.fclass }}
-                      </q-item-label>
-                    </q-item-section>
-                  </q-item>
-                  <q-item v-ripple
-                          clickable>
-                    <q-item-section>
-                      <q-item-label>name</q-item-label>
-                      <q-item-label caption>
-                        {{ selectedLayer.name }}
-                      </q-item-label>
-                    </q-item-section>
-                  </q-item>
-                  <q-item v-ripple
-                          clickable>
-                    <q-item-section>
-                      <q-item-label>geom</q-item-label>
-                      <q-item-label caption>
-                        {{ selectedLayer.geom }}
-                      </q-item-label>
-                    </q-item-section>
-                  </q-item>
-                </q-list>
-              </q-tab-panel>
-              <q-tab-panel name="branches">
-                <q-list bordered
-                        separator>
-                  <q-item v-ripple
-                          clickable>
-                    <q-item-section>Branches</q-item-section>
-                  </q-item>
-                  <q-item v-if="selectedLayer.id"
-                          v-ripple
-                          clickable>
-                    <q-item-section>
-                      <q-item-label>id</q-item-label>
-                      <q-item-label caption>
-                        {{ selectedLayer.id }}
-                      </q-item-label>
-                    </q-item-section>
-                  </q-item>
-                  <q-item v-if="selectedLayer.closest_branch"
-                          v-ripple
-                          clickable>
-                    <q-item-section>
-                      <q-item-label>closest_branch</q-item-label>
-                      <q-item-label caption>
-                        {{ selectedLayer.closest_branch }}
-                      </q-item-label>
-                    </q-item-section>
-                  </q-item>
-                  <template v-if="selectedLayer.closest_branch && selectedLayer.closest_branch_info">
-                    <q-item v-ripple
-                            clickable>
-                      <q-item-section>
-                        <q-item-label>closest_branch_info.id</q-item-label>
-                        <q-item-label caption>
-                          {{ selectedLayer.closest_branch_info.id }}
-                        </q-item-label>
-                      </q-item-section>
-                    </q-item>
-                    <q-item v-ripple
-                            clickable>
-                      <q-item-section>
-                        <q-item-label>closest_branch_info.geom</q-item-label>
-                        <q-item-label caption>
-                          {{ selectedLayer.closest_branch_info.geom }}
-                        </q-item-label>
-                      </q-item-section>
-                    </q-item>
-                    <q-item v-ripple
-                            clickable>
-                      <q-item-section>
-                        <q-item-label>closest_branch_info.distance</q-item-label>
-                        <q-item-label caption>
-                          {{ selectedLayer.closest_branch_info.distance }}
-                        </q-item-label>
-                      </q-item-section>
-                    </q-item>
-                    <q-item v-ripple
-                            clickable>
-                      <q-item-section>
-                        <q-item-label>closest_branch_info.geomPoint</q-item-label>
-                        <q-item-label caption>
-                          {{ selectedLayer.closest_branch_info.geomPoint }}
-                        </q-item-label>
-                      </q-item-section>
-                    </q-item>
-                  </template>
-                  <q-item v-if="selectedLayer.number"
-                          v-ripple
-                          clickable>
-                    <q-item-section>
-                      <q-item-label>number</q-item-label>
-                      <q-item-label caption>
-                        {{ selectedLayer.number }}
-                      </q-item-label>
-                    </q-item-section>
-                  </q-item>
-                  <q-item v-if="selectedLayer.code"
-                          v-ripple
-                          clickable>
-                    <q-item-section>
-                      <q-item-label>code</q-item-label>
-                      <q-item-label caption>
-                        {{ selectedLayer.code }}
-                      </q-item-label>
-                    </q-item-section>
-                  </q-item>
-                  <q-item v-if="selectedLayer.name"
-                          v-ripple
-                          clickable>
-                    <q-item-section>
-                      <q-item-label>name</q-item-label>
-                      <q-item-label caption>
-                        {{ selectedLayer.name }}
-                      </q-item-label>
-                    </q-item-section>
-                  </q-item>
-                  <q-item v-if="selectedLayer.farsighted"
-                          v-ripple
-                          clickable>
-                    <q-item-section>
-                      <q-item-label>farsighted</q-item-label>
-                      <q-item-label caption>
-                        {{ selectedLayer.farsighted }}
-                      </q-item-label>
-                    </q-item-section>
-                  </q-item>
-                  <q-item v-if="selectedLayer.phone_1"
-                          v-ripple
-                          clickable>
-                    <q-item-section>
-                      <q-item-label>phone_1</q-item-label>
-                      <q-item-label caption>
-                        {{ selectedLayer.phone_1 }}
-                      </q-item-label>
-                    </q-item-section>
-                  </q-item>
-                  <q-item v-if="selectedLayer.phone_2"
-                          v-ripple
-                          clickable>
-                    <q-item-section>
-                      <q-item-label>phone_2</q-item-label>
-                      <q-item-label caption>
-                        {{ selectedLayer.phone_2 }}
-                      </q-item-label>
-                    </q-item-section>
-                  </q-item>
-                  <q-item v-if="selectedLayer.currencyـcircle"
-                          v-ripple
-                          clickable>
-                    <q-item-section>
-                      <q-item-label>currencyـcircle</q-item-label>
-                      <q-item-label caption>
-                        {{ selectedLayer.currencyـcircle }}
-                      </q-item-label>
-                    </q-item-section>
-                  </q-item>
-                  <q-item v-if="selectedLayer.atm"
-                          v-ripple
-                          clickable>
-                    <q-item-section>
-                      <q-item-label>atm</q-item-label>
-                      <q-item-label caption>
-                        {{ selectedLayer.atm }}
-                      </q-item-label>
-                    </q-item-section>
-                  </q-item>
-                  <q-item v-if="selectedLayer.eveningـcounter"
-                          v-ripple
-                          clickable>
-                    <q-item-section>
-                      <q-item-label>eveningـcounter</q-item-label>
-                      <q-item-label caption>
-                        {{ selectedLayer.eveningـcounter }}
-                      </q-item-label>
-                    </q-item-section>
-                  </q-item>
-                  <q-item v-if="selectedLayer.Safeـbox"
-                          v-ripple
-                          clickable>
-                    <q-item-section>
-                      <q-item-label>Safeـbox</q-item-label>
-                      <q-item-label caption>
-                        {{ selectedLayer.Safeـbox }}
-                      </q-item-label>
-                    </q-item-section>
-                  </q-item>
-                  <q-item v-if="selectedLayer.pos"
-                          v-ripple
-                          clickable>
-                    <q-item-section>
-                      <q-item-label>pos</q-item-label>
-                      <q-item-label caption>
-                        {{ selectedLayer.pos }}
-                      </q-item-label>
-                    </q-item-section>
-                  </q-item>
-                  <q-item v-if="selectedLayer.cvv2"
-                          v-ripple
-                          clickable>
-                    <q-item-section>
-                      <q-item-label>cvv2</q-item-label>
-                      <q-item-label caption>
-                        {{ selectedLayer.cvv2 }}
-                      </q-item-label>
-                    </q-item-section>
-                  </q-item>
-                  <q-item v-if="selectedLayer.cellularـphone"
-                          v-ripple
-                          clickable>
-                    <q-item-section>
-                      <q-item-label>cellularـphone</q-item-label>
-                      <q-item-label caption>
-                        {{ selectedLayer.cellularـphone }}
-                      </q-item-label>
-                    </q-item-section>
-                  </q-item>
-                  <q-item v-if="selectedLayer.geom"
-                          v-ripple
-                          clickable>
-                    <q-item-section>
-                      <q-item-label>geom</q-item-label>
-                      <q-item-label caption>
-                        {{ selectedLayer.geom }}
-                      </q-item-label>
-                    </q-item-section>
-                  </q-item>
-                </q-list>
-              </q-tab-panel>
-              <q-tab-panel name="water">
-                <q-list bordered
-                        separator>
-                  <q-item v-ripple
-                          clickable>
-                    <q-item-section>Water</q-item-section>
-                  </q-item>
-                  <q-item v-ripple
-                          clickable>
-                    <q-item-section>
-                      <q-item-label>gid</q-item-label>
-                      <q-item-label caption>
-                        {{ selectedLayer.gid }}
-                      </q-item-label>
-                    </q-item-section>
-                  </q-item>
-                  <q-item v-ripple
-                          clickable>
-                    <q-item-section>
-                      <q-item-label>osm_id</q-item-label>
-                      <q-item-label caption>
-                        {{ selectedLayer.osm_id }}
-                      </q-item-label>
-                    </q-item-section>
-                  </q-item>
-                  <q-item v-ripple
-                          clickable>
-                    <q-item-section>
-                      <q-item-label>code</q-item-label>
-                      <q-item-label caption>
-                        {{ selectedLayer.code }}
-                      </q-item-label>
-                    </q-item-section>
-                  </q-item>
-                  <q-item v-ripple
-                          clickable>
-                    <q-item-section>
-                      <q-item-label>fclass</q-item-label>
-                      <q-item-label caption>
-                        {{ selectedLayer.fclass }}
-                      </q-item-label>
-                    </q-item-section>
-                  </q-item>
-                  <q-item v-ripple
-                          clickable>
-                    <q-item-section>
-                      <q-item-label>name</q-item-label>
-                      <q-item-label caption>
-                        {{ selectedLayer.name }}
-                      </q-item-label>
-                    </q-item-section>
-                  </q-item>
-                  <q-item v-ripple
-                          clickable>
-                    <q-item-section>
-                      <q-item-label>geom</q-item-label>
-                      <q-item-label caption>
-                        {{ selectedLayer.geom }}
-                      </q-item-label>
-                    </q-item-section>
-                  </q-item>
-                </q-list>
-              </q-tab-panel>
-              <q-tab-panel name="pofw">
-                <q-list bordered
-                        separator>
-                  <q-item v-ripple
-                          clickable>
-                    <q-item-section>pofw</q-item-section>
-                  </q-item>
-                  <q-item v-ripple
-                          clickable>
-                    <q-item-section>
-                      <q-item-label>gid</q-item-label>
-                      <q-item-label caption>
-                        {{ selectedLayer.gid }}
-                      </q-item-label>
-                    </q-item-section>
-                  </q-item>
-                  <q-item v-ripple
-                          clickable>
-                    <q-item-section>
-                      <q-item-label>osm_id</q-item-label>
-                      <q-item-label caption>
-                        {{ selectedLayer.osm_id }}
-                      </q-item-label>
-                    </q-item-section>
-                  </q-item>
-                  <q-item v-ripple
-                          clickable>
-                    <q-item-section>
-                      <q-item-label>code</q-item-label>
-                      <q-item-label caption>
-                        {{ selectedLayer.code }}
-                      </q-item-label>
-                    </q-item-section>
-                  </q-item>
-                  <q-item v-ripple
-                          clickable>
-                    <q-item-section>
-                      <q-item-label>fclass</q-item-label>
-                      <q-item-label caption>
-                        {{ selectedLayer.fclass }}
-                      </q-item-label>
-                    </q-item-section>
-                  </q-item>
-                  <q-item v-ripple
-                          clickable>
-                    <q-item-section>
-                      <q-item-label>name</q-item-label>
-                      <q-item-label caption>
-                        {{ selectedLayer.name }}
-                      </q-item-label>
-                    </q-item-section>
-                  </q-item>
-                  <q-item v-ripple
-                          clickable>
-                    <q-item-section>
-                      <q-item-label>type</q-item-label>
-                      <q-item-label caption>
-                        {{ selectedLayer.type }}
-                      </q-item-label>
-                    </q-item-section>
-                  </q-item>
-                  <q-item v-ripple
-                          clickable>
-                    <q-item-section>
-                      <q-item-label>geom</q-item-label>
-                      <q-item-label caption>
-                        {{ selectedLayer.geom }}
-                      </q-item-label>
-                    </q-item-section>
-                  </q-item>
-                </q-list>
-              </q-tab-panel>
-              <q-tab-panel name="places">
-                <q-list bordered
-                        separator>
-                  <q-item v-ripple
-                          clickable>
-                    <q-item-section>Places</q-item-section>
-                  </q-item>
-                  <q-item v-ripple
-                          clickable>
-                    <q-item-section>
-                      <q-item-label>gid</q-item-label>
-                      <q-item-label caption>
-                        {{ selectedLayer.gid }}
-                      </q-item-label>
-                    </q-item-section>
-                  </q-item>
-                  <q-item v-ripple
-                          clickable>
-                    <q-item-section>
-                      <q-item-label>osm_id</q-item-label>
-                      <q-item-label caption>
-                        {{ selectedLayer.osm_id }}
-                      </q-item-label>
-                    </q-item-section>
-                  </q-item>
-                  <q-item v-ripple
-                          clickable>
-                    <q-item-section>
-                      <q-item-label>code</q-item-label>
-                      <q-item-label caption>
-                        {{ selectedLayer.code }}
-                      </q-item-label>
-                    </q-item-section>
-                  </q-item>
-                  <q-item v-ripple
-                          clickable>
-                    <q-item-section>
-                      <q-item-label>population</q-item-label>
-                      <q-item-label caption>
-                        {{ selectedLayer.population }}
-                      </q-item-label>
-                    </q-item-section>
-                  </q-item>
-                  <q-item v-ripple
-                          clickable>
-                    <q-item-section>
-                      <q-item-label>fclass</q-item-label>
-                      <q-item-label caption>
-                        {{ selectedLayer.fclass }}
-                      </q-item-label>
-                    </q-item-section>
-                  </q-item>
-                  <q-item v-ripple
-                          clickable>
-                    <q-item-section>
-                      <q-item-label>name</q-item-label>
-                      <q-item-label caption>
-                        {{ selectedLayer.name }}
-                      </q-item-label>
-                    </q-item-section>
-                  </q-item>
-                  <q-item v-ripple
-                          clickable>
-                    <q-item-section>
-                      <q-item-label>geom</q-item-label>
-                      <q-item-label caption>
-                        {{ selectedLayer.geom }}
-                      </q-item-label>
-                    </q-item-section>
-                  </q-item>
-                </q-list>
-              </q-tab-panel>
-              <q-tab-panel name="natrual">
-                <q-list bordered
-                        separator>
-                  <q-item v-ripple
-                          clickable>
-                    <q-item-section>Natural</q-item-section>
-                  </q-item>
-                  <q-item v-ripple
-                          clickable>
-                    <q-item-section>
-                      <q-item-label>gid</q-item-label>
-                      <q-item-label caption>
-                        {{ selectedLayer.gid }}
-                      </q-item-label>
-                    </q-item-section>
-                  </q-item>
-                  <q-item v-ripple
-                          clickable>
-                    <q-item-section>
-                      <q-item-label>osm_id</q-item-label>
-                      <q-item-label caption>
-                        {{ selectedLayer.osm_id }}
-                      </q-item-label>
-                    </q-item-section>
-                  </q-item>
-                  <q-item v-ripple
-                          clickable>
-                    <q-item-section>
-                      <q-item-label>code</q-item-label>
-                      <q-item-label caption>
-                        {{ selectedLayer.code }}
-                      </q-item-label>
-                    </q-item-section>
-                  </q-item>
-                  <q-item v-ripple
-                          clickable>
-                    <q-item-section>
-                      <q-item-label>fclass</q-item-label>
-                      <q-item-label caption>
-                        {{ selectedLayer.fclass }}
-                      </q-item-label>
-                    </q-item-section>
-                  </q-item>
-                  <q-item v-ripple
-                          clickable>
-                    <q-item-section>
-                      <q-item-label>name</q-item-label>
-                      <q-item-label caption>
-                        {{ selectedLayer.name }}
-                      </q-item-label>
-                    </q-item-section>
-                  </q-item>
-                  <q-item v-ripple
-                          clickable>
-                    <q-item-section>
-                      <q-item-label>geom</q-item-label>
-                      <q-item-label caption>
-                        {{ selectedLayer.geom }}
-                      </q-item-label>
-                    </q-item-section>
-                  </q-item>
-                </q-list>
-              </q-tab-panel>
-              <q-tab-panel name="landuse">
-                <q-list bordered
-                        separator>
-                  <q-item v-ripple
-                          clickable>
-                    <q-item-section>LandUse</q-item-section>
-                  </q-item>
-                  <q-item v-ripple
-                          clickable>
-                    <q-item-section>
-                      <q-item-label>gid</q-item-label>
-                      <q-item-label caption>
-                        {{ selectedLayer.gid }}
-                      </q-item-label>
-                    </q-item-section>
-                  </q-item>
-                  <q-item v-ripple
-                          clickable>
-                    <q-item-section>
-                      <q-item-label>osm_id</q-item-label>
-                      <q-item-label caption>
-                        {{ selectedLayer.osm_id }}
-                      </q-item-label>
-                    </q-item-section>
-                  </q-item>
-                  <q-item v-ripple
-                          clickable>
-                    <q-item-section>
-                      <q-item-label>code</q-item-label>
-                      <q-item-label caption>
-                        {{ selectedLayer.code }}
-                      </q-item-label>
-                    </q-item-section>
-                  </q-item>
-                  <q-item v-ripple
-                          clickable>
-                    <q-item-section>
-                      <q-item-label>fclass</q-item-label>
-                      <q-item-label caption>
-                        {{ selectedLayer.fclass }}
-                      </q-item-label>
-                    </q-item-section>
-                  </q-item>
-                  <q-item v-ripple
-                          clickable>
-                    <q-item-section>
-                      <q-item-label>name</q-item-label>
-                      <q-item-label caption>
-                        {{ selectedLayer.name }}
-                      </q-item-label>
-                    </q-item-section>
-                  </q-item>
-                  <q-item v-ripple
-                          clickable>
-                    <q-item-section>
-                      <q-item-label>geom</q-item-label>
-                      <q-item-label caption>
-                        {{ selectedLayer.geom }}
-                      </q-item-label>
-                    </q-item-section>
-                  </q-item>
-                </q-list>
-              </q-tab-panel>
-              <q-tab-panel name="buildings">
-                <q-list bordered
-                        separator>
-                  <q-item v-ripple
-                          clickable>
-                    <q-item-section>Buildings</q-item-section>
-                  </q-item>
-                  <q-item v-ripple
-                          clickable>
-                    <q-item-section>
-                      <q-item-label>gid</q-item-label>
-                      <q-item-label caption>
-                        {{ selectedLayer.gid }}
-                      </q-item-label>
-                    </q-item-section>
-                  </q-item>
-                  <q-item v-ripple
-                          clickable>
-                    <q-item-section>
-                      <q-item-label>osm_id</q-item-label>
-                      <q-item-label caption>
-                        {{ selectedLayer.osm_id }}
-                      </q-item-label>
-                    </q-item-section>
-                  </q-item>
-                  <q-item v-ripple
-                          clickable>
-                    <q-item-section>
-                      <q-item-label>code</q-item-label>
-                      <q-item-label caption>
-                        {{ selectedLayer.code }}
-                      </q-item-label>
-                    </q-item-section>
-                  </q-item>
-                  <q-item v-ripple
-                          clickable>
-                    <q-item-section>
-                      <q-item-label>fclass</q-item-label>
-                      <q-item-label caption>
-                        {{ selectedLayer.fclass }}
-                      </q-item-label>
-                    </q-item-section>
-                  </q-item>
-                  <q-item v-ripple
-                          clickable>
-                    <q-item-section>
-                      <q-item-label>name</q-item-label>
-                      <q-item-label caption>
-                        {{ selectedLayer.name }}
-                      </q-item-label>
-                    </q-item-section>
-                  </q-item>
-                  <q-item v-ripple
-                          clickable>
-                    <q-item-section>
-                      <q-item-label>type</q-item-label>
-                      <q-item-label caption>
-                        {{ selectedLayer.type }}
-                      </q-item-label>
-                    </q-item-section>
-                  </q-item>
-                  <q-item v-ripple
-                          clickable>
-                    <q-item-section>
-                      <q-item-label>geom</q-item-label>
-                      <q-item-label caption>
-                        {{ selectedLayer.geom }}
-                      </q-item-label>
-                    </q-item-section>
-                  </q-item>
-                </q-list>
-              </q-tab-panel>
-              <q-tab-panel name="railway">
-                <q-list bordered
-                        separator>
-                  <q-item v-ripple
-                          clickable>
-                    <q-item-section>Railway</q-item-section>
-                  </q-item>
-                  <q-item v-ripple
-                          clickable>
-                    <q-item-section>
-                      <q-item-label>gid</q-item-label>
-                      <q-item-label caption>
-                        {{ selectedLayer.gid }}
-                      </q-item-label>
-                    </q-item-section>
-                  </q-item>
-                  <q-item v-ripple
-                          clickable>
-                    <q-item-section>
-                      <q-item-label>osm_id</q-item-label>
-                      <q-item-label caption>
-                        {{ selectedLayer.osm_id }}
-                      </q-item-label>
-                    </q-item-section>
-                  </q-item>
-                  <q-item v-ripple
-                          clickable>
-                    <q-item-section>
-                      <q-item-label>code</q-item-label>
-                      <q-item-label caption>
-                        {{ selectedLayer.code }}
-                      </q-item-label>
-                    </q-item-section>
-                  </q-item>
-                  <q-item v-ripple
-                          clickable>
-                    <q-item-section>
-                      <q-item-label>fclass</q-item-label>
-                      <q-item-label caption>
-                        {{ selectedLayer.fclass }}
-                      </q-item-label>
-                    </q-item-section>
-                  </q-item>
-                  <q-item v-ripple
-                          clickable>
-                    <q-item-section>
-                      <q-item-label>name</q-item-label>
-                      <q-item-label caption>
-                        {{ selectedLayer.name }}
-                      </q-item-label>
-                    </q-item-section>
-                  </q-item>
-                  <q-item v-ripple
-                          clickable>
-                    <q-item-section>
-                      <q-item-label>layer</q-item-label>
-                      <q-item-label caption>
-                        {{ selectedLayer.layer }}
-                      </q-item-label>
-                    </q-item-section>
-                  </q-item>
-                  <q-item v-ripple
-                          clickable>
-                    <q-item-section>
-                      <q-item-label>bridge</q-item-label>
-                      <q-item-label caption>
-                        <span v-if="selectedLayer.bridge">
-                          دارد
-                        </span>
-                        <span v-else>
-                          ندارد
-                        </span>
-                      </q-item-label>
-                    </q-item-section>
-                  </q-item>
-                  <q-item v-ripple
-                          clickable>
-                    <q-item-section>
-                      <q-item-label>tunnel</q-item-label>
-                      <q-item-label caption>
-                        <span v-if="selectedLayer.tunnel">
-                          دارد
-                        </span>
-                        <span v-else>
-                          ندارد
-                        </span>
-                      </q-item-label>
-                    </q-item-section>
-                  </q-item>
-                  <q-item v-ripple
-                          clickable>
-                    <q-item-section>
-                      <q-item-label>geom</q-item-label>
-                      <q-item-label caption>
-                        {{ selectedLayer.geom }}
-                      </q-item-label>
-                    </q-item-section>
-                  </q-item>
-                </q-list>
-              </q-tab-panel>
-              <q-tab-panel name="roads">
-                <q-list bordered
-                        separator>
-                  <q-item v-ripple
-                          clickable>
-                    <q-item-section>Roads</q-item-section>
-                  </q-item>
-                  <q-item v-ripple
-                          clickable>
-                    <q-item-section>
-                      <q-item-label>gid</q-item-label>
-                      <q-item-label caption>
-                        {{ selectedLayer.gid }}
-                      </q-item-label>
-                    </q-item-section>
-                  </q-item>
-                  <q-item v-ripple
-                          clickable>
-                    <q-item-section>
-                      <q-item-label>osm_id</q-item-label>
-                      <q-item-label caption>
-                        {{ selectedLayer.osm_id }}
-                      </q-item-label>
-                    </q-item-section>
-                  </q-item>
-                  <q-item v-ripple
-                          clickable>
-                    <q-item-section>
-                      <q-item-label>code</q-item-label>
-                      <q-item-label caption>
-                        {{ selectedLayer.code }}
-                      </q-item-label>
-                    </q-item-section>
-                  </q-item>
-                  <q-item v-ripple
-                          clickable>
-                    <q-item-section>
-                      <q-item-label>fclass</q-item-label>
-                      <q-item-label caption>
-                        {{ selectedLayer.fclass }}
-                      </q-item-label>
-                    </q-item-section>
-                  </q-item>
-                  <q-item v-ripple
-                          clickable>
-                    <q-item-section>
-                      <q-item-label>name</q-item-label>
-                      <q-item-label caption>
-                        {{ selectedLayer.name }}
-                      </q-item-label>
-                    </q-item-section>
-                  </q-item>
-                  <q-item v-ripple
-                          clickable>
-                    <q-item-section>
-                      <q-item-label>ref</q-item-label>
-                      <q-item-label caption>
-                        {{ selectedLayer.ref }}
-                      </q-item-label>
-                    </q-item-section>
-                  </q-item>
-                  <q-item v-ripple
-                          clickable>
-                    <q-item-section>
-                      <q-item-label>oneway</q-item-label>
-                      <q-item-label caption>
-                        <span v-if="selectedLayer.oneway">
-                          دارد
-                        </span>
-                        <span v-else>
-                          ندارد
-                        </span>
-                      </q-item-label>
-                    </q-item-section>
-                  </q-item>
-                  <q-item v-ripple
-                          clickable>
-                    <q-item-section>
-                      <q-item-label>maxspeed</q-item-label>
-                      <q-item-label caption>
-                        {{ selectedLayer.maxspeed }}
-                      </q-item-label>
-                    </q-item-section>
-                  </q-item>
-                  <q-item v-ripple
-                          clickable>
-                    <q-item-section>
-                      <q-item-label>layer</q-item-label>
-                      <q-item-label caption>
-                        {{ selectedLayer.layer }}
-                      </q-item-label>
-                    </q-item-section>
-                  </q-item>
-                  <q-item v-ripple
-                          clickable>
-                    <q-item-section>
-                      <q-item-label>bridge</q-item-label>
-                      <q-item-label caption>
-                        <span v-if="selectedLayer.bridge">
-                          دارد
-                        </span>
-                        <span v-else>
-                          ندارد
-                        </span>
-                      </q-item-label>
-                    </q-item-section>
-                  </q-item>
-                  <q-item v-ripple
-                          clickable>
-                    <q-item-section>
-                      <q-item-label>tunnel</q-item-label>
-                      <q-item-label caption>
-                        <span v-if="selectedLayer.tunnel">
-                          دارد
-                        </span>
-                        <span v-else>
-                          ندارد
-                        </span>
-                      </q-item-label>
-                    </q-item-section>
-                  </q-item>
-                  <q-item v-ripple
-                          clickable>
-                    <q-item-section>
-                      <q-item-label>geom</q-item-label>
-                      <q-item-label caption>
-                        {{ selectedLayer.geom }}
-                      </q-item-label>
-                    </q-item-section>
-                  </q-item>
-                </q-list>
-              </q-tab-panel>
-              <q-tab-panel name="waterWay">
-                <q-list bordered
-                        separator>
-                  <q-item v-ripple
-                          clickable>
-                    <q-item-section>Roads</q-item-section>
-                  </q-item>
-                  <q-item v-ripple
-                          clickable>
-                    <q-item-section>
-                      <q-item-label>gid</q-item-label>
-                      <q-item-label caption>
-                        {{ selectedLayer.gid }}
-                      </q-item-label>
-                    </q-item-section>
-                  </q-item>
-                  <q-item v-ripple
-                          clickable>
-                    <q-item-section>
-                      <q-item-label>osm_id</q-item-label>
-                      <q-item-label caption>
-                        {{ selectedLayer.osm_id }}
-                      </q-item-label>
-                    </q-item-section>
-                  </q-item>
-                  <q-item v-ripple
-                          clickable>
-                    <q-item-section>
-                      <q-item-label>code</q-item-label>
-                      <q-item-label caption>
-                        {{ selectedLayer.code }}
-                      </q-item-label>
-                    </q-item-section>
-                  </q-item>
-                  <q-item v-ripple
-                          clickable>
-                    <q-item-section>
-                      <q-item-label>fclass</q-item-label>
-                      <q-item-label caption>
-                        {{ selectedLayer.fclass }}
-                      </q-item-label>
-                    </q-item-section>
-                  </q-item>
-                  <q-item v-ripple
-                          clickable>
-                    <q-item-section>
-                      <q-item-label>name</q-item-label>
-                      <q-item-label caption>
-                        {{ selectedLayer.name }}
-                      </q-item-label>
-                    </q-item-section>
-                  </q-item>
-                  <q-item v-ripple
-                          clickable>
-                    <q-item-section>
-                      <q-item-label>geom</q-item-label>
-                      <q-item-label caption>
-                        {{ selectedLayer.geom }}
-                      </q-item-label>
-                    </q-item-section>
-                  </q-item>
-                </q-list>
-              </q-tab-panel>
-            </q-tab-panels>
-          </div>
-        </div>
+        <branch-info-card :selected-layer="selectedLayer" />
       </div>
       <div class="col-lg-6 col-md-6 col-sm-12 col-12">
         <q-linear-progress v-if="staticalLoading"
@@ -1052,6 +69,9 @@
 
 <script>
 import 'leaflet/dist/leaflet.css'
+// import 'leaflet.markercluster/dist/MarkerCluster.css'
+// import 'leaflet.markercluster/dist/MarkerCluster.Default.css'
+
 import { PofwList } from 'src/models/Pofw.js'
 import { RoadList } from 'src/models/Road.js'
 import { WaterList } from 'src/models/Water.js'
@@ -1060,6 +80,7 @@ import { APIGateway } from 'src/api/APIGateway.js'
 import { NatrualList } from 'src/models/Natrual.js'
 import { RailwayList } from 'src/models/Railway.js'
 import { LanduseList } from 'src/models/Landuse.js'
+import { ClusterList } from 'src/models/Cluster.js'
 import { Branche, BrancheList } from 'src/models/Branche.js'
 import { BuildingList } from 'src/models/Building.js'
 import { WaterwayList } from 'src/models/Waterway.js'
@@ -1067,19 +88,27 @@ import { ProvinceList } from 'src/models/Province.js'
 import { TransportList } from 'src/models/Transport.js'
 import { MapBoundary } from 'src/models/MapBoundary.js'
 import StaticalData from 'src/components/Widgets/Map/MapWithFilter/Components/StaticalData.vue'
+import BranchInfoCard from 'src/components/Widgets/Map/MapWithFilter/Components/BranchInfoCard.vue'
 import StatisticInformationChart from 'src/components/Widgets/Map/MapWithFilter/StatisticInformationChart.vue'
+// import { MarkerClusterGroup } from 'leaflet.markercluster/src/MarkerClusterGroup'
 
 let leafletObject = null
+// let MarkerClusterGroup = null
 if (typeof window !== 'undefined') {
   import('leaflet')
     .then((leaflet) => {
       leafletObject = leaflet.default
+      // import('src/assets/js/MarkerClusterGroup.js')
+      //   .then((markerClusterGroup) => {
+      //     MarkerClusterGroup = markerClusterGroup.default
+      //     MarkerClusterGroup(leafletObject)
+      //   })
     })
 }
 
 export default {
   name: 'MapWithFilter',
-  components: { StaticalData, StatisticInformationChart },
+  components: { BranchInfoCard, StaticalData, StatisticInformationChart },
   data: () => {
     return {
       mounted: false,
@@ -1096,16 +125,20 @@ export default {
       searchBranchLayer: null,
 
       staticalAbortController: null,
+      clusterAbortController: null,
 
       // points
       branchesAbortController: null,
       transportAbortController: null,
       branchesList: new BrancheList(),
       transportList: new TransportList(),
+      clusterList: new ClusterList(),
       branchesMarkers: [],
       transportMarkers: [],
+      clusterMarkers: [],
       showbranches: false,
       showtransport: false,
+      showcluster: false,
 
       // polygons
       waterAbortController: null,
@@ -1207,12 +240,12 @@ export default {
       }
 
       // AbortController
-      if (this.staticalAbortController) {
-        this.staticalAbortController.abort()
+      if (this.custerAbortController) {
+        this.custerAbortController.abort()
       }
-      this.staticalAbortController = new AbortController()
+      this.custerAbortController = new AbortController()
       options.config = {
-        signal: this.staticalAbortController.signal
+        signal: this.custerAbortController.signal
       }
 
       this.staticalLoading = true
@@ -1334,12 +367,172 @@ export default {
     },
     moveenddMap () {
       this.getStatical()
+      // if (this.mapInstance._zoom < 9) {
+      //   this.loadCluster('country')
+      //   return
+      // }
+      // if (this.mapInstance._zoom < 13) {
+      //   this.loadCluster('province')
+      //   return
+      // }
       if (this.closestBranchPointMarker) {
         this.hideLayer(this.closestBranchPointMarker)
       }
       this.togglePoints()
       this.togglePolygons()
       this.togglePolylines()
+    },
+    loadCluster (type) {
+      const bounds = new MapBoundary(this.mapInstance.getBounds()).getBBox()
+      // AbortController
+      if (this.clusterAbortController) {
+        this.clusterAbortController.abort()
+      }
+      this.clusterAbortController = new AbortController()
+      const options = {
+        bbox: bounds,
+        zoom: this.mapInstance._zoom,
+        [type]: 1,
+        config: {
+          signal: this.clusterAbortController.signal
+        }
+      }
+
+      this.clusterList.loading = true
+      const item = 'cluster'
+      APIGateway.point.getCluster(options)
+        .then((clusterList) => {
+          if (clusterList.list.length === 0) {
+            return
+          }
+          this[item + 'List'] = new ClusterList(clusterList)
+          this.loadClusterMarkersList(item + 'List', item + 'Markers')
+          this[item + 'List'].laoding = false
+        })
+        .catch(() => {
+          this.clusterList = new ClusterList([
+            {
+              branch_count: 17,
+              geom: 'SRID=4326;POINT (51.37003750000001 35.788924)',
+              branchies: null
+            },
+            {
+              branch_count: 46,
+              geom: 'SRID=4326;POINT (51.4723825 35.788924)',
+              branchies: null
+            },
+            {
+              branch_count: 1,
+              geom: 'SRID=4326;POINT (51.57472750000001 35.788924)',
+              branchies: {
+                name: 'باجه دانشگاه دفاع ملی',
+                geom: 'SRID=4326;POINT (51.527138 35.777668)',
+                farsighted: '22815270',
+                phone_1: '27354488',
+                phone_2: '22815270-73',
+                currencyـcircle: false,
+                atm: true,
+                eveningـcounter: false,
+                Safeـbox: false,
+                pos: true,
+                cvv2: false,
+                cellularـphone: false,
+                get_closest_point: "'distance':1.651 KM,'name': باجه   هوانیروز,'geom': SRID=4326;POINT (51.510365 35.783631),'id': 1776"
+              }
+            },
+            {
+              branch_count: 19,
+              geom: 'SRID=4326;POINT (51.26769250000001 35.75199199999999)',
+              branchies: null
+            },
+            {
+              branch_count: 40,
+              geom: 'SRID=4326;POINT (51.37003750000001 35.75199199999999)',
+              branchies: null
+            },
+            {
+              branch_count: 40,
+              geom: 'SRID=4326;POINT (51.4723825 35.75199199999999)',
+              branchies: null
+            },
+            {
+              branch_count: 10,
+              geom: 'SRID=4326;POINT (51.57472750000001 35.75199199999999)',
+              branchies: null
+            },
+            {
+              branch_count: 12,
+              geom: 'SRID=4326;POINT (51.26769250000001 35.71505999999999)',
+              branchies: null
+            },
+            {
+              branch_count: 69,
+              geom: 'SRID=4326;POINT (51.37003750000001 35.71505999999999)',
+              branchies: null
+            },
+            {
+              branch_count: 59,
+              geom: 'SRID=4326;POINT (51.4723825 35.71505999999999)',
+              branchies: null
+            },
+            {
+              branch_count: 5,
+              geom: 'SRID=4326;POINT (51.57472750000001 35.71505999999999)',
+              branchies: null
+            },
+            {
+              branch_count: 6,
+              geom: 'SRID=4326;POINT (51.26769250000001 35.678128)',
+              branchies: null
+            },
+            {
+              branch_count: 50,
+              geom: 'SRID=4326;POINT (51.37003750000001 35.678128)',
+              branchies: null
+            },
+            {
+              branch_count: 41,
+              geom: 'SRID=4326;POINT (51.4723825 35.678128)',
+              branchies: null
+            },
+            {
+              branch_count: 2,
+              geom: 'SRID=4326;POINT (51.57472750000001 35.678128)',
+              branchies: null
+            },
+            {
+              branch_count: 1,
+              geom: 'SRID=4326;POINT (51.26769250000001 35.64119599999999)',
+              branchies: {
+                name: 'یافت آباد',
+                geom: 'SRID=4326;POINT (51.311509 35.652742)',
+                farsighted: '66217700',
+                phone_1: '66217700',
+                phone_2: '66217711',
+                currencyـcircle: false,
+                atm: true,
+                eveningـcounter: false,
+                Safeـbox: false,
+                pos: true,
+                cvv2: false,
+                cellularـphone: false,
+                get_closest_point: "'distance':1.119 KM,'name': بهاران بازار آهن,'geom': SRID=4326;POINT (51.31499 35.662403),'id': 1702"
+              }
+            },
+            {
+              branch_count: 13,
+              geom: 'SRID=4326;POINT (51.37003750000001 35.64119599999999)',
+              branchies: null
+            },
+            {
+              branch_count: 18,
+              geom: 'SRID=4326;POINT (51.4723825 35.64119599999999)',
+              branchies: null
+            }
+          ])
+          this.loadClusterMarkersList(item + 'List', item + 'Markers')
+          this.clusterList.loading = false
+        })
     },
     hideAll (layerName, layerType) {
       this[layerName + layerType].forEach(layer => {
@@ -1473,29 +666,57 @@ export default {
       }
     },
     loadMarkersList (listName, markerName) {
-      const zoom = this.mapInstance._zoom // 13
+      this.zoom = this.mapInstance._zoom // 13
       const bounds = this.mapInstance.getBounds()
       this[markerName].forEach(marker => {
         this.hideLayer(marker)
       })
-      if (zoom < 10) {
-        return
-      }
+      // if (this.zoom < 10) {
+      //   return
+      // }
 
       this[listName].inBounds(bounds).forEach(marker => {
       // this[listName].list.forEach(marker => {
         const layerName = listName.replace('List', '')
-        const markerLayer = this.addMarker(marker.point, '<b>(' + layerName + ')</b></br><b>name: ' + marker.name + '</b></br>fclass:' + marker.fclass, marker, layerName)
+        // const markerLayer = this.addMarker(marker.point, '<b>(' + layerName + ')</b></br><b>name: ' + marker.name + '</b></br>fclass:' + marker.fclass, marker, layerName)
+        const markerLayer = this.getMarker(marker.point, '<b>(' + layerName + ')</b></br><b>name: ' + marker.name + '</b></br>fclass:' + marker.fclass, marker, layerName)
+        this[markerName].push(markerLayer)
+        // https://leafletjs.com/2012/08/20/guest-post-markerclusterer-0-1-released.html
+        // console.log('leafletObject', leafletObject)
+        // leafletObject.MarkerClusterGroup(this[markerName]).addTo(this.mapInstance)
+        leafletObject.layerGroup(this[markerName]).addTo(this.mapInstance)
+      })
+    },
+    loadClusterMarkersList (listName, markerName) {
+      this.zoom = this.mapInstance._zoom // 13
+      const bounds = this.mapInstance.getBounds()
+      this[markerName].forEach(marker => {
+        this.hideLayer(marker)
+      })
+      // if (this.zoom < 10) {
+      //   return
+      // }
+
+      this[listName].inBounds(bounds).forEach(marker => {
+      // this[listName].list.forEach(marker => {
+        const layerName = listName.replace('List', '')
+        const popup = '<b>(' + layerName + ')</b></br><b>name: ' + marker.name + '</b></br>fclass:' + marker.fclass
+        const icon = leafletObject.divIcon({
+          className: 'my-div-icon',
+          html: '<img class="my-div-image" src="http://png-3.vector.me/files/images/4/0/402272/aiga_air_transportation_bg_thumb"/>' +
+            '<span class="my-div-span">RAF Banff Airfield</span>'
+        })
+        const markerLayer = this.addMarker(marker.point, popup, marker, layerName, icon)
         this[markerName].push(markerLayer)
       })
     },
     loadPolygonList (listName, polygonName) {
-      const zoom = this.mapInstance._zoom // 13
+      this.zoom = this.mapInstance._zoom // 13
       const bounds = this.mapInstance.getBounds()
       this[polygonName].forEach(polygon => {
         this.hideLayer(polygon)
       })
-      if (zoom < 10) {
+      if (this.zoom < 10) {
         return
       }
 
@@ -1507,12 +728,12 @@ export default {
       })
     },
     loadPolylineList (listName, polylineName) {
-      const zoom = this.mapInstance._zoom // 13
+      this.zoom = this.mapInstance._zoom // 13
       const bounds = this.mapInstance.getBounds()
       this[polylineName].forEach(polyline => {
         this.hideLayer(polyline)
       })
-      if (zoom < 10) {
+      if (this.zoom < 10) {
         return
       }
 
@@ -1536,6 +757,47 @@ export default {
       }
       leafletMarker
         .addTo(this.mapInstance)
+      if (typeof clickEvent === 'undefined' || clickEvent === true) {
+        leafletMarker
+          .on('click', (e) => {
+            if (name === 'branches' || name === 'searchBranch') {
+              this.panel = 'branches'
+              this.selectedLayer = data
+              // const greenIcon = leafletObject.icon({
+              //   iconUrl: 'https://leafletjs.com/examples/custom-icons/leaf-green.png',
+              //   shadowUrl: 'https://leafletjs.com/examples/custom-icons/leaf-shadow.png',
+              //
+              //   iconSize: [38, 95], // size of the icon
+              //   shadowSize: [50, 64], // size of the shadow
+              //   iconAnchor: [22, 94], // point of the icon which will correspond to marker's location
+              //   shadowAnchor: [4, 62], // the same for the shadow
+              //   popupAnchor: [-3, -76] // point from which the popup should open relative to the iconAnchor
+              // })
+              // const layerName = 'branches'
+              // if (data.closest_branch_point) {
+              //   if (this.closestBranchPointMarker) {
+              //     this.hideLayer(this.closestBranchPointMarker)
+              //   }
+              //   this.closestBranchPointMarker = this.addMarker(data.closest_branch_point, '<b>(' + layerName + ')</b></br><b>name: ' + data.name + '</b></br>fclass:' + data.fclass, data, layerName, greenIcon, false)
+              // }
+            } else {
+              if (this.closestBranchPointMarker) {
+                this.hideLayer(this.closestBranchPointMarker)
+              }
+              this.closestBranchPointMarker = null
+            }
+          })
+      }
+      return leafletMarker.bindPopup(popup)
+      // .openPopup()
+    },
+    getMarker(latlng, popup = '', data, name, icon, clickEvent) {
+      let leafletMarker = null
+      if (icon) {
+        leafletMarker = leafletObject.marker(latlng, { icon })
+      } else {
+        leafletMarker = leafletObject.marker(latlng)
+      }
       if (typeof clickEvent === 'undefined' || clickEvent === true) {
         leafletMarker
           .on('click', (e) => {
