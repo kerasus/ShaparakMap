@@ -120,6 +120,7 @@ export default {
       searchBranch: new Branche(),
       searchBranchLayer: null,
       branchesRadioOptions: null,
+      branches2RadioOptions: null,
       selectedPlacesFilterSideMenu: null,
       selectedBranchHeaderMenu: null,
 
@@ -128,16 +129,21 @@ export default {
 
       // points
       branchesAbortController: null,
+      branches2AbortController: null,
       transportAbortController: null,
       branchesList: new BrancheList(),
+      branches2List: new BrancheList(),
       transportList: new TransportList(),
       clusterList: new ClusterList(),
       branchesListMarkerClusterGroupLayer: null,
+      branches2ListMarkerClusterGroupLayer: null,
       branchesMarkers: [],
+      branches2Markers: [],
       transportListMarkerClusterGroupLayer: null,
       transportMarkers: [],
       clusterMarkers: [],
       showbranches: false,
+      showbranches2: false,
       showtransport: false,
       showcluster: false,
 
@@ -182,8 +188,9 @@ export default {
       showwaterWay: false,
 
       pointList: [
-        'transport',
-        'branches'
+        'branches',
+        'branches2',
+        'transport'
       ],
       polygonNameList: [
         'water',
@@ -234,6 +241,7 @@ export default {
     clearSelectedLayer () {
       this.selectedLayer = null
       this.hideAll('branches', 'Markers')
+      this.hideAll('branches2', 'Markers')
     },
     getStatical () {
       const bounds = new MapBoundary(this.mapInstance.getBounds()).getBBox()
@@ -306,6 +314,19 @@ export default {
           this.getPoint(item, newOptions)
         }
       })
+      this.$bus.on('map-change-branches2-options', (newOptions) => {
+        const item = 'branches2'
+        const showState = this['show' + item]
+        this.hideAll(item, 'Markers')
+        const listName = item + 'List'
+        this.removeMarkerClusterLayer(listName)
+        this[item + 'List'].list = []
+        this.branches2RadioOptions = newOptions
+        if (showState) {
+          newOptions.payload = new MapBoundary(this.mapInstance.getBounds()).getBounds()
+          this.getPoint(item, newOptions)
+        }
+      })
       this.$bus.on('map-change-places-filter', (places) => {
         this.$bus.emit('clear-branches-header-filter', true)
         this.selectedBranchHeaderMenu = null
@@ -356,7 +377,7 @@ export default {
               this.hideLayer(this.searchBranchLayer)
               this.searchBranchLayer = null
             }
-            this.searchBranchLayer = this.addMarker(this.searchBranch.point, '<b>name: ' + this.searchBranch.name + '</b></br>fclass:' + this.searchBranch.fclass, this.searchBranch, 'searchBranch')
+            this.searchBranchLayer = this.getMarker(this.searchBranch.point, '<b>name: ' + this.searchBranch.name + '</b></br>fclass:' + this.searchBranch.fclass, this.searchBranch, 'searchBranch')
           })
           .catch(() => {
             this.searchBranch.loading = false
@@ -407,14 +428,25 @@ export default {
         this.hideLayer(this.closestBranchPointMarker)
       }
       this.getStatical()
-      if (this.showbranches && this.branchesRadioOptions) {
-        const item = 'branches'
-        this.hideAll(item, 'Markers')
-        const listName = item + 'List'
-        this.removeMarkerClusterLayer(listName)
-        this[item + 'List'].list = []
-        this.branchesRadioOptions.payload = new MapBoundary(this.mapInstance.getBounds()).getBounds()
-        this.getPoint(item, this.branchesRadioOptions)
+      if ((this.showbranches && this.branchesRadioOptions) || (this.showbranches2 && this.branches2RadioOptions)) {
+        if (this.showbranches && this.branchesRadioOptions) {
+          const item = 'branches'
+          this.hideAll(item, 'Markers')
+          const listName = item + 'List'
+          this.removeMarkerClusterLayer(listName)
+          this[item + 'List'].list = []
+          this.branchesRadioOptions.payload = new MapBoundary(this.mapInstance.getBounds()).getBounds()
+          this.getPoint(item, this.branchesRadioOptions)
+        }
+        if (this.showbranches2 && this.branches2RadioOptions) {
+          const item = 'branches2'
+          this.hideAll(item, 'Markers')
+          const listName = item + 'List'
+          this.removeMarkerClusterLayer(listName)
+          this[item + 'List'].list = []
+          this.branches2RadioOptions.payload = new MapBoundary(this.mapInstance.getBounds()).getBounds()
+          this.getPoint(item, this.branches2RadioOptions)
+        }
       } else if (this.selectedPlacesFilterSideMenu) {
         // this.hideAll('places', 'Polygon')
         // const item = 'branches'
@@ -493,9 +525,6 @@ export default {
       this[item + 'List'].laoding = true
       APIGateway.point[item](options)
         .then(({ list }) => {
-          if (list.list.length === 0) {
-            return
-          }
           this[item + 'List'] = list
           this.loadMarkersList(item + 'List', item + 'Markers')
           this[item + 'List'].laoding = false
@@ -512,6 +541,9 @@ export default {
       if (item === 'branches' && this.showbranches && this.branchesRadioOptions) {
         this.branchesRadioOptions.payload = bounds
         options = this.branchesRadioOptions
+      } else if (item === 'branches2' && this.showbranches2 && this.branches2RadioOptions) {
+        this.branches2RadioOptions.payload = bounds
+        options = this.branches2RadioOptions
       } else {
         options = {
           payload: bounds
@@ -562,9 +594,6 @@ export default {
       this[item + 'List'].laoding = true
       APIGateway.multiPolygon[item](options)
         .then(({ list }) => {
-          if (list.list.length === 0) {
-            return
-          }
           this[item + 'List'] = list
           this.loadPolygonList(item + 'List', item + 'Polygon')
           this[item + 'List'].laoding = false
@@ -591,9 +620,6 @@ export default {
       this[item + 'List'].laoding = true
       APIGateway.multiString[item](options)
         .then(({ list }) => {
-          if (list.list.length === 0) {
-            return
-          }
           this[item + 'List'] = list
           this.loadPolylineList(item + 'List', item + 'Polyline')
           this[item + 'List'].laoding = false
@@ -627,13 +653,29 @@ export default {
         return
       }
 
+      let redIcon = leafletObject.icon({
+        iconUrl: '/img/marker-icon-red.png',
+        iconRetinaUrl: '/img/marker-icon-red-2x.png',
+        shadowUrl: '/img/marker-shadow.png',
+        iconSize: [25, 41],
+        iconAnchor: [12, 41],
+        popupAnchor: [1, -34],
+        tooltipAnchor: [16, -28],
+        shadowSize: [41, 41]
+      })
+
+      if (listName.replace('List', '') !== 'branches2') {
+        redIcon = undefined
+      }
+
       // const markerClusterGroupLayer = new MarkerClusterGroup()
       // this[listName + 'MarkerClusterGroupLayer'] = new MarkerClusterGroup()
       // this[listName].inBounds(bounds).forEach(marker => {
       this[listName].list.forEach(marker => {
         const layerName = listName.replace('List', '')
         // const markerLayer = this.addMarker(marker.point, '<b>(' + layerName + ')</b></br><b>name: ' + marker.name + '</b></br>fclass:' + marker.fclass, marker, layerName)
-        const markerLayer = this.getMarker(marker.point, '<b>(' + layerName + ')</b></br><b>name: ' + marker.name + '</b></br>fclass:' + marker.fclass, marker, layerName)
+        const popup = '<b>(' + layerName + ')</b></br><b>name: ' + marker.name + '</b></br>fclass:' + marker.fclass
+        const markerLayer = this.getMarker(marker.point, popup, marker, layerName, redIcon)
         this[markerName].push(markerLayer)
         // this[listName + 'MarkerClusterGroupLayer'].addLayer(markerLayer)
         // https://leafletjs.com/2012/08/20/guest-post-markerclusterer-0-1-released.html
@@ -650,10 +692,26 @@ export default {
     loadMarkerClusterList (listName, markerName) {
       this.removeMarkerClusterLayer(listName)
 
+      let redIcon = leafletObject.icon({
+        iconUrl: '/img/marker-icon-red.png',
+        iconRetinaUrl: '/img/marker-icon-red-2x.png',
+        shadowUrl: '/img/marker-shadow.png',
+        iconSize: [25, 41],
+        iconAnchor: [12, 41],
+        popupAnchor: [1, -34],
+        tooltipAnchor: [16, -28],
+        shadowSize: [41, 41]
+      })
+
+      if (listName.replace('List', '') !== 'branches2') {
+        redIcon = undefined
+      }
+
       this[listName + 'MarkerClusterGroupLayer'] = new MarkerClusterGroup()
       this[listName].list.forEach(marker => {
         const layerName = listName.replace('List', '')
-        const markerLayer = this.getMarker(marker.point, '<b>(' + layerName + ')</b></br><b>name: ' + marker.name + '</b></br>fclass:' + marker.fclass, marker, layerName)
+        const popup = '<b>(' + layerName + ')</b></br><b>name: ' + marker.name + '</b></br>fclass:' + marker.fclass
+        const markerLayer = this.getMarker(marker.point, popup, marker, layerName, redIcon)
         this[markerName].push(markerLayer)
         this[listName + 'MarkerClusterGroupLayer'].addLayer(markerLayer)
       })
@@ -725,7 +783,20 @@ export default {
       if (icon) {
         leafletMarker = leafletObject.marker(latlng, { icon })
       } else {
-        leafletMarker = leafletObject.marker(latlng)
+        const defaultIcon = leafletObject.icon({
+          iconUrl: '/img/marker-icon.png',
+          iconRetinaUrl: '/img/marker-icon-2x.png',
+          shadowUrl: '/img/marker-shadow.png',
+          iconSize: [25, 41],
+          iconAnchor: [12, 41],
+          popupAnchor: [1, -34],
+          tooltipAnchor: [16, -28],
+          shadowSize: [41, 41]
+        })
+
+        leafletMarker = leafletObject.marker(latlng, {
+          icon: defaultIcon
+        })
       }
       leafletMarker
         .addTo(this.mapInstance)
@@ -768,12 +839,22 @@ export default {
       if (icon) {
         leafletMarker = leafletObject.marker(latlng, { icon })
       } else {
-        leafletMarker = leafletObject.marker(latlng)
+        const defaultIcon = leafletObject.icon({
+          iconUrl: '/img/marker-icon.png',
+          iconRetinaUrl: '/img/marker-icon-2x.png',
+          shadowUrl: '/img/marker-shadow.png',
+          iconSize: [25, 41],
+          iconAnchor: [12, 41],
+          popupAnchor: [1, -34],
+          tooltipAnchor: [16, -28],
+          shadowSize: [41, 41]
+        })
+        leafletMarker = leafletObject.marker(latlng, { defaultIcon })
       }
       if (typeof clickEvent === 'undefined' || clickEvent === true) {
         leafletMarker
           .on('click', (e) => {
-            if (name === 'branches' || name === 'searchBranch') {
+            if (name === 'branches' || name === 'branches2' || name === 'searchBranch') {
               this.panel = 'branches'
               this.selectedLayer = data
               // const greenIcon = leafletObject.icon({

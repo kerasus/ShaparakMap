@@ -92,6 +92,10 @@ export default class MultiStringAPI extends APIRepository {
     })
   }
 
+  branches2(options) {
+    return this.branches(options)
+  }
+
   searchbranche(options) {
     const defaultFilterOptions = {
       text: null

@@ -151,11 +151,119 @@
 
             </q-list>
           </q-expansion-item>
-          <q-expansion-item v-if="false"
+          <q-expansion-item v-model="branches2Expanded"
                             expand-separator
-                            icon="account_balance_wallet"
+                            icon="account_balance"
                             label="Branches 2">
-            Branches 2
+            <q-list bordered
+                    separator>
+
+              <q-item v-ripple
+                      tag="label">
+                <q-item-section side
+                                top>
+                  <q-checkbox v-model="branches2" />
+                </q-item-section>
+                <q-item-section>
+                  <q-item-label>Branch</q-item-label>
+                  <q-item-label caption>
+                    point
+                  </q-item-label>
+                </q-item-section>
+              </q-item>
+              <q-item v-ripple
+                      tag="label">
+                <q-item-section>
+                  <q-item-label>Branch with CC</q-item-label>
+                  <q-item-label caption>
+                    <q-option-group v-model="branches2CC"
+                                    :options="branchesRadioOptions"
+                                    dense
+                                    color="primary"
+                                    inline />
+                  </q-item-label>
+                </q-item-section>
+              </q-item>
+              <q-item v-ripple
+                      tag="label">
+                <q-item-section>
+                  <q-item-label>Branch with ATM</q-item-label>
+                  <q-item-label caption>
+                    <q-option-group v-model="branches2ATM"
+                                    :options="branchesRadioOptions"
+                                    dense
+                                    color="primary"
+                                    inline />
+                  </q-item-label>
+                </q-item-section>
+              </q-item>
+              <q-item v-ripple
+                      tag="label">
+                <q-item-section>
+                  <q-item-label>Branch with EC</q-item-label>
+                  <q-item-label caption>
+                    <q-option-group v-model="branches2EC"
+                                    :options="branchesRadioOptions"
+                                    dense
+                                    color="primary"
+                                    inline />
+                  </q-item-label>
+                </q-item-section>
+              </q-item>
+              <q-item v-ripple
+                      tag="label">
+                <q-item-section>
+                  <q-item-label>Branch with SB</q-item-label>
+                  <q-item-label caption>
+                    <q-option-group v-model="branches2SB"
+                                    :options="branchesRadioOptions"
+                                    dense
+                                    color="primary"
+                                    inline />
+                  </q-item-label>
+                </q-item-section>
+              </q-item>
+              <q-item v-ripple
+                      tag="label">
+                <q-item-section>
+                  <q-item-label>Branch with POS</q-item-label>
+                  <q-item-label caption>
+                    <q-option-group v-model="branches2POS"
+                                    :options="branchesRadioOptions"
+                                    dense
+                                    color="primary"
+                                    inline />
+                  </q-item-label>
+                </q-item-section>
+              </q-item>
+              <q-item v-ripple
+                      tag="label">
+                <q-item-section>
+                  <q-item-label>Branch with CVV2</q-item-label>
+                  <q-item-label caption>
+                    <q-option-group v-model="branches2CVV2"
+                                    :options="branchesRadioOptions"
+                                    dense
+                                    color="primary"
+                                    inline />
+                  </q-item-label>
+                </q-item-section>
+              </q-item>
+              <q-item v-ripple
+                      tag="label">
+                <q-item-section>
+                  <q-item-label>Branch with CP</q-item-label>
+                  <q-item-label caption>
+                    <q-option-group v-model="branches2CP"
+                                    :options="branchesRadioOptions"
+                                    dense
+                                    color="primary"
+                                    inline />
+                  </q-item-label>
+                </q-item-section>
+              </q-item>
+
+            </q-list>
           </q-expansion-item>
           <q-expansion-item v-model="locationsExpanded"
                             expand-separator
@@ -361,6 +469,17 @@ export default {
   data () {
     return {
       locationsExpanded: false,
+
+      branches2Expanded: false,
+      branches2CC: null,
+      branches2ATM: null,
+      branches2EC: null,
+      branches2SB: null,
+      branches2POS: null,
+      branches2CVV2: null,
+      branches2CP: null,
+      branches2: false,
+
       branchesExpanded: false,
       showingSearchPlaces: false,
       placesList: new PlaceList(),
@@ -412,6 +531,17 @@ export default {
         CVV2: this.branchesCVV2,
         CP: this.branchesCP
       }
+    },
+    branches2Options () {
+      return {
+        CC: this.branches2CC,
+        ATM: this.branches2ATM,
+        EC: this.branches2EC,
+        SB: this.branches2SB,
+        POS: this.branches2POS,
+        CVV2: this.branches2CVV2,
+        CP: this.branches2CP
+      }
     }
   },
   watch: {
@@ -421,6 +551,13 @@ export default {
     },
     branches (newValue) {
       this.$bus.emit('map-change-branches', newValue)
+    },
+    branches2Options (newValue) {
+      this.clearSearch(true)
+      this.$bus.emit('map-change-branches2-options', newValue)
+    },
+    branches2 (newValue) {
+      this.$bus.emit('map-change-branches2', newValue)
     },
     transport (newValue) {
       this.clearSearch(true)
@@ -470,6 +607,10 @@ export default {
       this.branches = newState
       this.locationsExpanded = false
       this.branchesExpanded = false
+
+      this.branches2 = newState
+      this.locationsExpanded = false
+      this.branches2Expanded = false
     })
     this.$bus.on('clear-places-filter', (preventEvent) => {
       this.clearSearch(preventEvent)
