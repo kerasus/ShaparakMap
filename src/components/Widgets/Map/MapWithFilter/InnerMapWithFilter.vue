@@ -653,7 +653,7 @@ export default {
         return
       }
 
-      let redIcon = leafletObject.icon({
+      const redIcon = leafletObject.icon({
         iconUrl: '/img/marker-icon-red.png',
         iconRetinaUrl: '/img/marker-icon-red-2x.png',
         shadowUrl: '/img/marker-shadow.png',
@@ -663,9 +663,20 @@ export default {
         tooltipAnchor: [16, -28],
         shadowSize: [41, 41]
       })
+      const defaultIcon = leafletObject.icon({
+        iconUrl: '/img/marker-icon.png',
+        iconRetinaUrl: '/img/marker-icon-2x.png',
+        shadowUrl: '/img/marker-shadow.png',
+        iconSize: [25, 41],
+        iconAnchor: [12, 41],
+        popupAnchor: [1, -34],
+        tooltipAnchor: [16, -28],
+        shadowSize: [41, 41]
+      })
+      let icon = defaultIcon
 
-      if (listName.replace('List', '') !== 'branches2') {
-        redIcon = undefined
+      if (listName.replace('List', '') === 'branches2') {
+        icon = redIcon
       }
 
       // const markerClusterGroupLayer = new MarkerClusterGroup()
@@ -675,7 +686,7 @@ export default {
         const layerName = listName.replace('List', '')
         // const markerLayer = this.addMarker(marker.point, '<b>(' + layerName + ')</b></br><b>name: ' + marker.name + '</b></br>fclass:' + marker.fclass, marker, layerName)
         const popup = '<b>(' + layerName + ')</b></br><b>name: ' + marker.name + '</b></br>fclass:' + marker.fclass
-        const markerLayer = this.getMarker(marker.point, popup, marker, layerName, redIcon)
+        const markerLayer = this.getMarker(marker.point, popup, marker, layerName, icon)
         this[markerName].push(markerLayer)
         // this[listName + 'MarkerClusterGroupLayer'].addLayer(markerLayer)
         // https://leafletjs.com/2012/08/20/guest-post-markerclusterer-0-1-released.html
@@ -692,7 +703,7 @@ export default {
     loadMarkerClusterList (listName, markerName) {
       this.removeMarkerClusterLayer(listName)
 
-      let redIcon = leafletObject.icon({
+      const redIcon = leafletObject.icon({
         iconUrl: '/img/marker-icon-red.png',
         iconRetinaUrl: '/img/marker-icon-red-2x.png',
         shadowUrl: '/img/marker-shadow.png',
@@ -702,16 +713,27 @@ export default {
         tooltipAnchor: [16, -28],
         shadowSize: [41, 41]
       })
+      const defaultIcon = leafletObject.icon({
+        iconUrl: '/img/marker-icon.png',
+        iconRetinaUrl: '/img/marker-icon-2x.png',
+        shadowUrl: '/img/marker-shadow.png',
+        iconSize: [25, 41],
+        iconAnchor: [12, 41],
+        popupAnchor: [1, -34],
+        tooltipAnchor: [16, -28],
+        shadowSize: [41, 41]
+      })
+      let icon = defaultIcon
 
-      if (listName.replace('List', '') !== 'branches2') {
-        redIcon = undefined
+      if (listName.replace('List', '') === 'branches2') {
+        icon = redIcon
       }
 
       this[listName + 'MarkerClusterGroupLayer'] = new MarkerClusterGroup()
       this[listName].list.forEach(marker => {
         const layerName = listName.replace('List', '')
         const popup = '<b>(' + layerName + ')</b></br><b>name: ' + marker.name + '</b></br>fclass:' + marker.fclass
-        const markerLayer = this.getMarker(marker.point, popup, marker, layerName, redIcon)
+        const markerLayer = this.getMarker(marker.point, popup, marker, layerName, icon)
         this[markerName].push(markerLayer)
         this[listName + 'MarkerClusterGroupLayer'].addLayer(markerLayer)
       })
