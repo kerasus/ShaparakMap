@@ -42,7 +42,8 @@
     </div>
     <div class="row q-col-gutter-lg">
       <div class="col-lg-6 col-md-6 col-sm-12 col-12">
-        <branch-info-card :selected-layer="selectedLayer" />
+        <branch-info-card :selected-layer="selectedLayer"
+                          @clear="clearSelectedLayer" />
       </div>
       <div class="col-lg-6 col-md-6 col-sm-12 col-12">
         <q-linear-progress v-if="staticalLoading"
@@ -242,6 +243,8 @@ export default {
       this.selectedLayer = null
       this.hideAll('branches', 'Markers')
       this.hideAll('branches2', 'Markers')
+      this.removeMarkerClusterLayer('branchesList')
+      this.removeMarkerClusterLayer('branches2List')
     },
     getStatical () {
       const bounds = new MapBoundary(this.mapInstance.getBounds()).getBBox()
@@ -879,23 +882,25 @@ export default {
             if (name === 'branches' || name === 'branches2' || name === 'searchBranch') {
               this.panel = 'branches'
               this.selectedLayer = data
-              // const greenIcon = leafletObject.icon({
-              //   iconUrl: 'https://leafletjs.com/examples/custom-icons/leaf-green.png',
-              //   shadowUrl: 'https://leafletjs.com/examples/custom-icons/leaf-shadow.png',
-              //
-              //   iconSize: [38, 95], // size of the icon
-              //   shadowSize: [50, 64], // size of the shadow
-              //   iconAnchor: [22, 94], // point of the icon which will correspond to marker's location
-              //   shadowAnchor: [4, 62], // the same for the shadow
-              //   popupAnchor: [-3, -76] // point from which the popup should open relative to the iconAnchor
-              // })
-              // const layerName = 'branches'
-              // if (data.closest_branch_point) {
-              //   if (this.closestBranchPointMarker) {
-              //     this.hideLayer(this.closestBranchPointMarker)
-              //   }
-              //   this.closestBranchPointMarker = this.addMarker(data.closest_branch_point, '<b>(' + layerName + ')</b></br><b>name: ' + data.name + '</b></br>fclass:' + data.fclass, data, layerName, greenIcon, false)
-              // }
+
+              const greenIcon = leafletObject.icon({
+                iconUrl: '/img/marker-icon-green.png',
+                iconRetinaUrl: '/img/marker-icon-green-2x.png',
+                shadowUrl: '/img/marker-shadow.png',
+                iconSize: [25, 41],
+                iconAnchor: [12, 41],
+                popupAnchor: [1, -34],
+                tooltipAnchor: [16, -28],
+                shadowSize: [41, 41]
+              })
+              const layerName = 'branches'
+              if (data.closest_branch_point) {
+                if (this.closestBranchPointMarker) {
+                  this.hideLayer(this.closestBranchPointMarker)
+                }
+                const popup = '<b>(' + layerName + ')</b></br><b>name: ' + data.name + '</b></br>fclass:' + data.fclass
+                this.closestBranchPointMarker = this.addMarker(data.closest_branch_point, popup, data, layerName, greenIcon, false)
+              }
             } else {
               if (this.closestBranchPointMarker) {
                 this.hideLayer(this.closestBranchPointMarker)

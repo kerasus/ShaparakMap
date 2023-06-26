@@ -5,6 +5,7 @@ class Branche extends Model {
     super(data, [
       { key: 'id' },
       { key: 'closest_branch' },
+      { key: 'get_closest_point' },
       { key: 'number' },
       { key: 'code' },
       { key: 'name' },
@@ -25,11 +26,27 @@ class Branche extends Model {
       { key: 'geom' } // POINT
     ])
 
+    if (!this.closest_branch) {
+      this.closest_branch = this.get_closest_point
+    }
+
+    const getKey = function (arr, key) {
+      const target = arr.findIndex(item => item.includes("'" + key + "':"))
+      if (target === -1) {
+        return null
+      }
+      const item = arr[target].trim().replace('\'' + key + '\':', '').trim()
+
+      return item
+    }
     if (typeof this.closest_branch === 'string') {
       const arr = this.closest_branch.split(',')
-      const id = arr[0].trim().replace('\'id\':', '')
-      const geom = arr[1].trim().replace('\'geom\':', '')
-      const distance = arr[2].trim().replace('\'distance\':', '')
+      const id = getKey(arr, 'id')
+      const geom = getKey(arr, 'geom')
+      const distance = getKey(arr, 'distance')
+      // const id = arr[0].trim().replace('\'id\':', '')
+      // const geom = arr[1].trim().replace('\'geom\':', '')
+      // const distance = arr[2].trim().replace('\'distance\':', '')
       const geomPointLatlng = geom.split(';')[1].replace('POINT (', '').replace(')', '').trim().split(' ').map(item => parseFloat(item))
       const geomPoint = {
         lat: geomPointLatlng[1],

@@ -1026,7 +1026,9 @@ export default {
     }
   },
   methods: {
-
+    clearSelectedLayer () {
+      this.$emit('clear')
+    }
   }
 }
 </script>
