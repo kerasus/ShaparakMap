@@ -58,6 +58,11 @@
                       square />
         </template>
         <template v-else>
+          <div class="flex justify-end">
+            <q-select v-model="informationTruncType"
+                      map-options
+                      :options="informationTruncOptions" />
+          </div>
           <statistic-information-chart v-if="mounted"
                                        :series="statisticInformation" />
         </template>
@@ -108,6 +113,25 @@ export default {
   components: { BranchInfoCard, StaticalData, StatisticInformationChart },
   data: () => {
     return {
+      informationTruncType: 'daily',
+      informationTruncOptions: [
+        {
+          label: 'روزانه',
+          value: 'daily'
+        },
+        {
+          label: 'هفتگی',
+          value: 'weekly'
+        },
+        {
+          label: 'ماهیانه',
+          value: 'monthly'
+        },
+        {
+          label: 'سالیانه',
+          value: 'yearly'
+        }
+      ],
       mounted: false,
       mapInstance: null,
       panel: 'branches',
@@ -229,9 +253,13 @@ export default {
       return this.selectedProvinece.cities
     }
   },
+  watch: {
+    informationTruncType () {
+      this.getStatistic()
+    }
+  },
   mounted() {
     // this.loadProvineces()
-    this.getStatistic()
     setTimeout(() => {
       this.loadMap()
       this.setEventBuses()
@@ -272,8 +300,12 @@ export default {
         })
     },
     getStatistic () {
+      const bounds = new MapBoundary(this.mapInstance.getBounds()).getBBox()
       this.statisticInformationLoading = true
-      APIGateway.statistic.information()
+      APIGateway.statistic.information({
+        bbox: bounds,
+        trunc: this.informationTruncType.value
+      })
         .then((series) => {
           this.statisticInformation = series
           this.statisticInformationLoading = false
@@ -431,6 +463,7 @@ export default {
         this.hideLayer(this.closestBranchPointMarker)
       }
       this.getStatical()
+      this.getStatistic()
       if ((this.showbranches && this.branchesRadioOptions) || (this.showbranches2 && this.branches2RadioOptions)) {
         if (this.showbranches && this.branchesRadioOptions) {
           const item = 'branches'

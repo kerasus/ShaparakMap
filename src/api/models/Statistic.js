@@ -10,9 +10,12 @@ export default class StatisticAPI extends APIRepository {
     }
   }
 
-  information() {
+  information(options) {
     return new Promise((resolve, reject) => {
-      appApiInstance.post(this.APIAdresses.information, { trunc: 'daily' }, { headers: { 'content-type': 'application/x-www-form-urlencoded' } })
+      appApiInstance.post(this.APIAdresses.information, {
+        bbox: options.bbox,
+        trunc: options.trunc
+      }, { headers: { 'content-type': 'application/x-www-form-urlencoded' } })
         .then((response) => {
           const series = [
             {
@@ -29,22 +32,6 @@ export default class StatisticAPI extends APIRepository {
               min: 'min_amount',
               data: []
             }
-            // {
-            //   name: 'min_nop',
-            //   data: []
-            // },
-            // {
-            //   name: 'min_amount',
-            //   data: []
-            // },
-            // {
-            //   name: 'max_nop',
-            //   data: []
-            // },
-            // {
-            //   name: 'max_amount',
-            //   data: []
-            // }
           ]
           const results = response.data.results
           series.forEach(sery => {
