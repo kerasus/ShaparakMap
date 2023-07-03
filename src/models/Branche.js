@@ -5,6 +5,9 @@ class Branche extends Model {
     super(data, [
       { key: 'id' },
       { key: 'closest_branch' },
+      { key: 'closest_distance' },
+      { key: 'closest_geom' }, // "SRID=4326;POINT (51.444508 35.651476)"
+      { key: 'closest_name' },
       { key: 'get_closest_point' },
       { key: 'number' },
       { key: 'code' },
@@ -53,6 +56,22 @@ class Branche extends Model {
         lng: geomPointLatlng[0]
       }
       this.closest_branch_info = { id, geom, distance, geomPoint }
+      if (!isNaN(this.closest_branch_info.geomPoint.lat) && !isNaN(this.closest_branch_info.geomPoint.lng)) {
+        this.closest_branch_point = this.closest_branch_info.geomPoint
+      } else {
+        this.closest_branch_point = {}
+      }
+    } else if (typeof this.closest_geom === 'string') {
+      const latlng = this.closest_geom.split(';')[1].replace('POINT (', '').replace(')', '').trim().split(' ').map(item => parseFloat(item))
+      const id = parseInt(this.closest_geom.split(';')[0].replace('SRID=', '').trim())
+      const distance = this.closest_distance
+      const geom = this.closest_geom
+      const name = this.closest_name
+      const geomPoint = {
+        lat: latlng[1],
+        lng: latlng[0]
+      }
+      this.closest_branch_info = { id, geom, distance, geomPoint, name }
       if (!isNaN(this.closest_branch_info.geomPoint.lat) && !isNaN(this.closest_branch_info.geomPoint.lng)) {
         this.closest_branch_point = this.closest_branch_info.geomPoint
       } else {

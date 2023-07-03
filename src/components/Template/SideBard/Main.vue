@@ -286,7 +286,8 @@
                   </q-item-label>
                 </q-item-section>
               </q-item>
-              <q-item v-ripple
+              <q-item v-if="false"
+                      v-ripple
                       tag="label">
                 <q-item-section side
                                 top>
@@ -308,7 +309,7 @@
                 </q-item-section>
 
                 <q-item-section>
-                  <q-item-label>pofw</q-item-label>
+                  <q-item-label>bank</q-item-label>
                   <q-item-label caption>
                     polygon
                   </q-item-label>
@@ -343,7 +344,8 @@
                   </q-item-label>
                 </q-item-section>
               </q-item>
-              <q-item v-ripple
+              <q-item v-if="false"
+                      v-ripple
                       tag="label">
                 <q-item-section side
                                 top>
@@ -357,7 +359,8 @@
                   </q-item-label>
                 </q-item-section>
               </q-item>
-              <q-item v-ripple
+              <q-item v-if="false"
+                      v-ripple
                       tag="label">
                 <q-item-section side
                                 top>
@@ -371,7 +374,8 @@
                   </q-item-label>
                 </q-item-section>
               </q-item>
-              <q-item v-ripple
+              <q-item v-if="false"
+                      v-ripple
                       tag="label">
                 <q-item-section side
                                 top>
@@ -385,7 +389,8 @@
                   </q-item-label>
                 </q-item-section>
               </q-item>
-              <q-item v-ripple
+              <q-item v-if="false"
+                      v-ripple
                       tag="label">
                 <q-item-section side
                                 top>
@@ -399,7 +404,8 @@
                   </q-item-label>
                 </q-item-section>
               </q-item>
-              <q-item v-ripple
+              <q-item v-if="false"
+                      v-ripple
                       tag="label">
                 <q-item-section side
                                 top>

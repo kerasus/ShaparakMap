@@ -61,6 +61,7 @@ export default class MultiPolygonAPI extends APIRepository {
         delete mergedFilter[key]
       }
     })
+    mergedFilter.fclass = 'bank'
     return this.sendRequest({
       apiMethod: 'post',
       api: this.api,

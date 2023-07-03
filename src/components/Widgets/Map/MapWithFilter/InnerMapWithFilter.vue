@@ -269,10 +269,18 @@ export default {
   methods: {
     clearSelectedLayer () {
       this.selectedLayer = null
-      this.hideAll('branches', 'Markers')
-      this.hideAll('branches2', 'Markers')
-      this.removeMarkerClusterLayer('branchesList')
-      this.removeMarkerClusterLayer('branches2List')
+      if (this.closestBranchPointMarker) {
+        this.hideLayer(this.closestBranchPointMarker)
+      }
+      // this.hideAll('branches', 'Markers')
+      // this.hideAll('branches2', 'Markers')
+      // this.removeMarkerClusterLayer('branchesList')
+      // this.removeMarkerClusterLayer('branches2List')
+    },
+    clearAllLayers () {
+      this.mapInstance.eachLayer((layer) => {
+        this.mapInstance.removeLayer(layer)
+      })
     },
     getStatical () {
       const bounds = new MapBoundary(this.mapInstance.getBounds()).getBBox()
@@ -363,6 +371,16 @@ export default {
         }
       })
       this.$bus.on('map-change-places-filter', (places) => {
+        if (places) {
+          this.mapInstance.panTo({
+            lat: (places.bbox[1] + places.bbox[3]) / 2,
+            lng: (places.bbox[0] + places.bbox[2]) / 2
+          })
+          setTimeout(() => {
+            this.mapInstance.setZoom(13)
+          }, 1000)
+        }
+
         this.$bus.emit('clear-branches-header-filter', true)
         this.selectedBranchHeaderMenu = null
         this.changeShowbranches(false)
@@ -561,6 +579,7 @@ export default {
       this[item + 'List'].laoding = true
       APIGateway.point[item](options)
         .then(({ list }) => {
+          this.hideAll(item, 'Markers')
           this[item + 'List'] = list
           this.loadMarkersList(item + 'List', item + 'Markers')
           this[item + 'List'].laoding = false
@@ -683,6 +702,7 @@ export default {
       this[markerName].forEach(marker => {
         this.hideLayer(marker)
       })
+      this[markerName] = []
       this.zoom = this.mapInstance._zoom
       if (this.zoom < this.markerClusterZoomLevel) {
         this.loadMarkerClusterList(listName, markerName)
@@ -709,10 +729,22 @@ export default {
         tooltipAnchor: [16, -28],
         shadowSize: [41, 41]
       })
+      const transportIcon = leafletObject.icon({
+        iconUrl: '/img/marker-transport-icon.png',
+        iconRetinaUrl: '/img/marker-icon-transport-2x.png',
+        shadowUrl: '/img/marker-shadow.png',
+        iconSize: [25, 41],
+        iconAnchor: [12, 41],
+        popupAnchor: [1, -34],
+        tooltipAnchor: [16, -28],
+        shadowSize: [41, 41]
+      })
       let icon = defaultIcon
 
       if (listName.replace('List', '') === 'branches2') {
         icon = redIcon
+      } else if (listName.replace('List', '') === 'transport') {
+        icon = transportIcon
       }
 
       // const markerClusterGroupLayer = new MarkerClusterGroup()
@@ -738,6 +770,7 @@ export default {
     },
     loadMarkerClusterList (listName, markerName) {
       this.removeMarkerClusterLayer(listName)
+      this[markerName] = []
 
       const redIcon = leafletObject.icon({
         iconUrl: '/img/marker-icon-red.png',
@@ -759,10 +792,22 @@ export default {
         tooltipAnchor: [16, -28],
         shadowSize: [41, 41]
       })
+      const transportIcon = leafletObject.icon({
+        iconUrl: '/img/marker-transport-icon.png',
+        iconRetinaUrl: '/img/marker-icon-transport-2x.png',
+        shadowUrl: '/img/marker-shadow.png',
+        iconSize: [25, 41],
+        iconAnchor: [12, 41],
+        popupAnchor: [1, -34],
+        tooltipAnchor: [16, -28],
+        shadowSize: [41, 41]
+      })
       let icon = defaultIcon
 
       if (listName.replace('List', '') === 'branches2') {
         icon = redIcon
+      } else if (listName.replace('List', '') === 'transport') {
+        icon = transportIcon
       }
 
       this[listName + 'MarkerClusterGroupLayer'] = new MarkerClusterGroup()
@@ -777,7 +822,7 @@ export default {
     },
     loadClusterMarkersList (listName, markerName) {
       this.zoom = this.mapInstance._zoom // 13
-      const bounds = this.mapInstance.getBounds()
+      // const bounds = this.mapInstance.getBounds()
       this[markerName].forEach(marker => {
         this.hideLayer(marker)
       })
@@ -785,8 +830,8 @@ export default {
       //   return
       // }
 
-      this[listName].inBounds(bounds).forEach(marker => {
-      // this[listName].list.forEach(marker => {
+      // this[listName].inBounds(bounds).forEach(marker => {
+      this[listName].list.forEach(marker => {
         const layerName = listName.replace('List', '')
         const popup = '<b>(' + layerName + ')</b></br><b>name: ' + marker.name + '</b></br>fclass:' + marker.fclass
         const icon = leafletObject.divIcon({
@@ -800,7 +845,7 @@ export default {
     },
     loadPolygonList (listName, polygonName) {
       this.zoom = this.mapInstance._zoom // 13
-      const bounds = this.mapInstance.getBounds()
+      // const bounds = this.mapInstance.getBounds()
       this[polygonName].forEach(polygon => {
         this.hideLayer(polygon)
       })
@@ -808,8 +853,9 @@ export default {
         return
       }
 
-      this[listName].inBounds(bounds).forEach(polygon => {
-      // this[listName].list.forEach(polygon => {
+      this[polygonName] = []
+      // this[listName].inBounds(bounds).forEach(polygon => {
+      this[listName].list.forEach(polygon => {
         const layerName = listName.replace('List', '')
         const polygonLayer = this.addPolygon(polygon.multiPolygon, '<b>(' + layerName + ')</b></br><b>name: ' + polygon.name + '</b></br>fclass:' + polygon.fclass, polygon, layerName)
         this[polygonName].push(polygonLayer)
@@ -817,7 +863,7 @@ export default {
     },
     loadPolylineList (listName, polylineName) {
       this.zoom = this.mapInstance._zoom // 13
-      const bounds = this.mapInstance.getBounds()
+      // const bounds = this.mapInstance.getBounds()
       this[polylineName].forEach(polyline => {
         this.hideLayer(polyline)
       })
@@ -825,8 +871,9 @@ export default {
         return
       }
 
-      this[listName].inBounds(bounds).forEach(polyline => {
-      // this[listName].list.forEach(polyline => {
+      this[polylineName] = []
+      // this[listName].inBounds(bounds).forEach(polyline => {
+      this[listName].list.forEach(polyline => {
         const layerName = listName.replace('List', '')
         const polylineLayer = this.addPolyline(polyline.multiString, '<b>(' + layerName + ')</b></br><b>name: ' + polyline.name + '</b></br>fclass:' + polyline.fclass, polyline, layerName)
         this[polylineName].push(polylineLayer)

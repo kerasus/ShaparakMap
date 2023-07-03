@@ -135,6 +135,7 @@ export default class MultiStringAPI extends APIRepository {
         delete mergedFilter[key]
       }
     })
+    mergedFilter.fclass = 'bus_station, railway_station'
     return this.sendRequest({
       apiMethod: 'post',
       api: this.api,
