@@ -13,6 +13,7 @@ export default class StatisticAPI extends APIRepository {
   information(options) {
     return new Promise((resolve, reject) => {
       appApiInstance.post(this.APIAdresses.information, {
+        branche: options.branche,
         bbox: options.bbox,
         trunc: options.trunc
       }, { headers: { 'content-type': 'application/x-www-form-urlencoded' } })

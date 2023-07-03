@@ -215,6 +215,28 @@
                   </q-item-label>
                 </q-item-section>
               </q-item>
+              <q-item v-if="selectedLayer.closest_name"
+                      v-ripple
+                      class="col-md-6 col-12"
+                      clickable>
+                <q-item-section>
+                  <q-item-label>closest_name</q-item-label>
+                  <q-item-label caption>
+                    {{ selectedLayer.closest_name }}
+                  </q-item-label>
+                </q-item-section>
+              </q-item>
+              <q-item v-if="selectedLayer.closest_distance"
+                      v-ripple
+                      class="col-md-6 col-12"
+                      clickable>
+                <q-item-section>
+                  <q-item-label>closest_distance</q-item-label>
+                  <q-item-label caption>
+                    {{ selectedLayer.closest_distance }}
+                  </q-item-label>
+                </q-item-section>
+              </q-item>
               <q-item v-ripple
                       class="col-md-6 col-12"
                       :class="{'bg-green-2': selectedLayer.currencyـcircle, 'bg-red-2': !selectedLayer.currencyـcircle}"
@@ -303,6 +325,21 @@
                   </q-item-label>
                 </q-item-section>
               </q-item>
+              <div v-if="selectedLayer.id"
+                   class="full-width">
+                <template v-if="statisticInformationLoading">
+                  <q-skeleton height="200px"
+                              square />
+                </template>
+                <template v-else>
+                  <div class="flex justify-end">
+                    <q-select v-model="informationTruncType"
+                              map-options
+                              :options="informationTruncOptions" />
+                  </div>
+                  <statistic-information-chart :series="statisticInformation" />
+                </template>
+              </div>
             </template>
           </q-list>
         </q-tab-panel>
@@ -1012,8 +1049,12 @@
 </template>
 
 <script>
+import { APIGateway } from 'src/api/APIGateway.js'
+import StatisticInformationChart from 'src/components/Widgets/Map/MapWithFilter/StatisticInformationChart.vue'
+
 export default {
   name: 'BranchInfoCard',
+  components: { StatisticInformationChart },
   props: {
     selectedLayer: {
       type: [Object, Boolean],
@@ -1022,10 +1063,58 @@ export default {
   },
   data: () => {
     return {
-      panel: 'branches'
+      panel: 'branches',
+      informationTruncType: 'daily',
+      informationTruncOptions: [
+        {
+          label: 'روزانه',
+          value: 'daily'
+        },
+        {
+          label: 'هفتگی',
+          value: 'weekly'
+        },
+        {
+          label: 'ماهیانه',
+          value: 'monthly'
+        },
+        {
+          label: 'سالیانه',
+          value: 'yearly'
+        }
+      ],
+      statisticInformationLoading: false,
+      statisticInformation: []
+    }
+  },
+  watch: {
+    selectedLayer () {
+      this.getChartData()
+    },
+    informationTruncType () {
+      this.getChartData()
     }
   },
   methods: {
+    getChartData () {
+      const selectedBrachId = this.selectedLayer.id
+      if (!selectedBrachId) {
+        return
+      }
+      this.statisticInformationLoading = true
+      const trunc = this.informationTruncType.value || this.informationTruncType
+      APIGateway.statistic.information({
+        branche: selectedBrachId,
+        trunc
+      })
+        .then((series) => {
+          this.statisticInformation = series
+          this.statisticInformationLoading = false
+        })
+        .catch(() => {
+          this.statisticInformationLoading = false
+        })
+    },
     clearSelectedLayer () {
       this.$emit('clear')
     }

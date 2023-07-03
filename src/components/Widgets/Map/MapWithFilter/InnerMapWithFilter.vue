@@ -310,9 +310,10 @@ export default {
     getStatistic () {
       const bounds = new MapBoundary(this.mapInstance.getBounds()).getBBox()
       this.statisticInformationLoading = true
+      const trunc = this.informationTruncType.value || this.informationTruncType
       APIGateway.statistic.information({
         bbox: bounds,
-        trunc: this.informationTruncType.value
+        trunc
       })
         .then((series) => {
           this.statisticInformation = series
