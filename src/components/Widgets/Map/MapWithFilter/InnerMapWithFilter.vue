@@ -936,7 +936,6 @@ export default {
       // .openPopup()
     },
     getMarker(latlng, popup = '', data, name, icon, clickEvent) {
-      debugger
       let leafletMarker = null
       if (icon) {
         leafletMarker = leafletObject.marker(latlng, { icon })
