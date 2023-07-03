@@ -148,6 +148,7 @@ export default {
       branches2RadioOptions: null,
       selectedPlacesFilterSideMenu: null,
       selectedBranchHeaderMenu: null,
+      selectedBranchHeaderMenuMarkerLayer: null,
 
       staticalAbortController: null,
       clusterAbortController: null,
@@ -431,7 +432,8 @@ export default {
               this.hideLayer(this.searchBranchLayer)
               this.searchBranchLayer = null
             }
-            this.searchBranchLayer = this.getMarker(this.searchBranch.point, '<b>name: ' + this.searchBranch.name + '</b></br>fclass:' + this.searchBranch.fclass, this.searchBranch, 'searchBranch')
+            const popup = '<b>name: ' + this.searchBranch.name + '</b></br>fclass:' + this.searchBranch.fclass
+            this.searchBranchLayer = this.addMarker(this.searchBranch.point, popup, this.searchBranch, 'searchBranch')
           })
           .catch(() => {
             this.searchBranch.loading = false
@@ -748,21 +750,14 @@ export default {
         icon = transportIcon
       }
 
-      // const markerClusterGroupLayer = new MarkerClusterGroup()
-      // this[listName + 'MarkerClusterGroupLayer'] = new MarkerClusterGroup()
       // this[listName].inBounds(bounds).forEach(marker => {
       this[listName].list.forEach(marker => {
         const layerName = listName.replace('List', '')
-        // const markerLayer = this.addMarker(marker.point, '<b>(' + layerName + ')</b></br><b>name: ' + marker.name + '</b></br>fclass:' + marker.fclass, marker, layerName)
         const popup = '<b>(' + layerName + ')</b></br><b>name: ' + marker.name + '</b></br>fclass:' + marker.fclass
         const markerLayer = this.getMarker(marker.point, popup, marker, layerName, icon)
         this[markerName].push(markerLayer)
-        // this[listName + 'MarkerClusterGroupLayer'].addLayer(markerLayer)
-        // https://leafletjs.com/2012/08/20/guest-post-markerclusterer-0-1-released.html
-        // leafletObject.MarkerClusterGroup(this[markerName]).addTo(this.mapInstance)
-        leafletObject.layerGroup(this[markerName]).addTo(this.mapInstance)
       })
-      // this.mapInstance.addLayer(this[listName + 'MarkerClusterGroupLayer'])
+      leafletObject.layerGroup(this[markerName]).addTo(this.mapInstance)
     },
     removeMarkerClusterLayer (listName) {
       if (this[listName + 'MarkerClusterGroupLayer'] && this.mapInstance.hasLayer(this[listName + 'MarkerClusterGroupLayer'])) {
@@ -816,7 +811,7 @@ export default {
         const layerName = listName.replace('List', '')
         const popup = '<b>(' + layerName + ')</b></br><b>name: ' + marker.name + '</b></br>fclass:' + marker.fclass
         const markerLayer = this.getMarker(marker.point, popup, marker, layerName, icon)
-        this[markerName].push(markerLayer)
+        // this[markerName].push(markerLayer)
         this[listName + 'MarkerClusterGroupLayer'].addLayer(markerLayer)
       })
       this.mapInstance.addLayer(this[listName + 'MarkerClusterGroupLayer'])
@@ -941,6 +936,7 @@ export default {
       // .openPopup()
     },
     getMarker(latlng, popup = '', data, name, icon, clickEvent) {
+      debugger
       let leafletMarker = null
       if (icon) {
         leafletMarker = leafletObject.marker(latlng, { icon })
