@@ -85,260 +85,284 @@
               <q-item-section>Branches</q-item-section>
             </q-item>
             <template v-if="selectedLayer">
-              <q-item v-if="selectedLayer.id"
-                      v-ripple
-                      class="col-md-6 col-12"
-                      clickable>
-                <q-item-section>
-                  <q-item-label>id</q-item-label>
-                  <q-item-label caption>
-                    {{ selectedLayer.id }}
-                  </q-item-label>
-                </q-item-section>
-              </q-item>
-              <q-item v-if="selectedLayer.closest_branch"
-                      v-ripple
-                      class="col-md-6 col-12"
-                      clickable>
-                <q-item-section>
-                  <q-item-label>closest_branch</q-item-label>
-                  <q-item-label caption>
-                    {{ selectedLayer.closest_branch }}
-                  </q-item-label>
-                </q-item-section>
-              </q-item>
-              <template v-if="selectedLayer.closest_branch && selectedLayer.closest_branch_info">
-                <q-item v-ripple
-                        class="col-md-6 col-12"
-                        clickable>
-                  <q-item-section>
-                    <q-item-label>closest_branch_info.id</q-item-label>
-                    <q-item-label caption>
-                      {{ selectedLayer.closest_branch_info.id }}
-                    </q-item-label>
-                  </q-item-section>
-                </q-item>
-                <q-item v-ripple
-                        class="col-md-6 col-12"
-                        clickable>
-                  <q-item-section>
-                    <q-item-label>closest_branch_info.geom</q-item-label>
-                    <q-item-label caption>
-                      {{ selectedLayer.closest_branch_info.geom }}
-                    </q-item-label>
-                  </q-item-section>
-                </q-item>
-                <q-item v-ripple
-                        class="col-md-6 col-12"
-                        clickable>
-                  <q-item-section>
-                    <q-item-label>closest_branch_info.distance</q-item-label>
-                    <q-item-label caption>
-                      {{ selectedLayer.closest_branch_info.distance }}
-                    </q-item-label>
-                  </q-item-section>
-                </q-item>
-                <q-item v-ripple
-                        class="col-md-6 col-12"
-                        clickable>
-                  <q-item-section>
-                    <q-item-label>closest_branch_info.geomPoint</q-item-label>
-                    <q-item-label caption>
-                      {{ selectedLayer.closest_branch_info.geomPoint }}
-                    </q-item-label>
-                  </q-item-section>
-                </q-item>
-              </template>
-              <q-item v-if="selectedLayer.number"
-                      v-ripple
-                      class="col-md-6 col-12"
-                      clickable>
-                <q-item-section>
-                  <q-item-label>number</q-item-label>
-                  <q-item-label caption>
-                    {{ selectedLayer.number }}
-                  </q-item-label>
-                </q-item-section>
-              </q-item>
-              <q-item v-if="selectedLayer.code"
-                      v-ripple
-                      class="col-md-6 col-12"
-                      clickable>
-                <q-item-section>
-                  <q-item-label>code</q-item-label>
-                  <q-item-label caption>
-                    {{ selectedLayer.code }}
-                  </q-item-label>
-                </q-item-section>
-              </q-item>
-              <q-item v-if="selectedLayer.name"
-                      v-ripple
-                      class="col-md-6 col-12"
-                      clickable>
-                <q-item-section>
-                  <q-item-label>name</q-item-label>
-                  <q-item-label caption>
-                    {{ selectedLayer.name }}
-                  </q-item-label>
-                </q-item-section>
-              </q-item>
-              <q-item v-if="selectedLayer.farsighted"
-                      v-ripple
-                      class="col-md-6 col-12"
-                      clickable>
-                <q-item-section>
-                  <q-item-label>farsighted</q-item-label>
-                  <q-item-label caption>
-                    {{ selectedLayer.farsighted }}
-                  </q-item-label>
-                </q-item-section>
-              </q-item>
-              <q-item v-if="selectedLayer.phone_1"
-                      v-ripple
-                      class="col-md-6 col-12"
-                      clickable>
-                <q-item-section>
-                  <q-item-label>phone_1</q-item-label>
-                  <q-item-label caption>
-                    {{ selectedLayer.phone_1 }}
-                  </q-item-label>
-                </q-item-section>
-              </q-item>
-              <q-item v-if="selectedLayer.phone_2"
-                      v-ripple
-                      class="col-md-6 col-12"
-                      clickable>
-                <q-item-section>
-                  <q-item-label>phone_2</q-item-label>
-                  <q-item-label caption>
-                    {{ selectedLayer.phone_2 }}
-                  </q-item-label>
-                </q-item-section>
-              </q-item>
-              <q-item v-if="selectedLayer.closest_name"
-                      v-ripple
-                      class="col-md-6 col-12"
-                      clickable>
-                <q-item-section>
-                  <q-item-label>closest_name</q-item-label>
-                  <q-item-label caption>
-                    {{ selectedLayer.closest_name }}
-                  </q-item-label>
-                </q-item-section>
-              </q-item>
-              <q-item v-if="selectedLayer.closest_distance"
-                      v-ripple
-                      class="col-md-6 col-12"
-                      clickable>
-                <q-item-section>
-                  <q-item-label>closest_distance</q-item-label>
-                  <q-item-label caption>
-                    {{ selectedLayer.closest_distance }}
-                  </q-item-label>
-                </q-item-section>
-              </q-item>
-              <q-item v-ripple
-                      class="col-md-6 col-12"
-                      :class="{'bg-green-2': selectedLayer.currencyـcircle, 'bg-red-2': !selectedLayer.currencyـcircle}"
-                      clickable>
-                <q-item-section>
-                  <q-item-label>currencyـcircle</q-item-label>
-                  <q-item-label caption>
-                    {{ (selectedLayer.currencyـcircle ? 'دارد' : 'ندارد') }}
-                  </q-item-label>
-                </q-item-section>
-              </q-item>
-              <q-item v-ripple
-                      class="col-md-6 col-12"
-                      :class="{'bg-green-2': selectedLayer.atm, 'bg-red-2': !selectedLayer.atm}"
-                      clickable>
-                <q-item-section>
-                  <q-item-label>atm</q-item-label>
-                  <q-item-label caption>
-                    {{ (selectedLayer.atm ? 'دارد' : 'ندارد') }}
-                  </q-item-label>
-                </q-item-section>
-              </q-item>
-              <q-item v-ripple
-                      class="col-md-6 col-12"
-                      :class="{'bg-green-2': selectedLayer.eveningـcounter, 'bg-red-2': !selectedLayer.eveningـcounter}"
-                      clickable>
-                <q-item-section>
-                  <q-item-label>eveningـcounter</q-item-label>
-                  <q-item-label caption>
-                    {{ (selectedLayer.eveningـcounter ? 'دارد' : 'ندارد') }}
-                  </q-item-label>
-                </q-item-section>
-              </q-item>
-              <q-item v-ripple
-                      class="col-md-6 col-12"
-                      :class="{'bg-green-2': selectedLayer.Safeـbox, 'bg-red-2': !selectedLayer.Safeـbox}"
-                      clickable>
-                <q-item-section>
-                  <q-item-label>Safeـbox</q-item-label>
-                  <q-item-label caption>
-                    {{ (selectedLayer.Safeـbox ? 'دارد' : 'ندارد') }}
-                  </q-item-label>
-                </q-item-section>
-              </q-item>
-              <q-item v-ripple
-                      class="col-md-6 col-12"
-                      :class="{'bg-green-2': selectedLayer.pos, 'bg-red-2': !selectedLayer.pos}"
-                      clickable>
-                <q-item-section>
-                  <q-item-label>pos</q-item-label>
-                  <q-item-label caption>
-                    {{ (selectedLayer.pos ? 'دارد' : 'ندارد') }}
-                  </q-item-label>
-                </q-item-section>
-              </q-item>
-              <q-item v-ripple
-                      class="col-md-6 col-12"
-                      :class="{'bg-green-2': selectedLayer.cvv2, 'bg-red-2': !selectedLayer.cvv2}"
-                      clickable>
-                <q-item-section>
-                  <q-item-label>cvv2</q-item-label>
-                  <q-item-label caption>
-                    {{ (selectedLayer.cvv2 ? 'دارد' : 'ندارد') }}
-                  </q-item-label>
-                </q-item-section>
-              </q-item>
-              <q-item v-ripple
-                      class="col-md-6 col-12"
-                      :class="{'bg-green-2': selectedLayer.cellularـphone, 'bg-red-2': !selectedLayer.cellularـphone}"
-                      clickable>
-                <q-item-section>
-                  <q-item-label>cellularـphone</q-item-label>
-                  <q-item-label caption>
-                    {{ (selectedLayer.cellularـphone ? 'دارد' : 'ندارد') }}
-                  </q-item-label>
-                </q-item-section>
-              </q-item>
-              <q-item v-if="selectedLayer.geom"
-                      v-ripple
-                      class="col-md-6 col-12"
-                      clickable>
-                <q-item-section>
-                  <q-item-label>geom</q-item-label>
-                  <q-item-label caption>
-                    {{ selectedLayer.geom }}
-                  </q-item-label>
-                </q-item-section>
-              </q-item>
-              <div v-if="selectedLayer.id"
-                   class="full-width">
-                <template v-if="statisticInformationLoading">
-                  <q-skeleton height="200px"
-                              square />
-                </template>
-                <template v-else>
-                  <div class="flex justify-end">
-                    <q-select v-model="informationTruncType"
-                              map-options
-                              :options="informationTruncOptions" />
-                  </div>
-                  <statistic-information-chart :series="statisticInformation" />
-                </template>
+              <div class="col-12">
+                <q-tabs v-model="branchInfoTab"
+                        dense
+                        class="text-grey"
+                        active-color="primary"
+                        indicator-color="primary"
+                        align="justify"
+                        narrow-indicator>
+                  <q-tab name="table"
+                         label="جدول" />
+                  <q-tab v-if="selectedLayer.id"
+                         name="chart"
+                         label="نمودار" />
+                </q-tabs>
+                <q-tab-panels v-model="branchInfoTab"
+                              animated>
+                  <q-tab-panel name="table">
+                    <div class="row">
+                      <q-item v-if="selectedLayer.id"
+                              v-ripple
+                              class="col-md-6 col-12"
+                              clickable>
+                        <q-item-section>
+                          <q-item-label>id</q-item-label>
+                          <q-item-label caption>
+                            {{ selectedLayer.id }}
+                          </q-item-label>
+                        </q-item-section>
+                      </q-item>
+                      <q-item v-if="selectedLayer.closest_branch"
+                              v-ripple
+                              class="col-md-6 col-12"
+                              clickable>
+                        <q-item-section>
+                          <q-item-label>closest_branch</q-item-label>
+                          <q-item-label caption>
+                            {{ selectedLayer.closest_branch }}
+                          </q-item-label>
+                        </q-item-section>
+                      </q-item>
+                      <template v-if="selectedLayer.closest_branch && selectedLayer.closest_branch_info">
+                        <q-item v-ripple
+                                class="col-md-6 col-12"
+                                clickable>
+                          <q-item-section>
+                            <q-item-label>closest_branch_info.id</q-item-label>
+                            <q-item-label caption>
+                              {{ selectedLayer.closest_branch_info.id }}
+                            </q-item-label>
+                          </q-item-section>
+                        </q-item>
+                        <q-item v-ripple
+                                class="col-md-6 col-12"
+                                clickable>
+                          <q-item-section>
+                            <q-item-label>closest_branch_info.geom</q-item-label>
+                            <q-item-label caption>
+                              {{ selectedLayer.closest_branch_info.geom }}
+                            </q-item-label>
+                          </q-item-section>
+                        </q-item>
+                        <q-item v-ripple
+                                class="col-md-6 col-12"
+                                clickable>
+                          <q-item-section>
+                            <q-item-label>closest_branch_info.distance</q-item-label>
+                            <q-item-label caption>
+                              {{ selectedLayer.closest_branch_info.distance }}
+                            </q-item-label>
+                          </q-item-section>
+                        </q-item>
+                        <q-item v-ripple
+                                class="col-md-6 col-12"
+                                clickable>
+                          <q-item-section>
+                            <q-item-label>closest_branch_info.geomPoint</q-item-label>
+                            <q-item-label caption>
+                              {{ selectedLayer.closest_branch_info.geomPoint }}
+                            </q-item-label>
+                          </q-item-section>
+                        </q-item>
+                      </template>
+                      <q-item v-if="selectedLayer.number"
+                              v-ripple
+                              class="col-md-6 col-12"
+                              clickable>
+                        <q-item-section>
+                          <q-item-label>number</q-item-label>
+                          <q-item-label caption>
+                            {{ selectedLayer.number }}
+                          </q-item-label>
+                        </q-item-section>
+                      </q-item>
+                      <q-item v-if="selectedLayer.code"
+                              v-ripple
+                              class="col-md-6 col-12"
+                              clickable>
+                        <q-item-section>
+                          <q-item-label>code</q-item-label>
+                          <q-item-label caption>
+                            {{ selectedLayer.code }}
+                          </q-item-label>
+                        </q-item-section>
+                      </q-item>
+                      <q-item v-if="selectedLayer.name"
+                              v-ripple
+                              class="col-md-6 col-12"
+                              clickable>
+                        <q-item-section>
+                          <q-item-label>name</q-item-label>
+                          <q-item-label caption>
+                            {{ selectedLayer.name }}
+                          </q-item-label>
+                        </q-item-section>
+                      </q-item>
+                      <q-item v-if="selectedLayer.farsighted"
+                              v-ripple
+                              class="col-md-6 col-12"
+                              clickable>
+                        <q-item-section>
+                          <q-item-label>farsighted</q-item-label>
+                          <q-item-label caption>
+                            {{ selectedLayer.farsighted }}
+                          </q-item-label>
+                        </q-item-section>
+                      </q-item>
+                      <q-item v-if="selectedLayer.phone_1"
+                              v-ripple
+                              class="col-md-6 col-12"
+                              clickable>
+                        <q-item-section>
+                          <q-item-label>phone_1</q-item-label>
+                          <q-item-label caption>
+                            {{ selectedLayer.phone_1 }}
+                          </q-item-label>
+                        </q-item-section>
+                      </q-item>
+                      <q-item v-if="selectedLayer.phone_2"
+                              v-ripple
+                              class="col-md-6 col-12"
+                              clickable>
+                        <q-item-section>
+                          <q-item-label>phone_2</q-item-label>
+                          <q-item-label caption>
+                            {{ selectedLayer.phone_2 }}
+                          </q-item-label>
+                        </q-item-section>
+                      </q-item>
+                      <q-item v-if="selectedLayer.closest_name"
+                              v-ripple
+                              class="col-md-6 col-12"
+                              clickable>
+                        <q-item-section>
+                          <q-item-label>closest_name</q-item-label>
+                          <q-item-label caption>
+                            {{ selectedLayer.closest_name }}
+                          </q-item-label>
+                        </q-item-section>
+                      </q-item>
+                      <q-item v-if="selectedLayer.closest_distance"
+                              v-ripple
+                              class="col-md-6 col-12"
+                              clickable>
+                        <q-item-section>
+                          <q-item-label>closest_distance</q-item-label>
+                          <q-item-label caption>
+                            {{ selectedLayer.closest_distance }}
+                          </q-item-label>
+                        </q-item-section>
+                      </q-item>
+                      <q-item v-ripple
+                              class="col-md-6 col-12"
+                              :class="{'bg-green-2': selectedLayer.currencyـcircle, 'bg-red-2': !selectedLayer.currencyـcircle}"
+                              clickable>
+                        <q-item-section>
+                          <q-item-label>currencyـcircle</q-item-label>
+                          <q-item-label caption>
+                            {{ (selectedLayer.currencyـcircle ? 'دارد' : 'ندارد') }}
+                          </q-item-label>
+                        </q-item-section>
+                      </q-item>
+                      <q-item v-ripple
+                              class="col-md-6 col-12"
+                              :class="{'bg-green-2': selectedLayer.atm, 'bg-red-2': !selectedLayer.atm}"
+                              clickable>
+                        <q-item-section>
+                          <q-item-label>atm</q-item-label>
+                          <q-item-label caption>
+                            {{ (selectedLayer.atm ? 'دارد' : 'ندارد') }}
+                          </q-item-label>
+                        </q-item-section>
+                      </q-item>
+                      <q-item v-ripple
+                              class="col-md-6 col-12"
+                              :class="{'bg-green-2': selectedLayer.eveningـcounter, 'bg-red-2': !selectedLayer.eveningـcounter}"
+                              clickable>
+                        <q-item-section>
+                          <q-item-label>eveningـcounter</q-item-label>
+                          <q-item-label caption>
+                            {{ (selectedLayer.eveningـcounter ? 'دارد' : 'ندارد') }}
+                          </q-item-label>
+                        </q-item-section>
+                      </q-item>
+                      <q-item v-ripple
+                              class="col-md-6 col-12"
+                              :class="{'bg-green-2': selectedLayer.Safeـbox, 'bg-red-2': !selectedLayer.Safeـbox}"
+                              clickable>
+                        <q-item-section>
+                          <q-item-label>Safeـbox</q-item-label>
+                          <q-item-label caption>
+                            {{ (selectedLayer.Safeـbox ? 'دارد' : 'ندارد') }}
+                          </q-item-label>
+                        </q-item-section>
+                      </q-item>
+                      <q-item v-ripple
+                              class="col-md-6 col-12"
+                              :class="{'bg-green-2': selectedLayer.pos, 'bg-red-2': !selectedLayer.pos}"
+                              clickable>
+                        <q-item-section>
+                          <q-item-label>pos</q-item-label>
+                          <q-item-label caption>
+                            {{ (selectedLayer.pos ? 'دارد' : 'ندارد') }}
+                          </q-item-label>
+                        </q-item-section>
+                      </q-item>
+                      <q-item v-ripple
+                              class="col-md-6 col-12"
+                              :class="{'bg-green-2': selectedLayer.cvv2, 'bg-red-2': !selectedLayer.cvv2}"
+                              clickable>
+                        <q-item-section>
+                          <q-item-label>cvv2</q-item-label>
+                          <q-item-label caption>
+                            {{ (selectedLayer.cvv2 ? 'دارد' : 'ندارد') }}
+                          </q-item-label>
+                        </q-item-section>
+                      </q-item>
+                      <q-item v-ripple
+                              class="col-md-6 col-12"
+                              :class="{'bg-green-2': selectedLayer.cellularـphone, 'bg-red-2': !selectedLayer.cellularـphone}"
+                              clickable>
+                        <q-item-section>
+                          <q-item-label>cellularـphone</q-item-label>
+                          <q-item-label caption>
+                            {{ (selectedLayer.cellularـphone ? 'دارد' : 'ندارد') }}
+                          </q-item-label>
+                        </q-item-section>
+                      </q-item>
+                      <q-item v-if="selectedLayer.geom"
+                              v-ripple
+                              class="col-md-6 col-12"
+                              clickable>
+                        <q-item-section>
+                          <q-item-label>geom</q-item-label>
+                          <q-item-label caption>
+                            {{ selectedLayer.geom }}
+                          </q-item-label>
+                        </q-item-section>
+                      </q-item>
+                    </div>
+                  </q-tab-panel>
+
+                  <q-tab-panel v-if="selectedLayer.id"
+                               name="chart">
+                    <template v-if="statisticInformationLoading">
+                      <q-skeleton height="200px"
+                                  square />
+                    </template>
+                    <template v-else>
+                      <div class="flex justify-end">
+                        <q-select v-model="informationTruncType"
+                                  map-options
+                                  :options="informationTruncOptions" />
+                      </div>
+                      <statistic-information-chart :series="statisticInformation" />
+                    </template>
+                  </q-tab-panel>
+
+                </q-tab-panels>
               </div>
             </template>
           </q-list>
@@ -1064,6 +1088,7 @@ export default {
   data: () => {
     return {
       panel: 'branches',
+      branchInfoTab: 'table',
       informationTruncType: 'daily',
       informationTruncOptions: [
         {
